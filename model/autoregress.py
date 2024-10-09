@@ -3,8 +3,8 @@ import pandas as pd
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.models import Sequential #type: ignore
-from tensorflow.keras.layers import LSTM, Dense #type: ignore
+from tensorflow.keras.models import Sequential # type: ignore
+from tensorflow.keras.layers import LSTM, Dense # type: ignore
 
 # Загрузка данных и их подготовка
 data = pd.read_csv('data/maxextend.csv')
@@ -42,31 +42,62 @@ def create_model(input_shape):
     return model
 
 # Функция для генерации временных предсказаний
-def make_predictions(model, initial_input, steps):
+def make_predictions(model, initial_input, steps, scaler_y):
     current_input = initial_input.reshape((1, 1, initial_input.shape[0]))  # Входной вектор с 10 признаками
     predictions = []
     
     # Первое предсказание на основе 10 признаков
     pred = model.predict(current_input)
-    predictions.append(pred)
+    predictions.append(scaler_y.inverse_transform(pred))  # Обратное преобразование
     
     # Для следующих шагов используем комбинацию старых данных и предсказанных значений
     for step in range(1, steps):
         # Обновляем входные данные: используем первые 5 признаков из исходного вектора и предсказанные данные
         current_input = np.concatenate([initial_input[:5], pred.flatten()]).reshape((1, 1, 10))
+        
+        # Следующее предсказание
         pred = model.predict(current_input)
-        predictions.append(pred)
+        predictions.append(scaler_y.inverse_transform(pred))  # Обратное преобразование
+    
     return np.array(predictions)
 
 # Параметры модели
-input_shape = (1, X_train_lstm.shape[2]) 
+input_shape = (1, X_train_lstm.shape[2])  # timesteps = 1, признаки = 10
+
+# Создаем модель
 model = create_model(input_shape)
+
+# Обучение модели
 model.fit(X_train_lstm, y_train, epochs=25, batch_size=16, validation_split=0.2)
-initial_input = X_test[0] 
+
+# Тестовые данные для предсказаний
+initial_input = X_test[0]  # Используем первый тестовый пример для предсказаний
+
+# Количество шагов для предсказаний
 steps = 6
-future_predictions = make_predictions(model, initial_input, steps)
+
+# Генерация временных предсказаний
+future_predictions = make_predictions(model, initial_input, steps, scaler_y)
 
 # Вывод предсказаний
-print("Предсказания на следующие шаги:")
+X_test_rescaled = scaler_X.inverse_transform(X_test)
+print(f"  Input Data:")
+print(f"    Theme ID: {X_test_rescaled[0, 0]:.2f}")
+print(f"    Category ID: {X_test_rescaled[0, 1]:.2f}")
+print(f"    Start Month: {X_test_rescaled[0, 2]:.2f}")
+print(f"    Investments (M): {X_test_rescaled[0, 3]:.2f}")
+print(f"    Crowdfunding (M): {X_test_rescaled[0, 4]:.2f}")
+print(f"    Team Index: {X_test_rescaled[0, 5]:.2f}")
+print(f"    Tech Index: {X_test_rescaled[0, 6]:.2f}")
+print(f"    Competition Index: {X_test_rescaled[0, 7]:.2f}")
+print(f"    Social Index: {X_test_rescaled[0, 8]:.2f}")
+print(f"    Demand Index: {X_test_rescaled[0, 9]:.2f}")
+print()
 for i, pred in enumerate(future_predictions):
-    print(f"Шаг {i+1}: {pred}")
+    print(f"Prediction {i+1}:")
+    print(f"  Social Index: {pred[0, 0]:.2f}")
+    print(f"  Future Investments: {pred[0, 1]:.2f}")
+    print(f"  Future Crowdfunding: {pred[0, 2]:.2f}")
+    print(f"  Future Demand: {pred[0, 3]:.2f}")
+    print(f"  Competition Index: {pred[0, 4]:.2f}")
+    print()
