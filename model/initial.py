@@ -6,7 +6,7 @@ import pandas as pd
 import tensorflow as tf
 
 def main():
-    file_path = 'data/maxextend.csv'
+    file_path = 'data/dataset_.csv'
     features = ['theme_id', 'category_id', 'comp_idx', 'start_m',
                 'investments_m', 'crowdfunding_m', 'team_idx',
                 'tech_idx', 'social_idx', 'demand_idx']
