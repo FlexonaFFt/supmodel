@@ -39,7 +39,7 @@ class Normalizer:
     def inverse_transform_X(self, X_scaled):
         return self.scaler_X.inverse_transform(X_scaled)
 
-    def inverse_transform_y(self, Y_scaled):
+    def inverse_transform_Y(self, Y_scaled):
         return self.scaler_Y.inverse_transform(Y_scaled)
 
 class DataProcessor:
@@ -62,6 +62,20 @@ class LSTMModelBuilder:
     def build_model(self):
         model = Sequential()
         model.add(LSTM(256, activation='relu', input_shape=self.input_shape, return_sequences=False))
+        model.add(Dense(5))
+        model.compile(optimizer='adam', loss='mse')
+        return model
+
+class DenseModelBuilder:
+    """Класс для создания и конфигурации Dense модели для одиночных предсказаний"""
+
+    def __init__(self, input_shape):
+        self.input_shape = input_shape
+
+    def build_model(self):
+        model = Sequential()
+        model.add(Dense(128, activation='relu', input_shape=self.input_shape))
+        model.add(Dense(64, activation='relu'))
         model.add(Dense(5))
         model.compile(optimizer='adam', loss='mse')
         return model
