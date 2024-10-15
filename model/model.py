@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -7,7 +8,7 @@ from tensorflow.keras.models import Sequential # type: ignore
 from tensorflow.keras.layers import LSTM, Dense # type: ignore
 
 class DataLoader:
-    """Класс для загрузки и хранения данных."""
+    """Класс для загрузки и хранения данных"""
 
     def __init__(self, file_path, features, targets):
         self.data = pd.read_csv(file_path)
@@ -20,7 +21,7 @@ class DataLoader:
         return X, Y
 
 class Normalizer:
-    """Класс для нормализации данных с помощью MinMaxScaler."""
+    """Класс для нормализации данных с помощью MinMaxScaler"""
 
     def __init__(self):
         self.scaler_X = MinMaxScaler()
@@ -43,7 +44,7 @@ class Normalizer:
         return self.scaler_Y.inverse_transform(Y_scaled)
 
 class DataProcessor:
-    """Класс для разделения данных на тренировочные и тестовые выборки."""
+    """Класс для разделения данных на тренировочные и тестовые выборки"""
 
     def __init__(self, test_size=0.2, random_state=20):
         self.test_size = test_size
@@ -54,7 +55,7 @@ class DataProcessor:
         return X_train, X_test, Y_train, Y_test
 
 class LSTMModelBuilder:
-    """Класс для создания и конфигурации LSTM модели."""
+    """Класс для создания и конфигурации LSTM модели"""
 
     def __init__(self, input_shape):
         self.input_shape = input_shape
@@ -81,7 +82,7 @@ class DenseModelBuilder:
         return model
 
 class Trainer:
-    """Класс для обучения модели."""
+    """Класс для обучения модели"""
 
     def __init__(self, model, X_train, Y_train, batch_size=16, epochs=25, validation_split=0.2):
         self.model = model
@@ -95,7 +96,7 @@ class Trainer:
         self.model.fit(self.X_train, self.Y_train, batch_size=self.batch_size, epochs=self.epochs, validation_split=self.validation_split)
 
 class Predictor:
-    """Класс для генерации предсказаний с помощью обученной модели."""
+    """Класс для генерации предсказаний с помощью обученной модели"""
 
     def __init__(self, model, scaler_Y):
         self.model = model
@@ -112,3 +113,58 @@ class Predictor:
             pred = self.model.predict(current_input)
             predictions.append(self.scaler_Y.inverse_transform(pred))
         return np.array(predictions)
+
+class ModelSaver:
+    """Класс для локального сохранения моделей"""
+
+    def __init__(self, model_1, model_2, model_dir='save/'):
+        self.model_1 = model_1
+        self.model_2 = model_2
+        self.model_dir = model_dir
+        os.makedirs(model_dir, exist_ok=True)
+
+    def save_models(self, epoch):
+        self.model_1.save(os.path.join(self.model_dir, f"model_1_epoch_{epoch}"))
+        self.model_2.save(os.path.join(self.model_dir, f"model_2_epoch_{epoch}"))
+        print(f"Модели сохранены после {epoch} эпох.")
+
+    def load_models(self, epoch):
+        self.model_1 = tf.keras.models.load_model(os.path.join(self.model_dir, f"model_1_epoch_{epoch}")) # type: ignore
+        self.model_2 = tf.keras.models.load_model(os.path.join(self.model_dir, f"model_2_epoch_{epoch}")) # type: ignore
+        print(f"Модели загружены для {epoch} эпох.")
+
+class InteractiveTrainer:
+    """Класс для обучения моделей в несколько циклов"""
+
+    def __init__(self, model_1, model_2, optimizer_1, optimizer_2, loss_fn, num_epochs, save_interval, model_saver):
+        self.model_1 = model_1
+        self.model_2 = model_2
+        self.optimizer_1 = optimizer_1
+        self.optimizer_2 = optimizer_2
+        self.loss_fn = loss_fn # Функция потерь для обеих моделей
+        self.num_epochs = num_epochs
+        self.save_interval = save_interval # Интервал сохранения моделей
+        self.model_saver = model_saver # Объект ModelSaver
+
+    def train_step(self, model, optimizer, inputs, targets):
+        with tf.GradientTape() as tape:
+            predictions = model(inputs, training=True)
+            loss = self.loss_fn(targets, predictions)
+        gradients = tape.gradient(loss, model.trainable_variables)
+        optimizer.apply_gradients(zip(gradients, model.trainable_variables)) # type: ignore
+        return loss
+
+    def train(self, train_dataset):
+        for epoch in range(1, self.num_epochs + 1):
+            print(f"Эпоха {epoch}/{self.num_epochs}")
+            total_loss_1 = 0
+            total_loss_2 = 0
+            for inputs, targets in train_dataset:
+                loss_1 = self.train_step(self.model_1, self.optimizer_1, inputs, targets)
+                total_loss_1 += loss_1
+                loss_2 = self.train_step(self.model_2, self.optimizer_2, inputs, targets)
+                total_loss_2 += loss_2
+            print(f"Потери модели 1: {total_loss_1.numpy()}, Потери модели 2: {total_loss_2.numpy()}") # type: ignore
+            if epoch % self.save_interval == 0:
+                self.model_saver.save_models(epoch)
+        print("Обучение завершено!")
