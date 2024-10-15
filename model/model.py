@@ -4,8 +4,8 @@ import pandas as pd
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.models import Sequential # type: ignore
 from tensorflow.keras.layers import LSTM, Dense # type: ignore
+from tensorflow.keras.models import Sequential, load_model # type: ignore
 
 class DataLoader:
     """Класс для загрузки и хранения данных"""
@@ -84,7 +84,7 @@ class DenseModelBuilder:
 class Trainer:
     """Класс для обучения модели"""
 
-    def __init__(self, model, X_train, Y_train, batch_size=16, epochs=25, validation_split=0.2):
+    def __init__(self, model, X_train, Y_train, batch_size=32, epochs=15, validation_split=0.2):
         self.model = model
         self.X_train = X_train
         self.Y_train = Y_train
@@ -124,10 +124,10 @@ class ModelManager:
         print(f"Модель сохранена по пути: {model_path}")
 
     @staticmethod
-    def load_model(model_path):
+    def load_model(model_path, compile_model=True):
         """Загружает модель с указанного пути"""
         if os.path.exists(model_path):
-            model = load_model(model_path) # type: ignore
+            model = load_model(model_path, compile=compile_model)
             print(f"Модель загружена из файла: {model_path}")
             return model
         else:
