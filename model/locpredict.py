@@ -25,7 +25,7 @@ X_scaled, Y_scaled = normalizer.fit_transform(X_train, Y_train)
 # Нормализуем новые данные
 new_data_scaled = normalizer.scaler_X.transform(new_data)
 
-# Если это LSTM модель, нужно изменить форму данных
+# Преобразование данных для LSTM
 new_data_lstm = new_data_scaled.reshape((new_data_scaled.shape[0], new_data_scaled.shape[1], 1))
 
 # Загрузка моделей
@@ -40,6 +40,15 @@ dense_prediction = dense_model.predict(new_data_scaled)
 lstm_prediction_inverse = normalizer.inverse_transform_Y(lstm_prediction)
 dense_prediction_inverse = normalizer.inverse_transform_Y(dense_prediction)
 
-# Выводим предсказания
-print("LSTM Model Prediction:", lstm_prediction_inverse)
-print("Dense Model Prediction:", dense_prediction_inverse)
+# Функция для форматированного вывода предсказаний
+def print_predictions(prediction, model_name):
+    print(f"{model_name} Predictions:")
+    print(f"  Social Index: {prediction[0][0]:.2f}")
+    print(f"  Future Investments: {prediction[0][1]:.2f}")
+    print(f"  Future Crowdfunding: {prediction[0][2]:.2f}")
+    print(f"  Future Demand: {prediction[0][3]:.2f}")
+    print(f"  Competition Index: {prediction[0][4]:.2f}\n")
+
+# Выводим предсказания для каждой модели
+print_predictions(lstm_prediction_inverse, "LSTM Model")
+print_predictions(dense_prediction_inverse, "Dense Model")
