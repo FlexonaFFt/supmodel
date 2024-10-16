@@ -36,7 +36,7 @@ def main():
     print(f"  Input Data:")
     print(f"    Theme ID: {X_test_rescaled[0, 0]:.2f}")
     print(f"    Category ID: {X_test_rescaled[0, 1]:.2f}")
-    print(f"    Start Month: {X_test_rescaled[0, 2]:.2f}")
+    print(f"    Start Money: {X_test_rescaled[0, 2]:.2f}")
     print(f"    Investments (M): {X_test_rescaled[0, 3]:.2f}")
     print(f"    Crowdfunding (M): {X_test_rescaled[0, 4]:.2f}")
     print(f"    Team Index: {X_test_rescaled[0, 5]:.2f}")

@@ -46,7 +46,7 @@ class Normalizer:
 class DataProcessor:
     """Класс для разделения данных на тренировочные и тестовые выборки"""
 
-    def __init__(self, test_size=0.2, random_state=20):
+    def __init__(self, test_size=0.2, random_state=50):
         self.test_size = test_size
         self.random_state = random_state
 
@@ -124,10 +124,10 @@ class ModelManager:
         print(f"Модель сохранена по пути: {model_path}")
 
     @staticmethod
-    def load_model(model_path, compile_model=True):
+    def load_model(model_path, custom_objects=None, compile_model=True):
         """Загружает модель с указанного пути"""
         if os.path.exists(model_path):
-            model = load_model(model_path, compile=compile_model)
+            model = load_model(model_path, custom_objects=custom_objects, compile=compile_model)
             print(f"Модель загружена из файла: {model_path}")
             return model
         else:
