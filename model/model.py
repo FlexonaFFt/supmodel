@@ -96,22 +96,78 @@ class Trainer:
         self.model.fit(self.X_train, self.Y_train, batch_size=self.batch_size, epochs=self.epochs, validation_split=self.validation_split)
 
 class Predictor:
-    """Класс для генерации предсказаний с помощью обученной модели"""
+    """Класс для генерации предсказаний с помощью обученной модели."""
 
     def __init__(self, model, scaler_Y):
+        """
+        Инициализация предсказателя.
+        model: обученная модель
+        scaler_Y: нормализатор для обратной трансформации целевых показателей
+        """
         self.model = model
         self.scaler_Y = scaler_Y
 
+    def make_single_prediction(self, current_input):
+        """
+        Выполняет одно предсказание на основе текущих входных данных.
+        current_input: входные данные для предсказания (одномерный массив)
+        """
+        current_input = current_input.reshape((1, 1, current_input.shape[0]))
+        pred = self.model.predict(current_input)
+        return self.scaler_Y.inverse_transform(pred)
+
     def make_predictions(self, initial_input, steps):
+        """
+        Выполняет пошаговые предсказания на основе модели и начальных данных.
+        initial_input: начальные входные данные
+        steps: количество шагов предсказаний
+        """
         current_input = initial_input.reshape((1, 1, initial_input.shape[0]))
         predictions = []
+
+        # Первое предсказание на основе начальных данных
         pred = self.model.predict(current_input)
         predictions.append(self.scaler_Y.inverse_transform(pred))
 
+        # Последующие предсказания на основе предыдущих
         for step in range(1, steps):
             current_input = np.concatenate([initial_input[:5], pred.flatten()]).reshape((1, 1, 10))
             pred = self.model.predict(current_input)
             predictions.append(self.scaler_Y.inverse_transform(pred))
+
+        return np.array(predictions)
+
+class Forecaster:
+    """Класс для генерации временных предсказаний через шаги с использованием модели."""
+
+    def __init__(self, predictor, normalizer, interval=6):
+        """
+        Инициализация Forecaster.
+        predictor: объект класса Predictor
+        normalizer: объект нормализатора для масштабирования
+        interval: временной интервал для предсказаний (по умолчанию полгода)
+        """
+        self.predictor = predictor
+        self.normalizer = normalizer
+        self.interval = interval
+
+    def forecast(self, X_scaled, steps):
+        """
+        Выполняет предсказания на временных рядах через заданные промежутки.
+        X_scaled: нормализованные входные данные
+        steps: количество шагов для предсказаний
+        """
+        predictions = []
+        current_input = X_scaled.copy()
+
+        for step in range(steps):
+            # Выполнение предсказания через Predictor
+            pred = self.predictor.make_single_prediction(current_input)
+            predictions.append(pred)
+
+            # Обновление входных данных на основе предыдущих предсказаний
+            current_input[:, -len(pred):] = self.normalizer.transform(pred)
+
         return np.array(predictions)
 
 class ModelManager:

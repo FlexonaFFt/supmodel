@@ -44,3 +44,46 @@ print(Y_pred_lstm)
 
 print("Dense Model Predictions:")
 print(Y_pred_dense)
+
+def make_lstm_forecast(model, X_scaled, normalizer, steps, interval):
+    """
+    Выполняет пошаговые предсказания с использованием LSTM модели на основе предыдущих предсказаний.
+
+    model: обученная модель LSTM
+    X_scaled: нормализованные входные данные (последнее известное значение для временного ряда)
+    normalizer: объект нормализатора, для обратной трансформации
+    steps: количество шагов (например, на 3 года, шаг в полгода = 6 шагов)
+    interval: количество временных единиц в одном шаге (например, полгода)
+
+    Возвращает: список предсказанных значений на каждом шаге.
+    """
+    predictions = []
+    current_input = X_scaled.copy()
+
+    for step in range(steps):
+        # Получение предсказаний на текущем шаге
+        prediction = model.predict(current_input)
+
+        # Обратная трансформация предсказаний (если требуется)
+        predicted_values = normalizer.inverse_transform_Y(prediction)
+
+        # Добавление предсказанных значений в результат
+        predictions.append(predicted_values)
+
+        # Обновление входа для следующего шага: используем предыдущие предсказанные значения
+        # Для временных рядов возможно необходимо обновлять только часть признаков
+        current_input[:, -len(TARGETS):] = prediction
+
+    return np.array(predictions)
+
+# Пример использования функции:
+# Задаем параметры для предсказаний на 3 года с шагом в полгода
+steps = 6  # 3 года, шаг полгода
+interval = 6  # Полгода
+
+# Вызов функции для предсказаний
+lstm_forecast = make_lstm_forecast(lstm_model, X_scaled, normalizer, steps, interval)
+
+# Печать предсказанных значений
+print("LSTM Forecast for 3 years (6 steps with half-year intervals):")
+print(lstm_forecast)
