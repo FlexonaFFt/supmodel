@@ -18,6 +18,36 @@ FEATURES = ['theme_id', 'category_id', 'comp_idx', 'start_m',
             'tech_idx', 'social_idx', 'demand_idx']
 TARGETS = ['social_idx', 'investments_m', 'crowdfunding_m', 'demand_idx', 'comp_idx']
 
+def make_lstm_forecast(model, X_scaled, normalizer, steps):
+    predictions = []
+    current_input = X_scaled.copy()
+
+    for step in range(steps):
+        prediction = model.predict(current_input)
+        predicted_values = normalizer.inverse_transform_Y(prediction)
+        predictions.append(predicted_values)
+        current_input[:, -len(TARGETS):] = prediction
+    return np.array(predictions)
+
+def display_model_predictions(predictions, model_name):
+    """
+    Функция для красивого вывода предсказаний модели.
+    predictions: массив предсказанных значений
+    model_name: название модели (например, 'LSTM Model' или 'Dense Model')
+    """
+    print(f"\n{model_name} Predictions:")
+    print("=" * 40)
+
+    for i, pred in enumerate(predictions):
+        print(f"Prediction {i + 1}:")
+        print(f"{'-' * 40}")
+        print(f"  Social Index        : {pred[0, 0]:>10.2f}")
+        print(f"  Future Investments  : {pred[0, 1]:>10.2f}")
+        print(f"  Future Crowdfunding : {pred[0, 2]:>10.2f}")
+        print(f"  Future Demand       : {pred[0, 3]:>10.2f}")
+        print(f"  Competition Index   : {pred[0, 4]:>10.2f}")
+        print(f"{'=' * 40}\n")
+
 # Загрузка данных
 data_loader = DataLoader(DATA_FILE, FEATURES, TARGETS)
 X, Y = data_loader.get_features_and_targets()
@@ -44,3 +74,7 @@ print(Y_pred_lstm)
 
 print("Dense Model Predictions:")
 print(Y_pred_dense)
+
+steps = 3
+lstm_forecast = make_lstm_forecast(lstm_model, X_scaled, normalizer, steps)
+display_model_predictions(lstm_forecast, 'LSTM_forecast')
