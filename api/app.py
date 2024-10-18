@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from model import ModelManager, Normalizer, DataLoader # type: ignore
+from model import ModelManager, Normalizer, DataLoader, Predictor, DataProcessor # type: ignore
 import tensorflow.keras.losses as losses # type: ignore
 import numpy as np
 
@@ -14,14 +14,19 @@ FEATURES = ['theme_id', 'category_id', 'comp_idx',
 TARGETS = ['social_idx', 'investments_m', 'crowdfunding_m',
     'demand_idx', 'comp_idx']
 
-data_loader, normalizer = DataLoader(DATA_FILE, FEATURES, TARGETS), Normalizer()
+data_loader, normalizer, processor = DataLoader(DATA_FILE, FEATURES, TARGETS), Normalizer(), DataProcessor()
 x_train, y_train = data_loader.get_features_and_targets()
 x_scaled, y_scaled = normalizer.fit_transform(x_train, y_train)
 lstm_model = ModelManager.load_model(LSTM_MODEL_PATH, custom_objects={'mse': losses.MeanSquaredError})
 dense_model = ModelManager.load_model(DENSE_MODEL_PATH, custom_objects={'mse': losses.MeanSquaredError})
+lstm_predictor = Predictor(lstm_model, normalizer.scaler_Y)
 
 class PredictionRequest(BaseModel):
     data: list[float]
+
+class TimeSeriesPredictionRequest(BaseModel):
+    data: list[float]
+    steps: int
 
 # Маршрут для предсказания с LSTM модели
 @app.post("/predict/lstm")
@@ -50,6 +55,21 @@ async def predict_dense(request: PredictionRequest):
 
         return {
             'prediction': dense_prediction_inverse.tolist()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+# Маршрут для предсказаний на основе временных рядов с LSTM моделью
+@app.post("/predict/timeseries")
+async def predict_timeseries(request: TimeSeriesPredictionRequest):
+    new_data = np.array([request.data])
+    try:
+        # Нормализуем данные и предсказываем на основе временных рядов
+        new_data_scaled = normalizer.scaler_X.transform(new_data)
+        predictions = lstm_predictor.make_predictions(new_data_scaled.flatten(), request.steps)
+
+        return {
+            'timeseries_predictions': predictions.tolist()
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
