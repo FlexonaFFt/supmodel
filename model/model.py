@@ -115,7 +115,7 @@ class Predictor:
         return np.array(predictions)
 
     def make_predictions2(self, initial_input, steps):
-        current_input = initial_input.reshape((1, 1, initial_input.shape[1]))
+        current_input = initial_input.reshape((1, 1, initial_input.shape[1])) # shape[2]
         predictions = []
         pred = self.model.predict(current_input)
         predictions.append(self.scaler_Y.inverse_transform(pred))

@@ -62,14 +62,14 @@ async def predict_dense(request: PredictionRequest):
 # Маршрут для предсказаний на основе временных рядов с LSTM моделью
 @app.post("/predict/timeseries")
 async def predict_timeseries(request: TimeSeriesPredictionRequest):
-    new_data = np.array([request.data])
+    initial_input = np.array(request.data).reshape((1, len(request.data)))
     try:
-        # Нормализуем данные и предсказываем на основе временных рядов
-        new_data_scaled = normalizer.scaler_X.transform(new_data)
-        predictions = lstm_predictor.make_predictions(new_data_scaled.flatten(), request.steps)
-
+        initial_input_scaled = normalizer.scaler_X.transform(initial_input)
+        steps = request.steps
+        future_predictions = lstm_predictor.make_predictions2(initial_input_scaled, steps)
+        # future_predictions_inverse = normalizer.inverse_transform_Y(future_predictions)
         return {
-            'timeseries_predictions': predictions.tolist()
+            'predictions': future_predictions.tolist()
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
