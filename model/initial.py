@@ -28,33 +28,61 @@ def main():
     trainer.train()
 
     predictor = Predictor(lstm_model, normalizer.scaler_Y)
-    initial_input = X_test[0]
-    steps = 6
-    future_predictions = predictor.make_predictions(initial_input, steps)
-
-    X_test_rescaled = normalizer.inverse_transform_X(X_test)
-    print(f"  Input Data:")
-    print(f"    Theme ID: {X_test_rescaled[0, 0]:.2f}")
-    print(f"    Category ID: {X_test_rescaled[0, 1]:.2f}")
-    print(f"    Start Money: {X_test_rescaled[0, 2]:.2f}")
-    print(f"    Investments (M): {X_test_rescaled[0, 3]:.2f}")
-    print(f"    Crowdfunding (M): {X_test_rescaled[0, 4]:.2f}")
-    print(f"    Team Index: {X_test_rescaled[0, 5]:.2f}")
-    print(f"    Tech Index: {X_test_rescaled[0, 6]:.2f}")
-    print(f"    Competition Index: {X_test_rescaled[0, 7]:.2f}")
-    print(f"    Social Index: {X_test_rescaled[0, 8]:.2f}")
-    print(f"    Demand Index: {X_test_rescaled[0, 9]:.2f}")
-    print()
-
-    for i, pred in enumerate(future_predictions):
-        print(f"Prediction {i+1}:")
-        print(f"  Social Index: {pred[0, 0]:.2f}")
-        print(f"  Future Investments: {pred[0, 1]:.2f}")
-        print(f"  Future Crowdfunding: {pred[0, 2]:.2f}")
-        print(f"  Future Demand: {pred[0, 3]:.2f}")
-        print(f"  Competition Index: {pred[0, 4]:.2f}")
+    function = int(input('1, 2: '))
+    if function == 1:
+        # initial_input = X_test[0]
+        _input = [1.00, 3.00, 3.0, 5900, 29050, 35000, 7.0, 8.30, 5.4, 6.40]
+        initial_input = np.array(_input).reshape((1, 1, len(_input)))
+        steps = 6
+        future_predictions = predictor.make_predictions2(initial_input, steps)
+        X_test_rescaled = normalizer.inverse_transform_X(X_test)
+        print(f"  Input Data:")
+        print(f"    Theme ID: {X_test_rescaled[0, 0]:.2f}")
+        print(f"    Category ID: {X_test_rescaled[0, 1]:.2f}")
+        print(f"    Start Money: {X_test_rescaled[0, 2]:.2f}")
+        print(f"    Investments (M): {X_test_rescaled[0, 3]:.2f}")
+        print(f"    Crowdfunding (M): {X_test_rescaled[0, 4]:.2f}")
+        print(f"    Team Index: {X_test_rescaled[0, 5]:.2f}")
+        print(f"    Tech Index: {X_test_rescaled[0, 6]:.2f}")
+        print(f"    Competition Index: {X_test_rescaled[0, 7]:.2f}")
+        print(f"    Social Index: {X_test_rescaled[0, 8]:.2f}")
+        print(f"    Demand Index: {X_test_rescaled[0, 9]:.2f}")
         print()
 
+        for i, pred in enumerate(future_predictions):
+            print(f"Prediction {i+1}:")
+            print(f"  Social Index: {pred[0, 0]:.2f}")
+            print(f"  Future Investments: {pred[0, 1]:.2f}")
+            print(f"  Future Crowdfunding: {pred[0, 2]:.2f}")
+            print(f"  Future Demand: {pred[0, 3]:.2f}")
+            print(f"  Competition Index: {pred[0, 4]:.2f}")
+            print()
+    if function == 2:
+        initial_input = X_test[0]
+        steps = 6
+        future_predictions = predictor.make_predictions(initial_input, steps)
+        X_test_rescaled = normalizer.inverse_transform_X(X_test)
+        print(f"  Input Data:")
+        print(f"    Theme ID: {X_test_rescaled[0, 0]:.2f}")
+        print(f"    Category ID: {X_test_rescaled[0, 1]:.2f}")
+        print(f"    Start Money: {X_test_rescaled[0, 2]:.2f}")
+        print(f"    Investments (M): {X_test_rescaled[0, 3]:.2f}")
+        print(f"    Crowdfunding (M): {X_test_rescaled[0, 4]:.2f}")
+        print(f"    Team Index: {X_test_rescaled[0, 5]:.2f}")
+        print(f"    Tech Index: {X_test_rescaled[0, 6]:.2f}")
+        print(f"    Competition Index: {X_test_rescaled[0, 7]:.2f}")
+        print(f"    Social Index: {X_test_rescaled[0, 8]:.2f}")
+        print(f"    Demand Index: {X_test_rescaled[0, 9]:.2f}")
+        print()
+
+        for i, pred in enumerate(future_predictions):
+            print(f"Prediction {i+1}:")
+            print(f"  Social Index: {pred[0, 0]:.2f}")
+            print(f"  Future Investments: {pred[0, 1]:.2f}")
+            print(f"  Future Crowdfunding: {pred[0, 2]:.2f}")
+            print(f"  Future Demand: {pred[0, 3]:.2f}")
+            print(f"  Competition Index: {pred[0, 4]:.2f}")
+            print()
 
 if __name__ == '__main__':
     main()

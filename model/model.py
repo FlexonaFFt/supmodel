@@ -114,6 +114,18 @@ class Predictor:
             predictions.append(self.scaler_Y.inverse_transform(pred))
         return np.array(predictions)
 
+    def make_predictions2(self, initial_input, steps):
+        current_input = initial_input.reshape((1, 1, initial_input.shape[2]))
+        predictions = []
+        pred = self.model.predict(current_input)
+        predictions.append(self.scaler_Y.inverse_transform(pred))
+
+        for step in range(1, steps):
+            current_input = np.concatenate([initial_input.flatten()[:5], pred.flatten()]).reshape((1, 1, 10))
+            pred = self.model.predict(current_input)
+            predictions.append(self.scaler_Y.inverse_transform(pred))
+        return np.array(predictions)
+
 class ModelManager:
     """Класс для управления сохранением и загрузкой моделей"""
 
