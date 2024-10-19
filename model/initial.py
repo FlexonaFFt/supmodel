@@ -32,8 +32,10 @@ def main():
     if function == 1:
         # initial_input = X_test[0]
         _input = [1.00, 3.00, 3.0, 5900, 29050, 35000, 7.0, 8.30, 5.4, 6.40]
-        initial_input = np.array(_input).reshape((1, 1, len(_input)))
-        steps = 6
+        #initial_input = np.array(_input).reshape((1, 1, len(_input)))
+        initial_input = np.array(_input).reshape((1, len(_input)))
+        initial_input = normalizer.scaler_X.transform(initial_input)
+        steps = 3
         future_predictions = predictor.make_predictions2(initial_input, steps)
         X_test_rescaled = normalizer.inverse_transform_X(X_test)
         print(f"  Input Data:")
