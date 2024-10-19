@@ -59,20 +59,32 @@ async def predict_dense(request: PredictionRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# Маршрут для предсказаний на основе временных рядов с LSTM моделью
 @app.post("/predict/timeseries")
 async def predict_timeseries(request: TimeSeriesPredictionRequest):
-    initial_input = np.array(request.data).reshape((1, 1, len(request.data)))
+    # Преобразуем входные данные в массив (размер (1, 10))
+    initial_input = np.array(request.data).reshape((1, len(request.data)))
+    print(f"Initial input shape: {initial_input.shape}")  # Выводим форму данных
+
     try:
-        initial_input_scaled = normalizer.scaler_X.transform(initial_input)
+        # Масштабируем данные (размер должен остаться (1, 10))
+        new_data_scaled = normalizer.scaler_X.transform(initial_input)
+        print(f"Scaled input shape: {new_data_scaled.shape}")  # Выводим форму масштабированных данных
+
+        # Преобразуем данные в трёхмерный массив для подачи в LSTM
+        initial_input_scaled = new_data_scaled.reshape((1, 1, len(request.data)))  # (1, 1, 10)
+        print(f"Reshaped input for LSTM: {initial_input_scaled.shape}")  # Выводим форму данных для LSTM
+
         steps = request.steps
-        future_predictions = lstm_predictor.make_predictions2(initial_input_scaled, steps)
-        # future_predictions_inverse = normalizer.inverse_transform_Y(future_predictions)
+        # Генерируем предсказания
+        future_predictions = lstm_predictor.make_predictions4(initial_input_scaled, steps)
+
         return {
             'predictions': future_predictions.tolist()
         }
     except Exception as e:
+        print(f"Error occurred: {str(e)}")  # Выводим текст ошибки
         raise HTTPException(status_code=400, detail=str(e))
+
 
 if __name__ == '__main__':
     import uvicorn
