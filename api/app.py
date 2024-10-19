@@ -62,7 +62,7 @@ async def predict_dense(request: PredictionRequest):
 # Маршрут для предсказаний на основе временных рядов с LSTM моделью
 @app.post("/predict/timeseries")
 async def predict_timeseries(request: TimeSeriesPredictionRequest):
-    initial_input = np.array(request.data).reshape((1, len(request.data)))
+    initial_input = np.array(request.data).reshape((1, 1, len(request.data)))
     try:
         initial_input_scaled = normalizer.scaler_X.transform(initial_input)
         steps = request.steps
