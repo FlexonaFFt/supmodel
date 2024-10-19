@@ -61,28 +61,27 @@ async def predict_dense(request: PredictionRequest):
 
 @app.post("/predict/timeseries")
 async def predict_timeseries(request: TimeSeriesPredictionRequest):
-    # Преобразуем входные данные в массив (размер (1, 10))
-    initial_input = np.array(request.data).reshape((1, len(request.data)))
-    print(f"Initial input shape: {initial_input.shape}")  # Выводим форму данных
-
+    new_data = np.array([request.data])
     try:
-        # Масштабируем данные (размер должен остаться (1, 10))
-        new_data_scaled = normalizer.scaler_X.transform(initial_input)
-        print(f"Scaled input shape: {new_data_scaled.shape}")  # Выводим форму масштабированных данных
+        # Масштабируем данные
+        new_data_scaled = normalizer.scaler_X.transform(new_data)
+        # Преобразуем данные в трехмерный массив для LSTM
+        new_data_lstm = new_data_scaled.reshape((new_data_scaled.shape[0], new_data_scaled.shape[1], 1))
 
-        # Преобразуем данные в трёхмерный массив для подачи в LSTM
-        initial_input_scaled = new_data_scaled.reshape((1, 1, len(request.data)))  # (1, 1, 10)
-        print(f"Reshaped input for LSTM: {initial_input_scaled.shape}")  # Выводим форму данных для LSTM
+        # Генерация предсказаний
+        predictions = []
+        pred = lstm_model.predict(new_data_lstm)
+        predictions.append(normalizer.inverse_transform_Y(pred).flatten())
 
-        steps = request.steps
-        # Генерируем предсказания
-        future_predictions = lstm_predictor.make_predictions4(initial_input_scaled, steps)
+        for step in range(1, request.steps):
+            current_input = np.concatenate([new_data_scaled.flatten()[:5], pred.flatten()]).reshape((1, 10, 1))
+            pred = lstm_model.predict(current_input)
+            predictions.append(normalizer.inverse_transform_Y(pred).flatten())
 
         return {
-            'predictions': future_predictions.tolist()
+            'predictions': np.array(predictions).tolist()
         }
     except Exception as e:
-        print(f"Error occurred: {str(e)}")  # Выводим текст ошибки
         raise HTTPException(status_code=400, detail=str(e))
 
 
