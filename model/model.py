@@ -4,7 +4,8 @@ import pandas as pd
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.layers import LSTM, Dense # type: ignore
+from tensorflow.keras.optimizers import Adam # type: ignore
+from tensorflow.keras.layers import LSTM, Dense, Dropout # type: ignore
 from tensorflow.keras.models import Sequential, load_model # type: ignore
 
 class DataLoader:
@@ -60,12 +61,38 @@ class LSTMModelBuilder:
     def __init__(self, input_shape):
         self.input_shape = input_shape
 
+    # Лучший результат ошибки: loss: 0.0051, val_loss: 0.0012
+    # Абсолютный рекорд
     def build_model(self):
         model = Sequential()
-        model.add(LSTM(256, activation='relu', input_shape=self.input_shape, return_sequences=False))
+        # Большое кол-во нейронов и возможность возврата последовательностей
+        model.add(LSTM(512, activation='tanh', input_shape=self.input_shape, return_sequences=True))
+        model.add(Dropout(0.2))
+        model.add(LSTM(256, activation='tanh', return_sequences=True))
+        model.add(Dropout(0.2))
+        model.add(LSTM(128, activation='tanh', return_sequences=False))
+        model.add(Dropout(0.2))
         model.add(Dense(5))
-        model.compile(optimizer='adam', loss='mse')
+        optimizer = Adam(learning_rate=0.0005)
+        model.compile(optimizer=optimizer, loss='huber')
         return model
+
+    '''
+    def build_model(self):
+        model = Sequential()
+        # Большое кол-во нейронов и возможность возврата последовательностей
+        model.add(LSTM(512, activation='tanh', input_shape=self.input_shape, return_sequences=True))
+        model.add(Dropout(0.2))
+        model.add(LSTM(256, activation='tanh', return_sequences=True))
+        model.add(Dropout(0.2))
+        model.add(LSTM(128, activation='tanh', return_sequences=True))
+        model.add(Dropout(0.2))
+        model.add(LSTM(64, activation='tanh', return_sequences=False))
+        model.add(Dropout(0.3))
+        model.add(Dense(5))
+        optimizer = Adam(learning_rate=0.0005)
+        model.compile(optimizer=optimizer, loss='huber')
+        return model'''
 
 class DenseModelBuilder:
     """Класс для создания и конфигурации Dense модели для одиночных предсказаний"""

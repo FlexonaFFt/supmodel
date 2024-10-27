@@ -31,9 +31,14 @@ def main():
     dense_builder = DenseModelBuilder(input_shape=(X_train.shape[1],))
     dense_model = dense_builder.build_model()
 
+    lstm_model.summary()
+
     # Обучение моделей без сохранения
     lstm_trainer = Trainer(lstm_model, X_train, Y_train)
     lstm_trainer.train()
+
+    print()
+    print()
 
     dense_trainer = Trainer(dense_model, X_train, Y_train)
     dense_trainer.train()
