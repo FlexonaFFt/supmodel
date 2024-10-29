@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="'en" data-bs-theme="auto">
+<html lang="'en" data-bs-theme="dark">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -18,18 +18,12 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
             crossorigin="anonymous"
         />
-        <link
-            href="/docs/5.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-            crossorigin="anonymous"
-        />
     </head>
     <body>
 
         <div class="container">
             <main>
-                <div class="py-5 text-center">
+                <!-- <div class="py-5 text-center">
                     <h2>Checkout form</h2>
                     <p class="lead">
                         Below is an example form built entirely with Bootstrap’s
@@ -37,21 +31,23 @@
                         state that can be triggered by attempting to submit the
                         form without completing it.
                     </p>
-                </div>
+                    </div> -->
                 <div class="d-flex justify-content-center row g-5">
+                    <hr class="my-4" />
                     <div class="col-md-7 col-lg-8">
-                        <h4 class="mb-3">Billing address</h4>
+                        <h4 class="mb-3">Основная информация</h4>
                         <form class="needs-validation" novalidate>
+                            <hr class="my-4" />
                             <div class="row g-3">
                                 <div class="col-sm-6">
                                     <label for="firstName" class="form-label"
-                                        >First name</label
+                                        >Название стартап проекта</label
                                     >
                                     <input
                                         type="text"
                                         class="form-control"
                                         id="firstName"
-                                        placeholder=""
+                                        placeholder="Startup name"
                                         value=""
                                         required
                                     />
@@ -62,13 +58,13 @@
 
                                 <div class="col-sm-6">
                                     <label for="lastName" class="form-label"
-                                        >Last name</label
+                                        >Название команды проекта</label
                                     >
                                     <input
                                         type="text"
                                         class="form-control"
                                         id="lastName"
-                                        placeholder=""
+                                        placeholder="Team name"
                                         value=""
                                         required
                                     />
@@ -77,201 +73,79 @@
                                     </div>
                                 </div>
 
-                                <div class="col-12">
-                                    <label for="username" class="form-label"
-                                        >Username</label
-                                    >
-                                    <div class="input-group has-validation">
-                                        <span class="input-group-text">@</span>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="username"
-                                            placeholder="Username"
-                                            required
-                                        />
-                                        <div class="invalid-feedback">
-                                            Your username is required.
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12">
-                                    <label for="email" class="form-label"
-                                        >Email
-                                        <span class="text-body-secondary"
-                                            >(Optional)</span
-                                        ></label
-                                    >
-                                    <input
-                                        type="email"
-                                        class="form-control"
-                                        id="email"
-                                        placeholder="you@example.com"
-                                    />
-                                    <div class="invalid-feedback">
-                                        Please enter a valid email address for
-                                        shipping updates.
-                                    </div>
-                                </div>
-
-                                <div class="col-12">
-                                    <label for="address" class="form-label"
-                                        >Address</label
-                                    >
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="address"
-                                        placeholder="1234 Main St"
-                                        required
-                                    />
-                                    <div class="invalid-feedback">
-                                        Please enter your shipping address.
-                                    </div>
-                                </div>
-
-                                <div class="col-12">
-                                    <label for="address2" class="form-label"
-                                        >Address 2
-                                        <span class="text-body-secondary"
-                                            >(Optional)</span
-                                        ></label
-                                    >
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="address2"
-                                        placeholder="Apartment or suite"
-                                    />
-                                </div>
-
-                                <div class="col-md-5">
+                                <div class="col-md-6">
                                     <label for="country" class="form-label"
-                                        >Country</label
+                                        >Тема стартапа</label
                                     >
                                     <select
                                         class="form-select"
-                                        id="country"
+                                        id="Startup theme"
                                         required
                                     >
-                                        <option value="">Choose...</option>
-                                        <option>United States</option>
+                                        <option value="">Выбрать...</option>
+                                        <option>Здравоохранение</option>
+                                        <option>Образование</option>
+                                        <option>Технологии</option>
+                                        <option>Окружающая среда</option>
+                                        <option>Финансы</option>
+                                        <option>Развлечения</option>
+                                        <option>Розничная торговля</option>
+                                        <option>Транспорт</option>
+                                        <option>Путешествия</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select a valid theme.
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="country" class="form-label"
+                                        >Категория стартапа</label
+                                    >
+                                    <select
+                                        class="form-select"
+                                        id="Startup cathegory"
+                                        required
+                                    >
+                                        <option value="">Выбрать...</option>
+                                        <option>Медицинская</option>
+                                        <option>EdTech</option>
+                                        <option>Искусственный интеллект</option>
+                                        <option>GreenTech</option>
+                                        <option>Недвижимость</option>
+                                        <option>Пищевые технологии</option>
+                                        <option>TravelTech</option>
+                                        <option>Биотехнологии</option>
+                                        <option>EnergyTech</option>
                                     </select>
                                     <div class="invalid-feedback">
                                         Please select a valid country.
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <label for="state" class="form-label"
-                                        >State</label
+                                <div class="col-12">
+                                    <label for="username" class="form-label"
+                                        >Краткое описание проекта</label
                                     >
-                                    <select
-                                        class="form-select"
-                                        id="state"
-                                        required
-                                    >
-                                        <option value="">Choose...</option>
-                                        <option>California</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please provide a valid state.
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text">&</span>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="username"
+                                            placeholder="Description"
+                                            required
+                                        />
+                                        <div class="invalid-feedback">
+                                            Your username is required.
+                                        </div>
                                     </div>
+                                <hr class="my-4" />
                                 </div>
-
-                                <div class="col-md-3">
-                                    <label for="zip" class="form-label"
-                                        >Zip</label
-                                    >
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="zip"
-                                        placeholder=""
-                                        required
-                                    />
-                                    <div class="invalid-feedback">
-                                        Zip code required.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr class="my-4" />
-
-                            <div class="form-check">
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    id="same-address"
-                                />
-                                <label
-                                    class="form-check-label"
-                                    for="same-address"
-                                    >Shipping address is the same as my billing
-                                    address</label
-                                >
-                            </div>
-
-                            <div class="form-check">
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    id="save-info"
-                                />
-                                <label class="form-check-label" for="save-info"
-                                    >Save this information for next time</label
-                                >
-                            </div>
-
-                            <hr class="my-4" />
-
-                            <h4 class="mb-3">Payment</h4>
-
-                            <div class="my-3">
-                                <div class="form-check">
-                                    <input
-                                        id="credit"
-                                        name="paymentMethod"
-                                        type="radio"
-                                        class="form-check-input"
-                                        checked
-                                        required
-                                    />
-                                    <label class="form-check-label" for="credit"
-                                        >Credit card</label
-                                    >
-                                </div>
-                                <div class="form-check">
-                                    <input
-                                        id="debit"
-                                        name="paymentMethod"
-                                        type="radio"
-                                        class="form-check-input"
-                                        required
-                                    />
-                                    <label class="form-check-label" for="debit"
-                                        >Debit card</label
-                                    >
-                                </div>
-                                <div class="form-check">
-                                    <input
-                                        id="paypal"
-                                        name="paymentMethod"
-                                        type="radio"
-                                        class="form-check-input"
-                                        required
-                                    />
-                                    <label class="form-check-label" for="paypal"
-                                        >PayPal</label
-                                    >
-                                </div>
-                            </div>
-
-                            <div class="row gy-3">
-                                <div class="col-md-6">
+                            <h4 class="mb-3">Характеристики</h4>
+                                <div class="col-6">
                                     <label for="cc-name" class="form-label"
-                                        >Name on card</label
+                                        >Стартовый капитал</label
                                     >
                                     <input
                                         type="text"
@@ -281,7 +155,7 @@
                                         required
                                     />
                                     <small class="text-body-secondary"
-                                        >Full name as displayed on card</small
+                                        >Все суммы прописываются в долларах</small
                                     >
                                     <div class="invalid-feedback">
                                         Name on card is required
@@ -290,7 +164,7 @@
 
                                 <div class="col-md-6">
                                     <label for="cc-number" class="form-label"
-                                        >Credit card number</label
+                                        >Инвестиции</label
                                     >
                                     <input
                                         type="text"
@@ -299,6 +173,28 @@
                                         placeholder=""
                                         required
                                     />
+                                    <small class="text-body-secondary"
+                                        >Денги полученные от партнёров</small
+                                    >
+                                    <div class="invalid-feedback">
+                                        Credit card number is required
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="cc-number" class="form-label"
+                                        >Краудфандинг</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="cc-number"
+                                        placeholder=""
+                                        required
+                                    />
+                                    <small class="text-body-secondary"
+                                        >Деньги собранные с предзаказчиков</small
+                                    >
                                     <div class="invalid-feedback">
                                         Credit card number is required
                                     </div>
@@ -308,7 +204,7 @@
                                     <label
                                         for="cc-expiration"
                                         class="form-label"
-                                        >Expiration</label
+                                        >Размер команды</label
                                     >
                                     <input
                                         type="text"
@@ -317,6 +213,9 @@
                                         placeholder=""
                                         required
                                     />
+                                    <small class="text-body-secondary"
+                                        >Кол-во человек</small
+                                    >
                                     <div class="invalid-feedback">
                                         Expiration date required
                                     </div>
@@ -324,22 +223,248 @@
 
                                 <div class="col-md-3">
                                     <label for="cc-cvv" class="form-label"
-                                        >CVV</label
+                                        >Оценка команды</label
                                     >
                                     <input
-                                        type="text"
+                                        type="number"
+                                        min="1"
+                                        max="10"
+                                        step="1"
                                         class="form-control"
                                         id="cc-cvv"
                                         placeholder=""
                                         required
                                     />
+                                    <small class="text-body-secondary"
+                                        >Балл от 1 до 10</small
+                                    >
                                     <div class="invalid-feedback">
                                         Security code required
                                     </div>
                                 </div>
+
+                                <div class="col-md-3">
+                                    <label
+                                        for="cc-expiration"
+                                        class="form-label"
+                                        >Опыт команды</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="cc-expiration"
+                                        placeholder=""
+                                        required
+                                    />
+                                    <small class="text-body-secondary"
+                                        >Средний стаж работы</small
+                                    >
+                                    <div class="invalid-feedback">
+                                        Expiration date required
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="cc-cvv" class="form-label"
+                                        >Технологический кэф</label
+                                    >
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        max="10"
+                                        step="1"
+                                        class="form-control"
+                                        id="cc-cvv"
+                                        placeholder=""
+                                        required
+                                    />
+                                    <small class="text-body-secondary"
+                                        >Балл от 1 до 10</small
+                                    >
+                                    <div class="invalid-feedback">
+                                        Security code required
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="cc-number" class="form-label"
+                                        >Технологические инвестиции</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="cc-number"
+                                        placeholder=""
+                                        required
+                                    />
+                                    <small class="text-body-secondary"
+                                        >Какое-то целое число</small
+                                    >
+                                    <div class="invalid-feedback">
+                                        Credit card number is required
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="cc-cvv" class="form-label"
+                                        >Уровень конкуренции</label
+                                    >
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        max="10"
+                                        step="1"
+                                        class="form-control"
+                                        id="cc-cvv"
+                                        placeholder=""
+                                        required
+                                    />
+                                    <small class="text-body-secondary"
+                                        >Балл от 1 до 10</small
+                                    >
+                                    <div class="invalid-feedback">
+                                        Security code required
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="cc-cvv" class="form-label"
+                                        >Примерное кол-во конкурентов</label
+                                    >
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        step="1"
+                                        class="form-control"
+                                        id="cc-cvv"
+                                        placeholder=""
+                                        required
+                                    />
+                                    <small class="text-body-secondary"
+                                        >Целое число</small
+                                    >
+                                    <div class="invalid-feedback">
+                                        Security code required
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text">#</span>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="username"
+                                            placeholder="Замечание по поводу конкуренции"
+                                            required
+                                        />
+                                        <div class="invalid-feedback">
+                                            Your username is required.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="cc-cvv" class="form-label"
+                                        >Уровень оцениваемой востребованности</label
+                                    >
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        max="10"
+                                        step="1"
+                                        class="form-control"
+                                        id="cc-cvv"
+                                        placeholder=""
+                                        required
+                                    />
+                                    <small class="text-body-secondary"
+                                        >Балл от 1 до 10</small
+                                    >
+                                    <div class="invalid-feedback">
+                                        Security code required
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="cc-cvv" class="form-label"
+                                        >Уровень оцениваемого спроса</label
+                                    >
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        max="10"
+                                        step="1"
+                                        class="form-control"
+                                        id="cc-cvv"
+                                        placeholder=""
+                                        required
+                                    />
+                                    <small class="text-body-secondary"
+                                        >Балл от 1 до 10</small
+                                    >
+                                    <div class="invalid-feedback">
+                                        Security code required
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="cc-number" class="form-label"
+                                        >Примерная целевая аудитория</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="cc-number"
+                                        placeholder=""
+                                        required
+                                    />
+                                    <small class="text-body-secondary"
+                                        >Примерное кол-во человек</small
+                                    >
+                                    <div class="invalid-feedback">
+                                        Credit card number is required
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="cc-number" class="form-label"
+                                        >Примерный размер рынка</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="cc-number"
+                                        placeholder=""
+                                        required
+                                    />
+                                    <small class="text-body-secondary"
+                                        >Примерное кол-во человек</small
+                                    >
+                                    <div class="invalid-feedback">
+                                        Credit card number is required
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text">#</span>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="username"
+                                            placeholder="Замечание по поводу целевой аудитории и рынка"
+                                            required
+                                        />
+                                        <div class="invalid-feedback">
+                                            Your username is required.
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
-                            <hr class="my-4" />
+                            <hr class="my-4">
 
                             <button
                                 class="w-100 btn btn-primary btn-lg"
@@ -363,12 +488,6 @@
                 </ul>
             </footer>
         </div>
-
-        <script
-            src="/docs/5.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"
-        ></script>
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
             integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
