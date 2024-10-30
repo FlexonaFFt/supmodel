@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from model import ModelManager, Normalizer, DataLoader, Predictor, DataProcessor # type: ignore
 import tensorflow.keras.losses as losses # type: ignore
@@ -27,6 +28,15 @@ class PredictionRequest(BaseModel):
 class TimeSeriesPredictionRequest(BaseModel):
     data: list[float]
     steps: int
+
+# Настройки CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Здесь можно указать список разрешённых доменов
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Маршрут для предсказания с LSTM модели
 @app.post("/predict/lstm")
