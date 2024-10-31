@@ -33,17 +33,17 @@ class TimeSeriesPredictionRequest(BaseModel):
 class FullFormRequest(BaseModel):
     startup_name: str
     team_name: str
-    theme_id: str
-    category_id: str
+    theme_id: int
+    category_id: int
     description: str
-    start_m: float
-    investments_m: float
-    crowdfunding_m: float
+    start_m: int
+    investments_m: int
+    crowdfunding_m: int
     team_size: int
     team_exp: str
-    team_index: float
+    team_index: int
     tech_level: str
-    tech_investment: float
+    tech_investment: int
     competition_level: str
     competitor_count: int
     demand_level: str

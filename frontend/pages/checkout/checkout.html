@@ -59,15 +59,15 @@
                                     <label for="StartupTheme" class="form-label">Тема стартапа</label>
                                     <select class="form-select" id="StartupTheme" required>
                                         <option value="">Выбрать...</option>
-                                        <option>Здравоохранение</option>
-                                        <option>Образование</option>
-                                        <option>Технологии</option>
-                                        <option>Окружающая среда</option>
-                                        <option>Финансы</option>
-                                        <option>Развлечения</option>
-                                        <option>Розничная торговля</option>
-                                        <option>Транспорт</option>
-                                        <option>Путешествия</option>
+                                        <option value="1">Здравоохранение</option>
+                                        <option value="2">Образование</option>
+                                        <option value="3">Технологии</option>
+                                        <option value="4">Окружающая среда</option>
+                                        <option value="5">Финансы</option>
+                                        <option value="6">Развлечения</option>
+                                        <option value="7">Розничная торговля</option>
+                                        <option value="8">Транспорт</option>
+                                        <option value="9">Путешествия</option>
                                     </select>
                                     <div class="invalid-feedback">
                                         Пожалуйста, выберете корректную тему
@@ -78,15 +78,15 @@
                                     <label for="StartupCathegory" class="form-label">Категория стартапа</label>
                                     <select class="form-select" id="StartupCathegory" required>
                                         <option value="">Выбрать...</option>
-                                        <option>Медицинская</option>
-                                        <option>EdTech</option>
-                                        <option>Искусственный интеллект</option>
-                                        <option>GreenTech</option>
-                                        <option>Недвижимость</option>
-                                        <option>Пищевые технологии</option>
-                                        <option>TravelTech</option>
-                                        <option>Биотехнологии</option>
-                                        <option>EnergyTech</option>
+                                        <option value="1">Медицинская</option>
+                                        <option value="2">EdTech</option>
+                                        <option value="3">Искусственный интеллект</option>
+                                        <option value="4">GreenTech</option>
+                                        <option value="5">Недвижимость</option>
+                                        <option value="6">Пищевые технологии</option>
+                                        <option value="7">TravelTech</option>
+                                        <option value="8">Биотехнологии</option>
+                                        <option value="9">EnergyTech</option>
                                     </select>
                                     <div class="invalid-feedback">
                                         Пожалуйста, выберете корректную категорию
@@ -295,49 +295,6 @@
                 </ul>
             </footer>
         </div>
-
-        <script>
-        // Функция для расчета индекса команды
-        function calculateTeamIdx(teamDesc, experienceYears, teamSize) {
-            const teamMapping = { "новички": 2, "средний опыт": 5, "эксперты": 8 };
-            const baseScore = teamMapping[teamDesc] || 0;
-            return ((0.6 * experienceYears + 0.4 * teamSize) / 10 + baseScore / 10).toFixed(1);
-        }
-
-        // Функция для расчета индекса технологий
-        function calculateTechIdx(techLevel, techInvestment) {
-            const techMapping = { "низкий": 2, "средний": 5, "высокий": 8 };
-            const baseScore = techMapping[techLevel] || 0;
-            return ((0.5 * techInvestment / 1000000 + 0.5 * baseScore) / 10).toFixed(1);
-        }
-
-        // Обработчик событий для пересчета индексов
-        function updateIndexes() {
-            // Получаем значения из полей формы
-            const teamDesc = document.getElementById("TeamExp").value;
-            const experienceYears = parseFloat(document.getElementById("ExperienceYears").value) || 0;
-            const teamSize = parseFloat(document.getElementById("TeamSize").value) || 0;
-
-            const techLevel = document.getElementById("TechLevel").value;
-            const techInvestment = parseFloat(document.getElementById("TechInvestment").value) || 0;
-
-            // Рассчитываем индексы
-            const teamIdx = calculateTeamIdx(teamDesc, experienceYears, teamSize);
-            const techIdx = calculateTechIdx(techLevel, techInvestment);
-
-            // Отображаем результаты
-            document.getElementById("CalculatedTeamIdx").value = teamIdx;
-            // Здесь можно добавить другие элементы для отображения других рассчитанных индексов
-        }
-
-        // Добавляем обработчики событий для пересчета при изменении значений
-        document.getElementById("TeamExp").addEventListener("change", updateIndexes);
-        document.getElementById("ExperienceYears").addEventListener("input", updateIndexes);
-        document.getElementById("TeamSize").addEventListener("input", updateIndexes);
-        document.getElementById("TechLevel").addEventListener("change", updateIndexes);
-        document.getElementById("TechInvestment").addEventListener("input", updateIndexes);
-
-        </script>
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
             integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
