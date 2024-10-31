@@ -51,12 +51,12 @@ class FullFormRequest(BaseModel):
     market_size: int
 
 # Функции для расчета индексов
-def calculate_team_idx(team_desc: str, experience_years: float, team_size: int) -> float:
+def calculate_team_idx(team_desc: str, experience_years: int, team_size: int) -> float:
     team_mapping = {"новички": 2, "средний опыт": 5, "эксперты": 8}
     base_score = team_mapping.get(team_desc, 0)
     return round((0.6 * experience_years + 0.4 * team_size) / 10 + base_score / 10, 1)
 
-def calculate_tech_idx(tech_level: str, tech_investment: float) -> float:
+def calculate_tech_idx(tech_level: str, tech_investment: int) -> float:
     tech_mapping = {"низкий": 2, "средний": 5, "высокий": 8}
     base_score = tech_mapping.get(tech_level, 0)
     return round((0.5 * tech_investment / 1_000_000 + 0.5 * base_score) / 10, 1)
@@ -70,7 +70,7 @@ def calculate_social_idx(social_impact_desc: str) -> int:
     social_mapping = {"низкое влияние": 3, "среднее влияние": 6, "высокое влияние": 9}
     return social_mapping.get(social_impact_desc, 0)
 
-def calculate_demand_idx(demand_level: str, audience_reach: float, market_size: float) -> float:
+def calculate_demand_idx(demand_level: str, audience_reach: int, market_size: int) -> float:
     demand_mapping = {"низкий спрос": 2, "средний спрос": 5, "высокий спрос": 8}
     base_score = demand_mapping.get(demand_level, 0)
     return round((base_score + (audience_reach + market_size) / (1_000_000 + 100_000_000)) * 10, 1)
