@@ -40,48 +40,24 @@
                             <hr class="my-4" />
                             <div class="row g-3">
                                 <div class="col-sm-6">
-                                    <label for="firstName" class="form-label"
-                                        >Название стартап проекта</label
-                                    >
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="firstName"
-                                        placeholder="Startup name"
-                                        value=""
-                                        required
-                                    />
+                                    <label for="StartupName" class="form-label">Название стартап проекта</label>
+                                    <input type="text" class="form-control" id="StartupName" placeholder="Startup name" value="" required/>
                                     <div class="invalid-feedback">
                                         Вы не указали название стартапа
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6">
-                                    <label for="lastName" class="form-label"
-                                        >Название команды проекта</label
-                                    >
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="lastName"
-                                        placeholder="Team name"
-                                        value=""
-                                        required
-                                    />
+                                    <label for="TeamName" class="form-label">Название команды проекта</label>
+                                    <input type="text" class="form-control" id="TeamName" placeholder="Team name" value="" required/>
                                     <div class="invalid-feedback">
                                         Вы не указали название команды проекта
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="country" class="form-label"
-                                        >Тема стартапа</label
-                                    >
-                                    <select
-                                        class="form-select"
-                                        id="Startup theme"
-                                        required
-                                    >
+                                    <label for="StartupTheme" class="form-label">Тема стартапа</label>
+                                    <select class="form-select" id="StartupTheme" required>
                                         <option value="">Выбрать...</option>
                                         <option>Здравоохранение</option>
                                         <option>Образование</option>
@@ -99,14 +75,8 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="country" class="form-label"
-                                        >Категория стартапа</label
-                                    >
-                                    <select
-                                        class="form-select"
-                                        id="Startup cathegory"
-                                        required
-                                    >
+                                    <label for="StartupCathegory" class="form-label">Категория стартапа</label>
+                                    <select class="form-select" id="StartupCathegory" required>
                                         <option value="">Выбрать...</option>
                                         <option>Медицинская</option>
                                         <option>EdTech</option>
@@ -124,222 +94,114 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <label for="username" class="form-label"
-                                        >Краткое описание проекта</label
-                                    >
+                                    <label for="Description" class="form-label">Краткое описание проекта</label>
                                     <div class="input-group has-validation">
                                         <span class="input-group-text">&</span>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="username"
-                                            placeholder="Description"
-                                        />
+                                        <input type="text" class="form-control" id="Description" placeholder="Description"/>
                                     </div>
                                 <hr class="my-4" />
                                 </div>
                             <h4 class="mb-3">Целевые характеристики</h4>
                                 <div class="col-6">
-                                    <label for="cc-name" class="form-label"
-                                        >Стартовый капитал</label
-                                    >
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="cc-name"
-                                        placeholder=""
-                                        required
-                                    />
-                                    <small class="text-body-secondary"
-                                        >Все суммы прописываются в долларах</small
-                                    >
+                                    <label for="Start_m" class="form-label">Стартовый капитал</label>
+                                    <input type="text" class="form-control" id="Start_m" placeholder="" required/>
+                                    <small class="text-body-secondary">Все суммы прописываются в долларах</small>
                                     <div class="invalid-feedback">
                                         Это поле обязательно для заполнения
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="cc-number" class="form-label"
-                                        >Инвестиции</label
-                                    >
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="cc-number"
-                                        placeholder=""
-                                        required
-                                    />
-                                    <small class="text-body-secondary"
-                                        >Деньги полученные от партнёров</small
-                                    >
+                                    <label for="Investments_m" class="form-label">Инвестиции</label>
+                                    <input type="text" class="form-control" id="Investments_m" placeholder="" required/>
+                                    <small class="text-body-secondary">Деньги полученные от партнёров</small>
                                     <div class="invalid-feedback">
                                         Это поле обязательно для заполнения
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="cc-number" class="form-label"
-                                        >Краудфандинг</label
-                                    >
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="cc-number"
-                                        placeholder=""
-                                        required
-                                    />
-                                    <small class="text-body-secondary"
-                                        >Деньги собранные с предзаказчиков</small
-                                    >
+                                    <label for="Crowdfunding_m" class="form-label">Краудфандинг</label>
+                                    <input type="text" class="form-control" id="Crowdfunding_m" placeholder="" required/>
+                                    <small class="text-body-secondary">Деньги собранные с предзаказчиков</small>
                                     <div class="invalid-feedback">
                                         Это поле обязательно для заполнения
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label
-                                        for="cc-expiration"
-                                        class="form-label"
-                                        >Размер команды</label
-                                    >
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="cc-expiration"
-                                        placeholder=""
-                                        required
-                                    />
-                                    <small class="text-body-secondary"
-                                        >Кол-во человек</small
-                                    >
+                                    <label for="TeamCount" class="form-label">Размер команды</label>
+                                    <input type="text" class="form-control" id="TeamCount" placeholder=""required/>
+                                    <small class="text-body-secondary">Кол-во человек</small>
                                     <div class="invalid-feedback">
                                         Это поле обязательно для заполнения
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label for="cc-cvv" class="form-label"
-                                        >Оценка команды</label
-                                    >
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        max="10"
-                                        step="1"
-                                        class="form-control"
-                                        id="cc-cvv"
-                                        placeholder=""
-                                        required
-                                    />
-                                    <small class="text-body-secondary"
-                                        >Балл от 1 до 10</small
-                                    >
+                                    <label for="TeamIndex" class="form-label">Оценка команды</label>
+                                    <input type="number" min="1" max="10" step="1" class="form-control" id="TeamIndex" placeholder="" required />
+                                    <small class="text-body-secondary">Балл от 1 до 10</small>
                                     <div class="invalid-feedback">
                                         Это поле обязательно для заполнениям
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label for="country" class="form-label"
-                                        >Опыт команды</label
-                                    >
-                                    <select
-                                        class="form-select"
-                                        id="Startup theme"
-                                        required
-                                    >
+                                    <label for="TeamExp" class="form-label">Опыт команды</label>
+                                    <select class="form-select" id="TeamExp" required>
                                         <option value="">Выбрать...</option>
                                         <option>Новички</option>
                                         <option>Средний опыт</option>
                                         <option>Эксперты</option>
                                     </select>
-                                    <small class="text-body-secondary"
-                                        >Средний опыт работы</small
-                                    >
+                                    <small class="text-body-secondary">Средний опыт работы</small>
                                     <div class="invalid-feedback">
                                         Пожалуйста, выберете корректную тему
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label for="country" class="form-label"
-                                        >Технологический кэф</label
-                                    >
-                                    <select
-                                        class="form-select"
-                                        id="Startup theme"
-                                        required
-                                    >
+                                    <label for="Techonological_kef" class="form-label">Технологический кэф</label>
+                                    <select class="form-select" id="Techonological_kef" required>
                                         <option value="">Выбрать...</option>
                                         <option>Низкий</option>
                                         <option>Средний</option>
                                         <option>Высокий</option>
                                     </select>
-                                    <small class="text-body-secondary"
-                                        >Оценка инноваций</small
-                                    >
+                                    <small class="text-body-secondary">Оценка инноваций</small>
                                     <div class="invalid-feedback">
                                         Пожалуйста, выберете корректную тему
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="cc-number" class="form-label"
-                                        >Технологические инвестиции</label
-                                    >
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="cc-number"
-                                        placeholder=""
-                                        required
-                                    />
-                                    <small class="text-body-secondary"
-                                        >Какое-то целое число</small
-                                    >
+                                    <label for="Techological_m" class="form-label">Технологические инвестиции</label>
+                                    <input type="text" class="form-control" id="Techological_m" placeholder="" required/>
+                                    <small class="text-body-secondary">Какое-то целое число</small>
                                     <div class="invalid-feedback">
                                         Это поле обязательно для заполнения
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="country" class="form-label"
-                                        >Оценка конкуренции</label
-                                    >
-                                    <select
-                                        class="form-select"
-                                        id="Startup theme"
-                                        required
-                                    >
+                                    <label for="Competition" class="form-label">Оценка конкуренции</label>
+                                    <select class="form-select" id="Competition" required>
                                         <option value="">Выбрать...</option>
                                         <option>Низкая конкуренция</option>
                                         <option>Средняя конкуренция</option>
                                         <option>Высокая конкуренция</option>
                                     </select>
-                                    <small class="text-body-secondary"
-                                        >Примерный уровень конкуренции на рынке</small
-                                    >
+                                    <small class="text-body-secondary">Примерный уровень конкуренции на рынке</small>
                                     <div class="invalid-feedback">
                                         Это поле обязательно для заполнения
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="cc-cvv" class="form-label"
-                                        >Примерное кол-во конкурентов</label
-                                    >
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        step="1"
-                                        class="form-control"
-                                        id="cc-cvv"
-                                        placeholder=""
-                                        required
-                                    />
-                                    <small class="text-body-secondary"
-                                        >Целое число</small
-                                    >
+                                    <label for="CompetititorCount" class="form-label">Примерное кол-во конкурентов</label>
+                                    <input type="number" min="1" step="1" class="form-control" id="CompetititorCount" placeholder="" required/>
+                                    <small class="text-body-secondary">Целое число</small>
                                     <div class="invalid-feedback">
                                         Это поле обязательно для заполнения
                                     </div>
@@ -348,94 +210,53 @@
                                 <div class="col-12">
                                     <div class="input-group has-validation">
                                         <span class="input-group-text">#</span>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="username"
-                                            placeholder="Замечание по поводу конкуренции"
-                                        />
+                                        <input type="text" class="form-control" id="CompetitionComment" placeholder="Замечание по поводу конкуренции"/>
                                     </div>
                                     <hr class="my-4" />
                                 </div>
                             <h4 class="mb-3">Характеристики аудитории и спроса</h4>
 
                             <div class="col-md-6">
-                                <label for="country" class="form-label"
-                                    >Уровень оцениваемой востребованности</label
-                                >
-                                <select
-                                    class="form-select"
-                                    id="Startup theme"
-                                    required
-                                >
+                                <label for="DemandLevel" class="form-label" >Уровень оцениваемой востребованности</label>
+                                <select class="form-select" id="DemandLevel" required>
                                     <option value="">Выбрать...</option>
                                     <option>Низкое влияние</option>
                                     <option>Среднее влияние</option>
                                     <option>Высокое влияние</option>
                                 </select>
-                                <small class="text-body-secondary"
-                                    >Примерный уровень востребованности на рынке</small
-                                >
+                                <small class="text-body-secondary">Примерный уровень востребованности на рынке</small>
                                 <div class="invalid-feedback">
                                     Это поле обязательно для заполнения
                                 </div>
                             </div>
 
                             <div class="col-md-6">
-                                <label for="country" class="form-label"
-                                    >Оцениваемый уровень спроса</label
-                                >
-                                <select
-                                    class="form-select"
-                                    id="Startup theme"
-                                    required
-                                >
+                                <label for="DemanIdx" class="form-label">Оцениваемый уровень спроса</label>
+                                <select class="form-select" id="DemanIdx" required>
                                     <option value="">Выбрать...</option>
                                     <option>Низкий спрос</option>
                                     <option>Среднйи спрос</option>
                                     <option>Высокий спрос</option>
                                 </select>
-                                <small class="text-body-secondary"
-                                    >Примерный уровень спроса на рынке</small
-                                >
+                                <small class="text-body-secondary">Примерный уровень спроса на рынке</small>
                                 <div class="invalid-feedback">
                                     Это поле обязательно для заполнения
                                 </div>
                             </div>
 
                                 <div class="col-md-6">
-                                    <label for="cc-number" class="form-label"
-                                        >Примерная целевая аудитория</label
-                                    >
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="cc-number"
-                                        placeholder=""
-                                        required
-                                    />
-                                    <small class="text-body-secondary"
-                                        >Примерное кол-во человек</small
-                                    >
+                                    <label for="TargetAudience" class="form-label">Примерная целевая аудитория</label>
+                                    <input type="text" class="form-control" id="TargetAudience" placeholder="" required/>
+                                    <small class="text-body-secondary">Примерное кол-во человек</small>
                                     <div class="invalid-feedback">
                                         Это поле обязательно для заполнения
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="cc-number" class="form-label"
-                                        >Примерный размер рынка</label
-                                    >
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="cc-number"
-                                        placeholder=""
-                                        required
-                                    />
-                                    <small class="text-body-secondary"
-                                        >Примерное кол-во человек</small
-                                    >
+                                    <label for="MarketSize" class="form-label">Примерный размер рынка</label>
+                                    <input type="text" class="form-control" id="MarketSize" placeholder="" required/>
+                                    <small class="text-body-secondary">Примерное кол-во человек</small>
                                     <div class="invalid-feedback">
                                         Это поле обязательно для заполнения
                                     </div>
@@ -444,12 +265,7 @@
                                 <div class="col-12">
                                     <div class="input-group has-validation">
                                         <span class="input-group-text">#</span>
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="username"
-                                            placeholder="Замечание по поводу целевой аудитории и рынка"
-                                        />
+                                        <input type="text" class="form-control" id="AudienceComment" placeholder="Замечание по поводу целевой аудитории и рынка"/>
                                     </div>
                                 </div>
 
@@ -479,6 +295,49 @@
                 </ul>
             </footer>
         </div>
+
+        <script>
+        // Функция для расчета индекса команды
+        function calculateTeamIdx(teamDesc, experienceYears, teamSize) {
+            const teamMapping = { "новички": 2, "средний опыт": 5, "эксперты": 8 };
+            const baseScore = teamMapping[teamDesc] || 0;
+            return ((0.6 * experienceYears + 0.4 * teamSize) / 10 + baseScore / 10).toFixed(1);
+        }
+
+        // Функция для расчета индекса технологий
+        function calculateTechIdx(techLevel, techInvestment) {
+            const techMapping = { "низкий": 2, "средний": 5, "высокий": 8 };
+            const baseScore = techMapping[techLevel] || 0;
+            return ((0.5 * techInvestment / 1000000 + 0.5 * baseScore) / 10).toFixed(1);
+        }
+
+        // Обработчик событий для пересчета индексов
+        function updateIndexes() {
+            // Получаем значения из полей формы
+            const teamDesc = document.getElementById("TeamExp").value;
+            const experienceYears = parseFloat(document.getElementById("ExperienceYears").value) || 0;
+            const teamSize = parseFloat(document.getElementById("TeamSize").value) || 0;
+
+            const techLevel = document.getElementById("TechLevel").value;
+            const techInvestment = parseFloat(document.getElementById("TechInvestment").value) || 0;
+
+            // Рассчитываем индексы
+            const teamIdx = calculateTeamIdx(teamDesc, experienceYears, teamSize);
+            const techIdx = calculateTechIdx(techLevel, techInvestment);
+
+            // Отображаем результаты
+            document.getElementById("CalculatedTeamIdx").value = teamIdx;
+            // Здесь можно добавить другие элементы для отображения других рассчитанных индексов
+        }
+
+        // Добавляем обработчики событий для пересчета при изменении значений
+        document.getElementById("TeamExp").addEventListener("change", updateIndexes);
+        document.getElementById("ExperienceYears").addEventListener("input", updateIndexes);
+        document.getElementById("TeamSize").addEventListener("input", updateIndexes);
+        document.getElementById("TechLevel").addEventListener("change", updateIndexes);
+        document.getElementById("TechInvestment").addEventListener("input", updateIndexes);
+
+        </script>
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
             integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
