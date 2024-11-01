@@ -63,7 +63,7 @@ def calculate_tech_idx(tech_level: str, tech_investment: int) -> float:
     tech_level.lower()
     tech_mapping = {"низкий": 2, "средний": 5, "высокий": 8}
     base_score = tech_mapping.get(tech_level, 0)
-    raw_score = (0.7 * (tech_investment / 1_000_000) + 0.3 * base_score)
+    raw_score = (0.7 * (tech_investment / 10) + 0.3 * base_score)
     return max(1.0, min(9.99, round(raw_score, 1)))
 
 def calculate_comp_idx(comp_level: str, competitors: int) -> float:
@@ -73,10 +73,10 @@ def calculate_comp_idx(comp_level: str, competitors: int) -> float:
     raw_score = base_score - min(competitors / 10, base_score - 1)
     return max(1.0, min(9.99, round(raw_score, 1)))
 
-def calculate_social_idx(social_impact_desc: str) -> float:
-    social_impact_desc.lower()
+def calculate_social_idx(social_impact: str) -> float:
+    social_impact.lower()
     social_mapping = {"низкое влияние": 3.0, "среднее влияние": 6.0, "высокое влияние": 9.0}
-    return social_mapping.get(social_impact_desc, 1.0)
+    return social_mapping.get(social_impact, 1.0)
 
 def calculate_demand_idx(demand_level: str, audience_reach: int, market_size: int) -> float:
     demand_level.lower()
@@ -88,13 +88,12 @@ def calculate_demand_idx(demand_level: str, audience_reach: int, market_size: in
     return max(1.0, min(9.99, round(raw_score, 1)))
 
 def calculate_indices(form_data):
-    # Пример вычислений индексов
-    team_idx = calculate_team_idx(form_data.team_mapping, form_data.team_size, form_data.team_index)
+    team_idx = calculate_team_idx(form_data.team_mapping, form_data.team_index, form_data.team_size)
     tech_idx = calculate_tech_idx(form_data.tech_level, form_data.tech_investment)
     comp_idx = calculate_comp_idx(form_data.competition_level, form_data.competitor_count)
     social_idx = calculate_social_idx(form_data.social_impact)
     demand_idx = calculate_demand_idx(form_data.demand_level, form_data.audience_reach, form_data.market_size)
-
+    print([team_idx, tech_idx, comp_idx, social_idx, demand_idx])
     return [team_idx, tech_idx, comp_idx, social_idx, demand_idx]
 
 # Настройки CORS
@@ -127,6 +126,7 @@ async def predict_full_form(request: FullFormRequest):
 
         return {
             'prediction': prediction_inverse.tolist(),
+            'data': data,
             'calculate_indices': indices
         }
     except Exception as e:

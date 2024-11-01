@@ -26,18 +26,18 @@
               document.getElementById("StartupCathegory").value,
             ), // Преобразуем в число
             description: document.getElementById("Description").value.trim(),
-            start_m: parseFloat(document.getElementById("Start_m").value),
-            investments_m: parseFloat(
+            start_m: parseInt(document.getElementById("Start_m").value),
+            investments_m: parseInt(
               document.getElementById("Investments_m").value,
             ),
             crowdfunding_m: parseFloat(
               document.getElementById("Crowdfunding_m").value,
             ),
             team_size: parseInt(document.getElementById("TeamCount").value),
-            team_index: parseFloat(document.getElementById("TeamIndex").value),
+            team_index: parseInt(document.getElementById("TeamIndex").value),
             team_mapping: document.getElementById("TeamExp").value,
             tech_level: document.getElementById("Techonological_kef").value,
-            tech_investment: parseFloat(
+            tech_investment: parseInt(
               document.getElementById("Techological_m").value,
             ),
             competition_level: document.getElementById("Competition").value,
