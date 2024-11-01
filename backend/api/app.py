@@ -53,28 +53,33 @@ class FullFormRequest(BaseModel):
 
 # Функции для расчета индексов
 def calculate_team_idx(team_desc: str, experience_years: int, team_size: int) -> float:
+    team_desc.lower()
     team_mapping = {"новички": 2, "средний опыт": 5, "эксперты": 8}
     base_score = team_mapping.get(team_desc, 0)
     raw_score = (0.6 * experience_years + 0.4 * team_size) + base_score
     return max(1.0, min(9.99, round(raw_score / 3, 1)))
 
 def calculate_tech_idx(tech_level: str, tech_investment: int) -> float:
+    tech_level.lower()
     tech_mapping = {"низкий": 2, "средний": 5, "высокий": 8}
     base_score = tech_mapping.get(tech_level, 0)
     raw_score = (0.7 * (tech_investment / 1_000_000) + 0.3 * base_score)
     return max(1.0, min(9.99, round(raw_score, 1)))
 
 def calculate_comp_idx(comp_level: str, competitors: int) -> float:
+    comp_level.lower()
     comp_mapping = {"низкая конкуренция": 8, "средняя конкуренция": 5, "высокая конкуренция": 2}
     base_score = comp_mapping.get(comp_level, 0)
     raw_score = base_score - min(competitors / 10, base_score - 1)
     return max(1.0, min(9.99, round(raw_score, 1)))
 
 def calculate_social_idx(social_impact_desc: str) -> float:
+    social_impact_desc.lower()
     social_mapping = {"низкое влияние": 3.0, "среднее влияние": 6.0, "высокое влияние": 9.0}
     return social_mapping.get(social_impact_desc, 1.0)
 
 def calculate_demand_idx(demand_level: str, audience_reach: int, market_size: int) -> float:
+    demand_level.lower()
     demand_mapping = {"низкий спрос": 2, "средний спрос": 5, "высокий спрос": 8}
     base_score = demand_mapping.get(demand_level, 0)
     scaled_audience = audience_reach / 10_000_000

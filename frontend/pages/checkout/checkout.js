@@ -77,6 +77,7 @@
 
             const result = await response.json();
             console.log("Prediction:", result.prediction);
+            console.log("calculate_indices:", result.calculate_indices);
             alert(
               `Результат предсказания: ${JSON.stringify(result.prediction)}`,
             );
