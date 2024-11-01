@@ -114,7 +114,8 @@ async def predict_full_form(request: FullFormRequest):
         prediction_inverse = normalizer.inverse_transform_Y(prediction)
 
         return {
-            'prediction': prediction_inverse.tolist()
+            'prediction': prediction_inverse.tolist(),
+            'calculate_indices': indices
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
