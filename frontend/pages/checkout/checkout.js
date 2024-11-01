@@ -35,7 +35,7 @@
             ),
             team_size: parseInt(document.getElementById("TeamCount").value),
             team_index: parseFloat(document.getElementById("TeamIndex").value),
-            team_exp: document.getElementById("TeamExp").value,
+            team_mapping: document.getElementById("TeamExp").value,
             tech_level: document.getElementById("Techonological_kef").value,
             tech_investment: parseFloat(
               document.getElementById("Techological_m").value,
@@ -45,6 +45,7 @@
               document.getElementById("CompetititorCount").value,
             ),
             demand_level: document.getElementById("DemandLevel").value,
+            social_impact: document.getElementById("DemandIdx").value,
             audience_reach: parseInt(
               document.getElementById("TargetAudience").value,
             ),
