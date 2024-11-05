@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from model import ModelManager, Normalizer, DataLoader, Predictor, DataProcessor # type: ignore
 import tensorflow.keras.losses as losses # type: ignore
 import numpy as np
+import httpx
 
 app = FastAPI()
 LSTM_MODEL_PATH = 'models/lstm_model.h5'
