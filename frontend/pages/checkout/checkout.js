@@ -61,7 +61,7 @@
           try {
             // Отправляем данные на API
             const response = await fetch(
-              "http://127.0.0.1:8000/predict/full_form",
+              "http://127.0.0.1:8001/predict/full_form",
               {
                 method: "POST",
                 headers: {

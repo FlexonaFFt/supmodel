@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from model import ModelManager, Normalizer, DataLoader, Predictor, DataProcessor # type: ignore
 import tensorflow.keras.losses as losses # type: ignore
 import numpy as np
+import random
 import httpx
 
 app = FastAPI()
@@ -16,6 +17,11 @@ FEATURES = ['theme_id', 'category_id', 'comp_idx',
     'team_idx', 'tech_idx', 'social_idx', 'demand_idx']
 TARGETS = ['social_idx', 'investments_m', 'crowdfunding_m',
     'demand_idx', 'comp_idx']
+
+DJANGO_API_BASE_URL = "http://localhost:8000/api"
+USER_INPUT_DATA_URL = f"{DJANGO_API_BASE_URL}/user-input-data/"
+PROJECTS_URL = f"{DJANGO_API_BASE_URL}/projects/"
+MODEL_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/model-predictions/"
 
 data_loader, normalizer, processor = DataLoader(DATA_FILE, FEATURES, TARGETS), Normalizer(), DataProcessor()
 x_train, y_train = data_loader.get_features_and_targets()
@@ -111,7 +117,46 @@ app.add_middleware(
 async def predict_full_form(request: FullFormRequest):
     try:
         indices = calculate_indices(request)
-        # Собираем все данные для предсказания, включая вычисленные индексы
+        user_input_data = {
+                    "startup_name": request.startup_name,
+                    "team_name": request.team_name,
+                    "theme_id": request.theme_id,
+                    "category_id": request.category_id,
+                    "description": request.description,
+                    "start_m": request.start_m,
+                    "investments_m": request.investments_m,
+                    "crowdfunding_m": request.crowdfunding_m,
+                    "team_mapping": request.team_mapping,
+                    "team_size": request.team_size,
+                    "team_index": indices[0],
+                    "tech_level": request.tech_level,
+                    "tech_investment": request.tech_investment,
+                    "competition_level": request.competition_level,
+                    "competitor_count": request.competitor_count,
+                    "social_impact": request.social_impact,
+                    "demand_level": request.demand_level,
+                    "audience_reach": request.audience_reach,
+                    "market_size": request.market_size,
+        }
+
+        async with httpx.AsyncClient() as client:
+            response = await client.post(USER_INPUT_DATA_URL, json=user_input_data)
+            response.raise_for_status()
+            user_input_id = response.json().get("id")
+
+        project_data = {
+            "project_name": request.startup_name,
+            "description": request.description,
+            "user_input_data": user_input_id,
+            "project_number": request.project_number if hasattr(request, "project_number") else random.randint(100000, 999999), # type: ignore
+            "is_public": request.is_public if hasattr(request, "is_public") else True, # type: ignore
+        }
+
+        async with httpx.AsyncClient() as client:
+            response = await client.post(PROJECTS_URL, json=project_data)
+            response.raise_for_status()
+            project_id = response.json().get("id")
+
         data = [
             request.theme_id, request.category_id, indices[2], # comp_idx
             request.start_m, request.investments_m, request.crowdfunding_m,
@@ -124,6 +169,20 @@ async def predict_full_form(request: FullFormRequest):
         new_data_lstm = new_data_scaled.reshape((new_data_scaled.shape[0], new_data_scaled.shape[1], 1))
         prediction = lstm_model.predict(new_data_lstm)
         prediction_inverse = normalizer.inverse_transform_Y(prediction)
+
+        prediction_data = {
+            "project_id": project_id,
+            "model_name": "LSTM",
+            "predicted_social_idx": prediction_inverse[0][0],
+            "predicted_investments_m": prediction_inverse[0][1],
+            "predicted_crowdfunding_m": prediction_inverse[0][2],
+            "predicted_demand_idx": prediction_inverse[0][3],
+            "predicted_comp_idx": prediction_inverse[0][4]
+        }
+
+        async with httpx.AsyncClient() as client:
+                    response = await client.post(MODEL_PREDICTIONS_URL, json=prediction_data)
+                    response.raise_for_status()
 
         return {
             'prediction': prediction_inverse.tolist(),
@@ -192,4 +251,4 @@ async def predict_timeseries(request: TimeSeriesPredictionRequest):
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host='127.0.0.1', port=8000)
+    uvicorn.run(app, host='127.0.0.1', port=8001)
