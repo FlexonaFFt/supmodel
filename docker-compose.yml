@@ -1,0 +1,26 @@
+services:
+  fastapi:
+    build:
+      context: ./backend/api
+    volumes:
+      - ./backend/api:/app
+    ports:
+      - "8001:8001"
+
+  django:
+    build:
+      context: ./backend/core
+    volumes:
+      - ./backend/core:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@<db_host>:5432/app_db
+
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "1234:1234"
