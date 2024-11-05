@@ -197,12 +197,11 @@ async def predict_full_form(request: FullFormRequest):
 @app.post("/predict/full_form")
 async def predict_full_form(request: FullFormRequest):
     try:
+        # Вычисляем индексы
         indices = calculate_indices(request)
+        print("Calculated indices:", indices)  # Логируем индексы для отладки
 
-        # Вывод индексов для отладки
-        print("Calculated indices:", indices)
-
-        # Сборка данных для UserInputData
+        # Подготовка данных для UserInputData
         user_input_data = {
             "startup_name": request.startup_name,
             "team_name": request.team_name,
@@ -226,27 +225,27 @@ async def predict_full_form(request: FullFormRequest):
         }
 
         # Отправка данных в Django для создания записи UserInputData
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(proxies=None) as client:
             print("Sending UserInputData to Django:", user_input_data)
             response = await client.post(USER_INPUT_DATA_URL, json=user_input_data)
             print("UserInputData response status:", response.status_code)
-            print("UserInputData response data:", response.json())
-            response.raise_for_status()
+            response.raise_for_status()  # Проверка на ошибки HTTP-ответа
             user_input_id = response.json().get("id")
 
-        # Создание данных для Project
+        # Подготовка данных для Project
         project_data = {
             "project_name": request.startup_name,
             "description": request.description,
             "user_input_data": user_input_id,
+            "project_number": request.project_number if hasattr(request, "project_number") else random.randint(100000, 999999),
+            "is_public": request.is_public if hasattr(request, "is_public") else True,
         }
 
         # Отправка данных Project в Django
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(proxies=None) as client:
             print("Sending Project to Django:", project_data)
             response = await client.post(PROJECTS_URL, json=project_data)
             print("Project response status:", response.status_code)
-            print("Project response data:", response.json())
             response.raise_for_status()
             project_id = response.json().get("id")
 
@@ -273,11 +272,10 @@ async def predict_full_form(request: FullFormRequest):
         }
 
         # Отправка предсказаний в Django
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(proxies=None) as client:
             print("Sending ModelPrediction to Django:", prediction_data)
             response = await client.post(MODEL_PREDICTIONS_URL, json=prediction_data)
             print("ModelPrediction response status:", response.status_code)
-            print("ModelPrediction response data:", response.json())
             response.raise_for_status()
 
         # Возврат данных предсказаний
