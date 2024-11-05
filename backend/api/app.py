@@ -224,7 +224,6 @@ async def predict_full_form(request: FullFormRequest):
             "market_size": request.market_size,
         }
 
-        # Отправка данных в Django для создания записи UserInputData
         async with httpx.AsyncClient(proxies=None) as client:
             print("Sending UserInputData to Django:", user_input_data)
             response = await client.post(USER_INPUT_DATA_URL, json=user_input_data)
@@ -237,8 +236,8 @@ async def predict_full_form(request: FullFormRequest):
             "project_name": request.startup_name,
             "description": request.description,
             "user_input_data": user_input_id,
-            "project_number": request.project_number if hasattr(request, "project_number") else random.randint(100000, 999999),
-            "is_public": request.is_public if hasattr(request, "is_public") else True,
+            "project_number": request.project_number if hasattr(request, "project_number") else random.randint(100000, 999999), # type: ignore
+            "is_public": request.is_public if hasattr(request, "is_public") else True, # type: ignore
         }
 
         # Отправка данных Project в Django
@@ -264,19 +263,22 @@ async def predict_full_form(request: FullFormRequest):
         prediction_data = {
             "project_id": project_id,
             "model_name": "LSTM",
-            "predicted_social_idx": prediction_inverse[0][0],
-            "predicted_investments_m": prediction_inverse[0][1],
-            "predicted_crowdfunding_m": prediction_inverse[0][2],
-            "predicted_demand_idx": prediction_inverse[0][3],
-            "predicted_comp_idx": prediction_inverse[0][4]
+            "predicted_social_idx": round(float(prediction_inverse[0][0]), 2),
+            "predicted_investments_m": round(float(prediction_inverse[0][1]), 2),
+            "predicted_crowdfunding_m": round(float(prediction_inverse[0][2]), 2),
+            "predicted_demand_idx": round(float(prediction_inverse[0][3]), 2),
+            "predicted_comp_idx": round(float(prediction_inverse[0][4]), 2)
         }
 
+        prediction_data["project"] = prediction_data.pop("project_id")
         # Отправка предсказаний в Django
         async with httpx.AsyncClient(proxies=None) as client:
             print("Sending ModelPrediction to Django:", prediction_data)
             response = await client.post(MODEL_PREDICTIONS_URL, json=prediction_data)
             print("ModelPrediction response status:", response.status_code)
+            print("ModelPrediction response data:", response.json())
             response.raise_for_status()
+
 
         # Возврат данных предсказаний
         return {
