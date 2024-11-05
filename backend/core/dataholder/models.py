@@ -11,7 +11,7 @@ class UserInputData(models.Model):
     crowdfunding_m = models.IntegerField(blank=True, null=True)
     team_mapping = models.TextField(blank=True, null=True)
     team_size = models.IntegerField(blank=True, null=True)
-    team_index = models.IntegerField(blank=True, null=True)
+    team_index = models.FloatField(blank=True, null=True)
     tech_level = models.TextField(blank=True, null=True)
     tech_investment = models.IntegerField(blank=True, null=True)
     competition_level = models.TextField(blank=True, null=True)
