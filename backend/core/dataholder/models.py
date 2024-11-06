@@ -21,6 +21,9 @@ class UserInputData(models.Model):
     audience_reach = models.IntegerField(blank=True, null=True)
     market_size = models.IntegerField(blank=True, null=True)
 
+    def __str__(self): # type: ignore
+        return self.startup_name
+
 class Projects(models.Model):
     project_name = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -32,6 +35,9 @@ class Projects(models.Model):
         constraints = [
             models.CheckConstraint(check=models.Q(project_number__gte=100000) & models.Q(project_number__lte=999999), name='project_number_range')
         ]
+
+    def __str__(self): # type: ignore
+        return self.project_name
 
 class ModelPredictions(models.Model):
     project = models.ForeignKey(Projects, related_name='predictions', on_delete=models.CASCADE)
