@@ -104,10 +104,9 @@ def calculate_indices(form_data):
     print([team_idx, tech_idx, comp_idx, social_idx, demand_idx])
     return [team_idx, tech_idx, comp_idx, social_idx, demand_idx]
 
-# Настройки CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Здесь можно указать список разрешённых доменов
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -180,7 +179,6 @@ async def predict_full_form(request: FullFormRequest):
         print("Error encountered:", str(e))
         raise HTTPException(status_code=400, detail=str(e))
 
-# Маршрут для предсказания с LSTM модели
 @app.post("/predict/lstm")
 async def predict_lstm(request: PredictionRequest):
     new_data = np.array([request.data])
@@ -196,7 +194,6 @@ async def predict_lstm(request: PredictionRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# Маршрут для предсказания с Dense модели
 @app.post("/predict/dense")
 async def predict_dense(request: PredictionRequest):
     new_data = np.array([request.data])
@@ -215,12 +212,9 @@ async def predict_dense(request: PredictionRequest):
 async def predict_timeseries(request: TimeSeriesPredictionRequest):
     new_data = np.array([request.data])
     try:
-        # Масштабируем данные
         new_data_scaled = normalizer.scaler_X.transform(new_data)
-        # Преобразуем данные в трехмерный массив для LSTM
         new_data_lstm = new_data_scaled.reshape((new_data_scaled.shape[0], new_data_scaled.shape[1], 1))
 
-        # Генерация предсказаний
         predictions = []
         pred = lstm_model.predict(new_data_lstm)
         predictions.append(normalizer.inverse_transform_Y(pred).flatten())
