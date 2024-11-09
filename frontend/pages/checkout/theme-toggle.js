@@ -1,26 +1,68 @@
-const themeToggle = document.getElementById("theme-toggle");
 const root = document.documentElement;
+const themeToggle = document.getElementById("bd-theme");
+const themeButtons = document.querySelectorAll("[data-bs-theme-value]");
+const themeIconActive = document.querySelector(".theme-icon-active use");
 
-// Проверка системной темы и установка начальной темы
-function setSystemTheme() {
-  const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  root.setAttribute("data-bs-theme", isDarkMode ? "dark" : "light");
-  themeToggle.textContent = isDarkMode ? "Светлая тема" : "Темная тема";
+function setTheme(theme) {
+  root.setAttribute("data-bs-theme", theme);
+
+  themeIconActive.setAttribute(
+    "href",
+    {
+      light: "#sun-fill",
+      dark: "#moon-stars-fill",
+      auto: "#circle-half",
+    }[theme],
+  );
+
+  themeButtons.forEach((button) => {
+    const isActive = button.getAttribute("data-bs-theme-value") === theme;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", isActive);
+    button
+      .querySelector("svg:last-child")
+      .classList.toggle("d-none", !isActive);
+  });
+
+  if (theme === "auto") {
+    setSystemTheme();
+  }
 }
 
-// Установка начальной темы при загрузке
-setSystemTheme();
+function setSystemTheme() {
+  const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const systemTheme = isDarkMode ? "dark" : "light";
+  root.setAttribute("data-bs-theme", systemTheme);
+  themeIconActive.setAttribute(
+    "href",
+    isDarkMode ? "#circle-half" : "#circle-half",
+  );
 
-// Слушаем изменения системной темы
+  themeButtons.forEach((button) => {
+    const isActive = button.getAttribute("data-bs-theme-value") === "auto";
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", isActive);
+  });
+}
+
+const defaultTheme = "auto";
+if (defaultTheme === "auto") {
+  setSystemTheme();
+} else {
+  setTheme(defaultTheme);
+}
+
 window
   .matchMedia("(prefers-color-scheme: dark)")
-  .addEventListener("change", setSystemTheme);
+  .addEventListener("change", () => {
+    if (root.getAttribute("data-bs-theme") === "auto") {
+      setSystemTheme();
+    }
+  });
 
-// Обработчик для переключения темы вручную
-themeToggle.addEventListener("click", () => {
-  const currentTheme = root.getAttribute("data-bs-theme");
-  const newTheme = currentTheme === "dark" ? "light" : "dark";
-  root.setAttribute("data-bs-theme", newTheme);
-  themeToggle.textContent =
-    newTheme === "dark" ? "Светлая тема" : "Темная тема";
+themeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const selectedTheme = button.getAttribute("data-bs-theme-value");
+    setTheme(selectedTheme);
+  });
 });
