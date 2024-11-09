@@ -217,8 +217,7 @@ async def predict_full_form_dense(request: FullFormRequest):
         ]])
 
         new_data_scaled = normalizer.scaler_X.transform(new_data)
-        new_data_lstm = new_data_scaled.reshape((new_data_scaled.shape[0], new_data_scaled.shape[1], 1))
-        prediction = dense_model.predict(new_data_lstm)
+        prediction = dense_model.predict(new_data_scaled)
         prediction_inverse = normalizer.inverse_transform_Y(prediction)
 
         prediction_data = {
@@ -245,6 +244,110 @@ async def predict_full_form_dense(request: FullFormRequest):
     except Exception as e:
         print("Error encountered:", str(e))
         raise HTTPException(status_code=400, detail=str(e))
+'''
+@app.post("/predict/full_form_dense")
+async def predict_full_form_dense(request: FullFormRequest):
+    try:
+        indices = calculate_indices(request)
+
+        # Подготовка данных для первого запроса
+        user_input_data = {
+            "startup_name": request.startup_name,
+            "team_name": request.team_name,
+            "theme_id": request.theme_id,
+            "category_id": request.category_id,
+            "description": request.description,
+            "start_m": request.start_m,
+            "investments_m": request.investments_m,
+            "crowdfunding_m": request.crowdfunding_m,
+            "team_mapping": request.team_mapping,
+            "team_size": request.team_size,
+            "team_index": indices[0],
+            "tech_level": request.tech_level,
+            "tech_investment": request.tech_investment,
+            "competition_level": request.competition_level,
+            "competitor_count": request.competitor_count,
+            "social_impact": request.social_impact,
+            "demand_level": request.demand_level,
+            "audience_reach": request.audience_reach,
+            "market_size": request.market_size,
+        }
+
+        # Первый запрос
+        try:
+            async with httpx.AsyncClient(proxies=None) as client:
+                response = await client.post(USER_INPUT_DATA_URL, json=user_input_data)
+                response.raise_for_status()
+                user_input_id = response.json().get("id")
+        except httpx.HTTPStatusError as http_err:
+            print(f"HTTP error while posting user input data: {http_err.response.text}")
+            raise HTTPException(status_code=400, detail=f"Failed to post user input data: {http_err}")
+
+        # Подготовка данных для второго запроса
+        project_data = {
+            "project_name": request.startup_name,
+            "description": request.description,
+            "user_input_data": user_input_id,
+            "project_number": request.project_number if hasattr(request, "project_number") else random.randint(600000, 699999),  # type: ignore
+            "is_public": request.is_public if hasattr(request, "is_public") else True,  # type: ignore
+        }
+
+        # Второй запрос
+        try:
+            async with httpx.AsyncClient(proxies=None) as client:
+                response = await client.post(PROJECTS_URL, json=project_data)
+                response.raise_for_status()
+                project_id = response.json().get("id")
+        except httpx.HTTPStatusError as http_err:
+            print(f"HTTP error while posting project data: {http_err.response.text}")
+            raise HTTPException(status_code=400, detail=f"Failed to post project data: {http_err}")
+
+        # Данные для модели и предсказание
+        try:
+            new_data = np.array([[
+                request.theme_id, request.category_id, indices[2],
+                request.start_m, request.investments_m, request.crowdfunding_m,
+                indices[0], indices[1], indices[3], indices[4]
+            ]])
+
+            new_data_scaled = normalizer.scaler_X.transform(new_data)
+            prediction = dense_model.predict(new_data_scaled)
+            prediction_inverse = normalizer.inverse_transform_Y(prediction)
+        except Exception as model_err:
+            print(f"Error during model prediction: {model_err}")
+            raise HTTPException(status_code=400, detail="Model prediction failed")
+
+        # Подготовка данных для третьего запроса
+        prediction_data = {
+            "project_id": project_id,
+            "model_name": "LSTM",
+            "predicted_social_idx": round(float(prediction_inverse[0][0]), 2),
+            "predicted_investments_m": round(float(prediction_inverse[0][1]), 2),
+            "predicted_crowdfunding_m": round(float(prediction_inverse[0][2]), 2),
+            "predicted_demand_idx": round(float(prediction_inverse[0][3]), 2),
+            "predicted_comp_idx": round(float(prediction_inverse[0][4]), 2)
+        }
+
+        prediction_data["project"] = prediction_data.pop("project_id")
+
+        # Третий запрос
+        try:
+            async with httpx.AsyncClient(proxies=None) as client:
+                response = await client.post(MODEL_PREDICTIONS_URL, json=prediction_data)
+                response.raise_for_status()
+        except httpx.HTTPStatusError as http_err:
+            print(f"HTTP error while posting prediction data: {http_err.response.text}")
+            raise HTTPException(status_code=400, detail=f"Failed to post prediction data: {http_err}")
+
+        return {
+            "prediction": prediction_inverse.tolist(),
+            "data": new_data.tolist(),
+            "calculated_indices": indices
+        }
+
+    except Exception as e:
+        print("General error encountered:", str(e))
+        raise HTTPException(status_code=400, detail=str(e))'''
 
 @app.post("/predict/lstm")
 async def predict_lstm(request: PredictionRequest):
