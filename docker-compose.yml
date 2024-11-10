@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: backend/core/Dockerfile
+    volumes:
+      - ./backend/core:/app
+    ports:
+      - "8000:8000"
