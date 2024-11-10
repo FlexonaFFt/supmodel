@@ -9,3 +9,16 @@ services:
       - ./backend/core:/app
     ports:
       - "8000:8000"
+
+  fastapi:
+    build:
+      context: .
+      dockerfile: backend/api/Dockerfile
+    volumes:
+      - ./backend/api:/app
+      - ./backend/api/data:/app/data
+      - ./backend/api/models:/app/models
+    ports:
+      - "8001:8001"
+    depends_on:
+      - django
