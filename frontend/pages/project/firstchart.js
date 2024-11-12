@@ -5,10 +5,10 @@ const ctx = document.getElementById("myChart").getContext("2d");
 const myChart = new Chart(ctx, {
   type: "bar",
   data: {
-    labels: ["Demand", "February", "March", "April", "May"],
+    labels: ["demand", "comp_idx", "teamd_idx", "tech_idx", "social_idx"],
     datasets: [
       {
-        label: "Sample Data",
+        label: "Основные характеристики",
         data: [7.5, 4.3, 3.0, 5.65, 2.35],
         backgroundColor: "rgba(12, 110, 253, 0.2)",
         borderColor: "rgba(12, 110, 253, 1)",
@@ -23,6 +23,9 @@ const myChart = new Chart(ctx, {
       aspectRatio: 1,
       y: {
         beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
       },
     },
   },
