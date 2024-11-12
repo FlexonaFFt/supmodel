@@ -80,3 +80,19 @@
 .bd-mode-toggle .dropdown-menu .active .bi {
     display: block !important;
 }
+
+#chart-container {
+    display: flex;
+    justify-content: center; /* Горизонтальное центрирование */
+    align-items: center;
+    width: 100%; /* Занимает всю ширину родителя */
+    height: 100%; /* Занимает всю высоту родителя */
+    max-width: 600px; /* Максимальная ширина, например, 600px */
+    max-height: 600px; /* Максимальная высота, например, 400px */
+    margin: auto; /* Центрирование контейнера */
+}
+
+#myChart {
+    width: 100%; /* Занимает всю ширину контейнера */
+    height: 100%; /* Занимает всю высоту контейнера */
+}

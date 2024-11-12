@@ -3,13 +3,13 @@ const ctx = document.getElementById("myChart").getContext("2d");
 
 // Создайте график
 const myChart = new Chart(ctx, {
-  type: "bar", // Тип графика (bar, line, pie и др.)
+  type: "bar",
   data: {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: ["Demand", "February", "March", "April", "May"],
     datasets: [
       {
         label: "Sample Data",
-        data: [12, 19, 3, 5, 2, 3, 7],
+        data: [7.5, 4.3, 3.0, 5.65, 2.35],
         backgroundColor: "rgba(12, 110, 253, 0.2)",
         borderColor: "rgba(12, 110, 253, 1)",
         borderWidth: 1,
@@ -20,6 +20,7 @@ const myChart = new Chart(ctx, {
     scales: {
       responsive: true,
       maintainAspectRatio: false,
+      aspectRatio: 1,
       y: {
         beginAtZero: true,
       },
