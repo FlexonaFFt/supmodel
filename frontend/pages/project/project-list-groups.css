@@ -1,6 +1,5 @@
 .list-group {
     width: 100%;
-    margin-inline: 1rem;
 }
 
 .form-check-input:checked + .form-checked-content {
