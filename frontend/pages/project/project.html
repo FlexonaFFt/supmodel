@@ -73,7 +73,7 @@
         <div class="container py-4">
             <header class="pb-3 mb-4 border-bottom">
             <a href="/" class="d-flex align-items-center text-body-emphasis text-decoration-none">
-                <span class="fs-4">project name</span>
+                <span class="fs-4">project #640024</span>
             </a>
             </header>
 
@@ -103,26 +103,26 @@
                     <div class="m-0 d-flex justify-content-center list-group list-group-checkable gap-2">
                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios1" value="" checked>
                         <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios1">
-                            First radio
-                        <span class="d-block small opacity-50">With support text underneath to add more detail</span>
+                            Базовые предсказания
+                        <span class="d-block small opacity-50">Предсказани, основанные на реальном датасете</span>
                         </label>
 
                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
                         <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios2">
-                            Second radio
-                            <span class="d-block small opacity-50">Some other text goes here</span>
+                            Предсказания на временных рядах
+                            <span class="d-block small opacity-50">Предсказания, основанные на временных рядах</span>
                         </label>
 
                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios3" value="">
                         <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios3">
-                            Third radio
-                            <span class="d-block small opacity-50">And we end with another snippet of text</span>
+                            Синтетические предсказания на временных рядах
+                            <span class="d-block small opacity-50">Предсказания, основанные на синтетическом датасете</span>
                         </label>
 
                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios4" value="" disabled>
                         <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios4">
-                            Fourth disabled radio
-                            <span class="d-block small opacity-50">This option is disabled</span>
+                            Синтетические предсказания
+                            <span class="d-block small opacity-50">Пока эта опция в разработке</span>
                         </label>
                     </div>
                 </div>
@@ -130,9 +130,9 @@
 
               <div class="col-md-6">
                 <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                  <h2>Add borders</h2>
-                  <p>Or, keep it light and add a border for some added definition to the boundaries of your content. Be sure to look under the hood at the source HTML here as we've adjusted the alignment and sizing of both column's content for equal-height.</p>
-                  <button class="btn btn-outline-secondary" type="button">Example button</button>
+                    <div>
+                        <canvas id="myChart"></canvas>
+                    </div>
                 </div>
               </div>
             </div>
@@ -179,6 +179,8 @@
             integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
             crossorigin="anonymous"
         ></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="theme-toggle.js"></script>
+        <script src="firstchart.js"></script>
     </body>
 </html>
