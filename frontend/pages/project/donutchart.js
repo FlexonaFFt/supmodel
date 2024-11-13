@@ -4,13 +4,21 @@ document.addEventListener("DOMContentLoaded", function () {
   new Chart(ctx, {
     type: "doughnut",
     data: {
-      labels: ["Category 1", "Category 2", "Category 3"],
+      labels: ["start_m", "investments", "crowdfunding"],
       datasets: [
         {
-          data: [30, 50, 20],
-          backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-          borderColor: ["#FFFFFF", "#FFFFFF", "#FFFFFF"],
-          borderWidth: 2,
+          data: [25000, 35670, 12300],
+          backgroundColor: [
+            "rgba(12, 110, 253, 0.2)",
+            "rgba(12, 110, 253, 0.4)",
+            "rgba(12, 110, 253, 0.6)",
+          ],
+          borderColor: [
+            "rgba(12, 110, 253, 1)",
+            "rgba(12, 110, 253, 1)",
+            "rgba(12, 110, 253, 1)",
+          ],
+          borderWidth: 1,
         },
       ],
     },
