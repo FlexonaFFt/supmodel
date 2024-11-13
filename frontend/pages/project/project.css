@@ -97,7 +97,7 @@
     height: 100%;
 }
 
-# donut-container {
+#donut-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -109,6 +109,22 @@
 }
 
 #donutChart {
+    width: 100%;
+    height: 100%;
+}
+
+#radar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    max-width: 600px;
+    max-height: 600px;
+    margin: auto;
+}
+
+#radarChart {
     width: 100%;
     height: 100%;
 }
