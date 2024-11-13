@@ -4,25 +4,18 @@ document.addEventListener("DOMContentLoaded", function () {
   new Chart(ctx, {
     type: "radar",
     data: {
-      labels: [
-        "Strength",
-        "Speed",
-        "Endurance",
-        "Agility",
-        "Intelligence",
-        "Flexibility",
-      ],
+      labels: ["demand", "comp_idx", "team_idx", "tech_idx", "social_idx"],
       datasets: [
         {
           label: "Athlete A",
-          data: [65, 75, 70, 80, 60, 75],
-          backgroundColor: "rgba(255, 99, 132, 0.2)",
-          borderColor: "rgba(255, 99, 132, 1)",
+          data: [35, 42, 56, 34, 20],
+          backgroundColor: "rgba(12, 110, 253, 0.2)",
+          borderColor: "rgba(12, 110, 253, 1)",
           borderWidth: 1,
         },
         {
           label: "Athlete B",
-          data: [54, 65, 60, 70, 78, 82],
+          data: [74, 100, 34, 88, 42],
           backgroundColor: "rgba(54, 162, 235, 0.2)",
           borderColor: "rgba(54, 162, 235, 1)",
           borderWidth: 1,
