@@ -3,19 +3,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const timeSeriesBlocks = document.querySelectorAll(
     ".time-series-predictions",
   );
+  const syntheticBlocks = document.querySelectorAll(".synthetic-predictions");
   const radioButtons = document.querySelectorAll(
     'input[name="listGroupCheckableRadios"]',
   );
 
+  // Функция для скрытия всех блоков
+  function hideAllBlocks() {
+    baseBlocks.forEach((block) => (block.style.display = "none"));
+    timeSeriesBlocks.forEach((block) => (block.style.display = "none"));
+    syntheticBlocks.forEach((block) => (block.style.display = "none"));
+  }
+
   radioButtons.forEach((radio) => {
     radio.addEventListener("change", function () {
+      hideAllBlocks(); // Сначала скрываем все блоки
+
+      // Затем показываем блоки, соответствующие выбранной радио-кнопке
       if (this.id === "listGroupCheckableRadios1") {
         baseBlocks.forEach((block) => (block.style.display = "block"));
-        timeSeriesBlocks.forEach((block) => (block.style.display = "none"));
       } else if (this.id === "listGroupCheckableRadios2") {
-        baseBlocks.forEach((block) => (block.style.display = "none"));
         timeSeriesBlocks.forEach((block) => (block.style.display = "block"));
+      } else if (this.id === "listGroupCheckableRadios3") {
+        syntheticBlocks.forEach((block) => (block.style.display = "block"));
       }
     });
   });
+
+  // Инициализация: скрываем все блоки, кроме базовых
+  hideAllBlocks();
+  baseBlocks.forEach((block) => (block.style.display = "block"));
 });
