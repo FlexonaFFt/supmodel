@@ -10,9 +10,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Функция для скрытия всех блоков
   function hideAllBlocks() {
-    baseBlocks.forEach((block) => (block.style.display = "none"));
-    timeSeriesBlocks.forEach((block) => (block.style.display = "none"));
-    syntheticBlocks.forEach((block) => (block.style.display = "none"));
+    baseBlocks.forEach((block) => (block.style.visibility = "hidden"));
+    timeSeriesBlocks.forEach((block) => (block.style.visibility = "hidden"));
+    syntheticBlocks.forEach((block) => (block.style.visibility = "hidden"));
   }
 
   radioButtons.forEach((radio) => {
@@ -21,16 +21,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Затем показываем блоки, соответствующие выбранной радио-кнопке
       if (this.id === "listGroupCheckableRadios1") {
-        baseBlocks.forEach((block) => (block.style.display = "block"));
+        baseBlocks.forEach((block) => (block.style.visibility = "visible"));
       } else if (this.id === "listGroupCheckableRadios2") {
-        timeSeriesBlocks.forEach((block) => (block.style.display = "block"));
+        timeSeriesBlocks.forEach(
+          (block) => (block.style.visibility = "visible"),
+        );
       } else if (this.id === "listGroupCheckableRadios3") {
-        syntheticBlocks.forEach((block) => (block.style.display = "block"));
+        syntheticBlocks.forEach(
+          (block) => (block.style.visibility = "visible"),
+        );
       }
     });
   });
 
   // Инициализация: скрываем все блоки, кроме базовых
   hideAllBlocks();
-  baseBlocks.forEach((block) => (block.style.display = "block"));
+  baseBlocks.forEach((block) => (block.style.visibility = "visible"));
 });
