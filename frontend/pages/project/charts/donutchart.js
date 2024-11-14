@@ -24,6 +24,10 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     options: {
       responsive: true,
+      animation: {
+        duration: 2000,
+        easing: "easeOutBounce",
+      },
       plugins: {
         legend: {
           display: false, // Убирает легенду, если false

@@ -17,6 +17,10 @@ const myChart = new Chart(ctx, {
     ],
   },
   options: {
+    animation: {
+      duration: 2000, // Длительность анимации в миллисекундах
+      easing: "easeOutBounce", // Эффект для анимации (например, 'easeOutBounce')
+    },
     scales: {
       responsive: true,
       maintainAspectRatio: false,
