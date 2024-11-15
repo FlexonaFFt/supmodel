@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   new Chart(ctx, {
     type: "doughnut",
     data: {
-      labels: ["start_m", "investments", "crowdfunding"],
+      labels: ["Стартовый капитал", "Инвестиции", "Краудфандинг"],
       datasets: [
         {
           data: [25000, 35670, 12300],
@@ -30,14 +30,14 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       plugins: {
         legend: {
-          display: false, // Убирает легенду, если false
+          display: false,
           position: "top",
         },
         tooltip: {
-          enabled: true, // Включает/выключает всплывающие подсказки
+          enabled: true,
         },
       },
-      cutout: "70%", // Делает внутренний вырез для donut-графика
+      cutout: "70%",
     },
   });
 });

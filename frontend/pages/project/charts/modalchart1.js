@@ -3,7 +3,7 @@ const ctx = document.getElementById("modalChart1").getContext("2d");
 const myChart = new Chart(ctx, {
   type: "line",
   data: {
-    labels: ["Старт", "H1", "H2", "H3", "H4", "H5"],
+    labels: ["Start", "H1", "H2", "H3", "H4", "H5"],
     datasets: [
       {
         label: "Социальный индекс",
@@ -41,7 +41,7 @@ const myChart = new Chart(ctx, {
       x: {
         title: {
           display: true,
-          text: "Месяцы",
+          text: "Полугодия",
         },
       },
       y: {
