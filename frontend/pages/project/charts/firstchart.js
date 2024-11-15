@@ -5,7 +5,7 @@ const ctx = document.getElementById("myChart").getContext("2d");
 const myChart = new Chart(ctx, {
   type: "bar",
   data: {
-    labels: ["demand", "comp_idx", "teamd_idx", "tech_idx", "social_idx"],
+    labels: ["demand", "comp_idx", "team_idx", "tech_idx", "social_idx"],
     datasets: [
       {
         label: "Основные характеристики",
