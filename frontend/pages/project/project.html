@@ -113,16 +113,16 @@
                             <span class="d-block small opacity-50">Предсказания, основанные на временных рядах</span>
                         </label>
 
-                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios3" value="" disabled>
-                        <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios3">
-                            Синтетические предсказания на временных рядах
-                            <span class="d-block small opacity-50">Предсказания, основанные на синтетическом датасете</span>
-                        </label>
-
                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios4" value="" disabled>
                         <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios4">
                             Синтетические предсказания
                             <span class="d-block small opacity-50">Пока эта опция в разработке</span>
+                        </label>
+
+                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios3" value="" disabled>
+                        <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios3">
+                            Синтетические предсказания на временных рядах
+                            <span class="d-block small opacity-50">Предсказания, основанные на синтетическом датасете</span>
                         </label>
                     </div>
                 </div>
@@ -148,10 +148,9 @@
 
                 <div class="col-md-6 mb-4">
                     <div class="h-100 p-5 border rounded-3">
-                        <h2>Основные предсказания</h2>
-                        <p style="text-align: justify;">Большинство предсказаний будут отображаться в этой небольшой табличке. Здесь представлены суммарные характеристики предсказаний модели.</p>
-                        <p style="text-align: justify;">Большинство предсказаний будут отображаться в этой небольшой табличке. Здесь представлены суммарные характеристики предсказаний модели. Вы можете тапнуть на кнопулю и узнать больше.</p>
-                        <button class="col-md-6 mt-4 btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#myModal" type="button">Посмотреть</button>
+                        <h2 class="mb-5">Основные предсказания</h2>
+                        <p style="text-align: justify;">Модели, обученные на несинтетических данных, обеспечат наиболее точные прогнозы.</p>
+                        <p style="text-align: justify;">Ниже можно ознакомиться с результатами предсказанных характеристик. Для каждого показателя написан микровывод и возможный сценарий его дальнейшего развития. Дополнительно представлен график для демонстрации изменения характеристик с течением времени.</p>
                     </div>
                 </div>
             </div>
@@ -229,9 +228,9 @@
 
                 <div class="col-md-6 mb-4">
                     <div class="h-100 p-5 border rounded-3">
-                        <h2>Ничоси</h2>
-                        <p style="text-align: justify;">Большинство предсказаний будут отображаться в этой небольшой табличке. Здесь представлены суммарные характеристики предсказаний модели.</p>
-                        <p style="text-align: justify;">Большинство предсказаний будут отображаться в этой небольшой табличке. Здесь представлены суммарные характеристики предсказаний модели. Вы можете тапнуть на кнопулю и узнать больше.</p>
+                        <h2 class="mb-4">Динамика характеристик</h2>
+                        <p style="text-align: justify;">Вы можете изучить прогнозируемую динамику ряда показателей, основанную на временных рядах.</p>
+                        <p style="text-align: justify;">В модальном окне доступны графики изменений этих показателей со временем, включая такие характеристики, как социальный индекс (social_idx), индекс спроса (demand_idx) и индекс конкуренции (comp_idx).</p>
                         <button class="col-md-6 mt-4 btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#myModal" type="button">Посмотреть</button>
                     </div>
                 </div>
