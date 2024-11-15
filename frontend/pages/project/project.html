@@ -158,12 +158,12 @@
             <div class="row align-items-md-stretch base-predictions">
                 <div class="col-md-6 mb-4 h-100">
                     <div class="d-flex flex-column flex-md-row align-items-center justify-content-center">
-                      <div class="list-group w-100 h-100">
+                      <div class="list-group w-100 h-100" id="dynamic-texts">
                         <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
                           <div class="d-flex gap-2 w-100 justify-content-between">
                             <div>
                               <h6 class="mb-0">Уровень возможного спроса</h6>
-                              <p class="mb-0 opacity-75">Спрос может упасть с течением времени.</p>
+                              <p class="mb-0 opacity-75" data-index="0">Тут будет оценка.</p>
                             </div>
                             <small class="opacity-50 text-nowrap">mid</small>
                           </div>
@@ -172,7 +172,7 @@
                           <div class="d-flex gap-2 w-100 justify-content-between">
                             <div>
                               <h6 class="mb-0">Характеристика конкурентоспособности</h6>
-                              <p class="mb-0 opacity-75">Стартап сможет спокойно сосущестовать с конкурентами.</p>
+                              <p class="mb-0 opacity-75" data-index="1">Тут будет оценка.</p>
                             </div>
                             <small class="opacity-50 text-nowrap">max</small>
                           </div>
@@ -181,7 +181,7 @@
                           <div class="d-flex gap-2 w-100 justify-content-between">
                             <div>
                               <h6 class="mb-0">Характеристика команды</h6>
-                              <p class="mb-0 opacity-75">С течением времени в команде могут возникнуть разногласия, так как общий индекс команды довольно низкий.</p>
+                              <p class="mb-0 opacity-75" data-index="2">Тут будет оценка.</p>
                             </div>
                             <small class="opacity-50 text-nowrap">low</small>
                           </div>
@@ -190,7 +190,7 @@
                           <div class="d-flex gap-2 w-100 justify-content-between">
                             <div>
                               <h6 class="mb-0">Технологические инвестиции</h6>
-                              <p class="mb-0 opacity-75">Проект может потребовать в дальнейшем увеличение технологических инвестиций.</p>
+                              <p class="mb-0 opacity-75" data-index="3">Тут будет оценка.</p>
                             </div>
                             <small class="opacity-50 text-nowrap">low</small>
                           </div>
@@ -199,7 +199,7 @@
                           <div class="d-flex gap-2 w-100 justify-content-between">
                             <div>
                               <h6 class="mb-0">Реакция общества</h6>
-                              <p class="mb-0 opacity-75">Возможно лютого пиара не будет.</p>
+                              <p class="mb-0 opacity-75" data-index="4">Тут будет оценка.</p>
                             </div>
                             <small class="opacity-50 text-nowrap">low</small>
                           </div>
@@ -342,8 +342,9 @@
             crossorigin="anonymous"
         ></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="selector.js" defer></script>
-        <script src="theme-toggle.js"></script>
+        <script src="scripts/reasons.js" defer></script>
+        <script src="scripts/selector.js" defer></script>
+        <script src="scripts/theme-toggle.js"></script>
         <script src="charts/firstchart.js"></script>
         <script src="charts/donutchart.js"></script>
         <script src="charts/horizontal.js"></script>
