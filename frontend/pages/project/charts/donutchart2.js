@@ -10,7 +10,7 @@ const myChart = new Chart(ctx, {
       {
         label: "Предсказанные характеристики за 5 промежуток",
         data: [10000, 28900],
-        backgroundColor: ["rgba(12, 110, 253, 0.6)", "rgba(12, 110, 253, 0.9)"],
+        backgroundColor: ["rgba(12, 110, 253, 0.6)", "rgba(12, 110, 253, 0.3)"],
         borderColor: ["rgba(12, 110, 253, 1)", "rgba(12, 110, 253, 1)"],
         borderWidth: 0,
       },

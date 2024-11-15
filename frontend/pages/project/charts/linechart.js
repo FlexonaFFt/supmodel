@@ -5,11 +5,19 @@ const ctx = document.getElementById("lineChart").getContext("2d");
 const myChart = new Chart(ctx, {
   type: "line",
   data: {
-    labels: ["H1 2025", "H2 2025", "H1 2026", "H2 2026", "H1 2027", "H2 2027"],
+    labels: [
+      "Начало",
+      "H1 2025",
+      "H2 2025",
+      "H1 2026",
+      "H2 2026",
+      "H1 2027",
+      "H2 2027",
+    ],
     datasets: [
       {
         label: "Инвестиции",
-        data: [21300, 16500, 17290, 24340, 23200, 25345],
+        data: [13400, 21300, 16500, 17290, 24340, 23200, 25345],
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 2,
@@ -18,7 +26,7 @@ const myChart = new Chart(ctx, {
       },
       {
         label: "Краудфандинг",
-        data: [10200, 7800, 19000, 32060, 21000, 14560],
+        data: [8600, 10200, 7800, 19000, 32060, 21000, 14560],
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgba(255, 99, 132, 1)",
         borderWidth: 2,
@@ -28,6 +36,7 @@ const myChart = new Chart(ctx, {
       {
         label: "Общая сумма",
         data: [
+          13400 + 8600,
           21300 + 10200,
           16500 + 7800,
           17290 + 19000,
