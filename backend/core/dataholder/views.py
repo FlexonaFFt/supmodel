@@ -1,16 +1,42 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import UserInputData, Projects, ModelPredictions
-from .serializers import UserInputDataSerializer, ProjectsSerializer, ModelPredictionsSerializer
+from .models import (
+    UserInputData,
+    Project,
+    LSTMPrediction,
+    LSTMTimePrediction,
+    SyntheticPrediction,
+    SyntheticTimePrediction,
+)
+from .serializers import (
+    UserInputDataSerializer,
+    ProjectSerializer,
+    LSTMPredictionSerializer,
+    LSTMTimePredictionSerializer,
+    SyntheticPredictionSerializer,
+    SyntheticTimePredictionSerializer
+)
 
 class UserInputDataViewSet(viewsets.ModelViewSet):
     queryset = UserInputData.objects.all() # type: ignore
     serializer_class = UserInputDataSerializer
 
 class ProjectsViewSet(viewsets.ModelViewSet):
-    queryset = Projects.objects.all() # type: ignore
-    serializer_class = ProjectsSerializer
+    queryset = Project.objects.all() # type: ignore
+    serializer_class = ProjectSerializer
 
-class ModelPredictionsViewSet(viewsets.ModelViewSet):
-    queryset = ModelPredictions.objects.all() # type: ignore
-    serializer_class = ModelPredictionsSerializer
+class LSTMPredictionsViewSet(viewsets.ModelViewSet):
+    queryset = LSTMPrediction.objects.all() # type: ignore
+    serializer_class = LSTMPredictionSerializer
+
+class LSTMTimePredictionsViewSet(viewsets.ModelViewSet):
+    queryset = LSTMTimePrediction.objects.all() # type: ignore
+    serializer_class = LSTMTimePredictionSerializer
+
+class SyntheticPredictionsViewSet(viewsets.ModelViewSet):
+    queryset = SyntheticPrediction.objects.all() # type: ignore
+    serializer_class = SyntheticPredictionSerializer
+
+class SyntheticTimePredictionsViewSet(viewsets.ModelViewSet):
+    queryset = SyntheticTimePrediction.objects.all() # type: ignore
+    serializer_class = SyntheticTimePredictionSerializer

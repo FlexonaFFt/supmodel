@@ -1,50 +1,79 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class UserInputData(models.Model):
-    startup_name = models.TextField(blank=True, null=True)
-    team_name = models.TextField(blank=True, null=True)
-    theme_id = models.IntegerField(blank=True, null=True)
-    category_id = models.IntegerField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    start_m = models.IntegerField(blank=True, null=True)
-    investments_m = models.IntegerField(blank=True, null=True)
-    crowdfunding_m = models.IntegerField(blank=True, null=True)
-    team_mapping = models.TextField(blank=True, null=True)
-    team_size = models.IntegerField(blank=True, null=True)
-    team_index = models.FloatField(blank=True, null=True)
-    tech_level = models.TextField(blank=True, null=True)
-    tech_investment = models.IntegerField(blank=True, null=True)
-    competition_level = models.TextField(blank=True, null=True)
-    competitor_count = models.IntegerField(blank=True, null=True)
-    social_impact = models.TextField(blank=True, null=True)
-    demand_level = models.TextField(blank=True, null=True)
-    audience_reach = models.IntegerField(blank=True, null=True)
-    market_size = models.IntegerField(blank=True, null=True)
+    startup_name = models.TextField()
+    team_name = models.TextField()
+    theme_id = models.IntegerField()
+    category_id = models.IntegerField()
+    description = models.TextField()
+    start_m = models.IntegerField()
+    investments_m = models.IntegerField()
+    crowdfunding_m = models.IntegerField()
+    team_mapping = models.TextField()
+    team_size = models.IntegerField()
+    team_index = models.IntegerField()
+    tech_level = models.TextField()
+    tech_investment = models.IntegerField()
+    competition_level = models.TextField()
+    competitor_count = models.IntegerField()
+    social_impact = models.TextField()
+    demand_level = models.TextField()
+    audience_reach = models.IntegerField()
+    market_size = models.IntegerField()
 
-    def __str__(self): # type: ignore
-        return self.startup_name
 
-class Projects(models.Model):
-    project_name = models.TextField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    user_input_data = models.ForeignKey(UserInputData, related_name='projects', on_delete=models.CASCADE)
-    project_number = models.IntegerField()
-    is_public = models.BooleanField(default=True) # type: ignore
-
-    class Meta:
-        constraints = [
-            models.CheckConstraint(check=models.Q(project_number__gte=100000) & models.Q(project_number__lte=999999), name='project_number_range')
+class Project(models.Model):
+    project_name = models.TextField()
+    description = models.TextField()
+    user_input = models.ForeignKey(UserInputData, on_delete=models.CASCADE)
+    project_number = models.IntegerField(
+        null=True,
+        blank=True,
+        validators=[
+            MinValueValidator(600000),
+            MaxValueValidator(699999)
         ]
 
-    def __str__(self): # type: ignore
-        return self.project_name
+    )
+    is_public = models.BooleanField(default=True) # type: ignore
 
-class ModelPredictions(models.Model):
-    project = models.ForeignKey(Projects, related_name='predictions', on_delete=models.CASCADE)
-    model_name = models.TextField(blank=True, null=True)
-    predicted_social_idx = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    predicted_investments_m = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    predicted_crowdfunding_m = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    predicted_demand_idx = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    predicted_comp_idx = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+
+class LSTMPrediction(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    predicted_social_idx = models.FloatField()
+    predicted_investments_m = models.FloatField()
+    predicted_crowdfunding_m = models.FloatField()
+    predicted_demand_idx = models.FloatField()
+    predicted_comp_idx = models.FloatField()
+    prediction_date = models.DateTimeField(auto_now_add=True)
+
+
+class LSTMTimePrediction(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    predicted_social_idx = models.FloatField()
+    predicted_investments_m = models.FloatField()
+    predicted_crowdfunding_m = models.FloatField()
+    predicted_demand_idx = models.FloatField()
+    predicted_comp_idx = models.FloatField()
+    prediction_date = models.DateTimeField(auto_now_add=True)
+
+
+class SyntheticPrediction(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    predicted_social_idx = models.FloatField()
+    predicted_investments_m = models.FloatField()
+    predicted_crowdfunding_m = models.FloatField()
+    predicted_demand_idx = models.FloatField()
+    predicted_comp_idx = models.FloatField()
+    prediction_date = models.DateTimeField(auto_now_add=True)
+
+
+class SyntheticTimePrediction(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    predicted_social_idx = models.FloatField()
+    predicted_investments_m = models.FloatField()
+    predicted_crowdfunding_m = models.FloatField()
+    predicted_demand_idx = models.FloatField()
+    predicted_comp_idx = models.FloatField()
     prediction_date = models.DateTimeField(auto_now_add=True)
