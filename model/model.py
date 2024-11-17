@@ -62,7 +62,7 @@ class LSTMModelBuilder:
         self.input_shape = input_shape
 
     # Лучший результат ошибки: loss: 0.0051, val_loss: 0.0012
-    # Абсолютный рекорд
+    # Это абсолютный рекорд для обучения на реальных данных
     def build_model(self):
         model = Sequential()
         # Большое кол-во нейронов и возможность возврата последовательностей
@@ -112,6 +112,20 @@ class Trainer:
     """Класс для обучения модели"""
 
     def __init__(self, model, X_train, Y_train, batch_size=32, epochs=15, validation_split=0.2):
+        self.model = model
+        self.X_train = X_train
+        self.Y_train = Y_train
+        self.batch_size = batch_size
+        self.epochs = epochs
+        self.validation_split = validation_split
+
+    def train(self):
+        self.model.fit(self.X_train, self.Y_train, batch_size=self.batch_size, epochs=self.epochs, validation_split=self.validation_split)
+
+class SynthTrainer:
+    """Класс для обучения модели"""
+
+    def __init__(self, model, X_train, Y_train, batch_size=128, epochs=15, validation_split=0.2):
         self.model = model
         self.X_train = X_train
         self.Y_train = Y_train
