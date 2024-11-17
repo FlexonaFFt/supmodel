@@ -30,7 +30,7 @@ def main():
     lstm_model.summary()
 
     # Обучение моделей без сохранения
-    lstm_trainer = Trainer(lstm_model, X_train, Y_train)
+    lstm_trainer = SynthTrainer(lstm_model, X_train, Y_train)
     lstm_trainer.train()
 
     print()

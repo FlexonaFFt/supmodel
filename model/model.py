@@ -125,7 +125,7 @@ class Trainer:
 class SynthTrainer:
     """Класс для обучения модели"""
 
-    def __init__(self, model, X_train, Y_train, batch_size=128, epochs=15, validation_split=0.2):
+    def __init__(self, model, X_train, Y_train, batch_size=258, epochs=15, validation_split=0.2):
         self.model = model
         self.X_train = X_train
         self.Y_train = Y_train
