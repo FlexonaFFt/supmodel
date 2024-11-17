@@ -4,7 +4,8 @@ import pandas as pd
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.layers import LSTM, Dense # type: ignore
+from tensorflow.keras.optimizers import Adam # type: ignore
+from tensorflow.keras.layers import LSTM, Dense, Dropout # type: ignore
 from tensorflow.keras.models import Sequential, load_model # type: ignore
 
 class DataLoader:
@@ -60,12 +61,41 @@ class LSTMModelBuilder:
     def __init__(self, input_shape):
         self.input_shape = input_shape
 
+    # Лучший результат ошибки: loss: 0.0051, val_loss: 0.0012
+    # Это абсолютный рекорд для обучения на реальных данных
+
+    # Лучший результат ошибки: loss: 0.0041, val_loss: 0.0012
+    # Это абсолютный рекорд для обучения на синтетических данных (батч 256)
     def build_model(self):
         model = Sequential()
-        model.add(LSTM(256, activation='relu', input_shape=self.input_shape, return_sequences=False))
+        # Большое кол-во нейронов и возможность возврата последовательностей
+        model.add(LSTM(512, activation='tanh', input_shape=self.input_shape, return_sequences=True))
+        model.add(Dropout(0.2))
+        model.add(LSTM(256, activation='tanh', return_sequences=True))
+        model.add(Dropout(0.2))
+        model.add(LSTM(128, activation='tanh', return_sequences=False))
+        model.add(Dropout(0.2))
         model.add(Dense(5))
-        model.compile(optimizer='adam', loss='mse')
+        optimizer = Adam(learning_rate=0.0005)
+        model.compile(optimizer=optimizer, loss='huber')
         return model
+
+    '''
+    def build_model(self):
+        model = Sequential()
+        # Большое кол-во нейронов и возможность возврата последовательностей
+        model.add(LSTM(512, activation='tanh', input_shape=self.input_shape, return_sequences=True))
+        model.add(Dropout(0.2))
+        model.add(LSTM(256, activation='tanh', return_sequences=True))
+        model.add(Dropout(0.2))
+        model.add(LSTM(128, activation='tanh', return_sequences=True))
+        model.add(Dropout(0.2))
+        model.add(LSTM(64, activation='tanh', return_sequences=False))
+        model.add(Dropout(0.3))
+        model.add(Dense(5))
+        optimizer = Adam(learning_rate=0.0005)
+        model.compile(optimizer=optimizer, loss='huber')
+        return model'''
 
 class DenseModelBuilder:
     """Класс для создания и конфигурации Dense модели для одиночных предсказаний"""
@@ -85,6 +115,20 @@ class Trainer:
     """Класс для обучения модели"""
 
     def __init__(self, model, X_train, Y_train, batch_size=32, epochs=15, validation_split=0.2):
+        self.model = model
+        self.X_train = X_train
+        self.Y_train = Y_train
+        self.batch_size = batch_size
+        self.epochs = epochs
+        self.validation_split = validation_split
+
+    def train(self):
+        self.model.fit(self.X_train, self.Y_train, batch_size=self.batch_size, epochs=self.epochs, validation_split=self.validation_split)
+
+class SynthTrainer:
+    """Класс для обучения модели"""
+
+    def __init__(self, model, X_train, Y_train, batch_size=258, epochs=15, validation_split=0.2):
         self.model = model
         self.X_train = X_train
         self.Y_train = Y_train
@@ -118,38 +162,6 @@ class Predictor:
         current_input = initial_input.reshape((1, 1, initial_input.shape[1])) # shape[2]
         predictions = []
         pred = self.model.predict(current_input)
-        predictions.append(self.scaler_Y.inverse_transform(pred))
-
-        for step in range(1, steps):
-            current_input = np.concatenate([initial_input.flatten()[:5], pred.flatten()]).reshape((1, 1, 10))
-            pred = self.model.predict(current_input)
-            predictions.append(self.scaler_Y.inverse_transform(pred))
-        return np.array(predictions)
-
-    def make_predictions3(self, initial_input, steps):
-        current_input = initial_input.reshape((1, 1, initial_input.shape[2]))
-        predictions = []
-        pred = self.model.predict(current_input)
-        predictions.append(self.scaler_Y.inverse_transform(pred))
-
-        for step in range(1, steps):
-            current_input = np.concatenate([initial_input.flatten()[:5], pred.flatten()]).reshape((1, 1, 10))
-            pred = self.model.predict(current_input)
-            predictions.append(self.scaler_Y.inverse_transform(pred))
-        return np.array(predictions)
-
-    def make_predictions4(self, initial_input, steps):
-        print(f"Input shape before prediction: {initial_input.shape}")
-        try:
-            current_input = initial_input.reshape((1, 1, initial_input.shape[2]))  # Здесь возможная ошибка
-            print(f"Current input shape for LSTM: {current_input.shape}")
-        except Exception as e:
-            print(f"Reshape error: {str(e)}")
-            raise
-
-        predictions = []
-        pred = self.model.predict(current_input)
-        print(f"Prediction shape: {pred.shape}")
         predictions.append(self.scaler_Y.inverse_transform(pred))
 
         for step in range(1, steps):
