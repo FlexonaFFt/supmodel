@@ -182,7 +182,7 @@ async def predict_full_form(request: FullFormRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/predict/synthlstm/timeseries")
-async def predict_lstm_timeseries(request: FullFormRequest):
+async def predict_synth_lstm_timeseries(request: FullFormRequest):
     indices = calculate_indices(request)
     new_data = np.array([[
         request.theme_id, request.category_id, indices[2],
@@ -200,6 +200,33 @@ async def predict_lstm_timeseries(request: FullFormRequest):
         for step in range(1, 5):
             current_input = np.concatenate([new_data_scaled.flatten()[:5], pred.flatten()]).reshape((1, 10, 1))
             pred = synth_lstm_model.predict(current_input)
+            predictions.append(normalizer.inverse_transform_Y(pred).flatten())
+
+        return {
+            'predictions': np.array(predictions).tolist()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/predict/lstm/timeseries")
+async def predict_lstm_timeseries(request: FullFormRequest):
+    indices = calculate_indices(request)
+    new_data = np.array([[
+        request.theme_id, request.category_id, indices[2],
+        request.start_m, request.investments_m, request.crowdfunding_m,
+        indices[0], indices[1], indices[3], indices[4]
+    ]])
+    try:
+        new_data_scaled = normalizer.scaler_X.transform(new_data)
+        new_data_lstm = new_data_scaled.reshape((new_data_scaled.shape[0], new_data_scaled.shape[1], 1))
+
+        predictions = []
+        pred = lstm_model.predict(new_data_lstm)
+        predictions.append(normalizer.inverse_transform_Y(pred).flatten())
+
+        for step in range(1, 5):
+            current_input = np.concatenate([new_data_scaled.flatten()[:5], pred.flatten()]).reshape((1, 10, 1))
+            pred = lstm_model.predict(current_input)
             predictions.append(normalizer.inverse_transform_Y(pred).flatten())
 
         return {
