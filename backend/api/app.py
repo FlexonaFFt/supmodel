@@ -235,6 +235,21 @@ async def predict_lstm_timeseries(request: FullFormRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@app.post("/predict/synthlstm/prediction")
+async def predict_synthlstm(request: PredictionRequest):
+    new_data = np.array([request.data])
+    try:
+        new_data_scaled = normalizer.scaler_X.transform(new_data)
+        new_data_lstm = new_data_scaled.reshape((new_data_scaled.shape[0], new_data_scaled.shape[1], 1))
+        lstm_prediction = synth_lstm_model.predict(new_data_lstm)
+        lstm_prediction_inverse = normalizer.inverse_transform_Y(lstm_prediction)
+
+        return {
+            'prediction': lstm_prediction_inverse.tolist()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 @app.post("/predict/lstm/prediction")
 async def predict_lstm(request: PredictionRequest):
     new_data = np.array([request.data])
