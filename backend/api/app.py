@@ -203,12 +203,14 @@ async def predict_all_full_form(request: FullFormRequest):
         ]])
 
         # LSTMPrediction
+        print("LSTMPrediction")
         new_data_scaled = normalizer.scaler_X.transform(new_data)
         new_data_lstm = new_data_scaled.reshape((new_data_scaled.shape[0], new_data_scaled.shape[1], 1))
         prediction = lstm_model.predict(new_data_lstm)
         prediction_inverse = normalizer.inverse_transform_Y(prediction)
 
         # LSTMTimePrediction
+        print("LSTMTimePrediction")
         new_data_scaled_two = normalizer.scaler_X.transform(new_data)
         new_data_lstm_two = new_data_scaled_two.reshape((new_data_scaled_two.shape[0], new_data_scaled_two.shape[1], 1))
 
@@ -222,12 +224,14 @@ async def predict_all_full_form(request: FullFormRequest):
             predictions_two.append(normalizer.inverse_transform_Y(pred).flatten())
 
         # SyntheticPrediction
+        print("SyntheticPrediction")
         new_data_scaled_three = normalizer.scaler_X.transform(new_data)
         new_data_lstm_three = new_data_scaled_three.reshape((new_data_scaled_three.shape[0], new_data_scaled_three.shape[1], 1))
         lstm_prediction_three = synth_lstm_model.predict(new_data_lstm_three)
         lstm_prediction_inverse_three = normalizer.inverse_transform_Y(lstm_prediction_three)
 
         # SyntheticTimePrediction
+        print("SyntheticTimePrediction")
         new_data_scaled_four = normalizer.scaler_X.transform(new_data)
         new_data_lstm_four = new_data_scaled_four.reshape((new_data_scaled_four.shape[0], new_data_scaled_four.shape[1], 1))
 
