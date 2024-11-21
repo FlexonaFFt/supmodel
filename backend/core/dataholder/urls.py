@@ -1,5 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from . import views
 from .views import (
     UserInputDataViewSet,
     ProjectsViewSet,
@@ -19,4 +20,6 @@ router.register(r'synthetic-time-predictions', SyntheticTimePredictionsViewSet, 
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('api/', include(router.urls)),
+    path('project/<int:project_number>/', views.project_detail, name='project_detail'),
 ]

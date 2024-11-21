@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets
 from .models import (
     UserInputData,
@@ -40,3 +40,7 @@ class SyntheticPredictionsViewSet(viewsets.ModelViewSet):
 class SyntheticTimePredictionsViewSet(viewsets.ModelViewSet):
     queryset = SyntheticTimePrediction.objects.all() # type: ignore
     serializer_class = SyntheticTimePredictionSerializer
+
+def project_detail(request, project_number):
+    project = get_object_or_404(Project, project_number=project_number)
+    return render(request, 'project.html', {'project': project})
