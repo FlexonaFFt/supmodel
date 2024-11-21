@@ -38,6 +38,9 @@ class Project(models.Model):
     )
     is_public = models.BooleanField(default=True) # type: ignore
 
+    def __str__(self): # type: ignore
+        return self.project_name
+
 
 class LSTMPrediction(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
