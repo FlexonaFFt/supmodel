@@ -117,29 +117,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/predict/test_all_full_form")
-async def test_predict_all_full_form(request: FullFormRequest):
+@app.post("/predict/all_full_form")
+async def predict_all_full_form(request: FullFormRequest):
     try:
         indices = calculate_indices(request)
         user_input_data = {
-            "startup_name": request.startup_name,
-            "team_name": request.team_name,
-            "theme_id": request.theme_id,
-            "category_id": request.category_id,
-            "description": request.description,
-            "start_m": request.start_m,
-            "investments_m": request.investments_m,
-            "crowdfunding_m": request.crowdfunding_m,
-            "team_mapping": request.team_mapping,
-            "team_size": request.team_size,
-            "team_index": request.team_index,
-            "tech_level": request.tech_level,
-            "tech_investment": request.tech_investment,
-            "competition_level": request.competition_level,
-            "competitor_count": request.competitor_count,
-            "social_impact": request.social_impact,
-            "demand_level": request.demand_level,
-            "audience_reach": request.audience_reach,
+            "startup_name": request.startup_name, "team_name": request.team_name, "theme_id": request.theme_id,
+            "category_id": request.category_id, "description": request.description, "start_m": request.start_m,
+            "investments_m": request.investments_m, "crowdfunding_m": request.crowdfunding_m, "team_mapping": request.team_mapping,
+            "team_size": request.team_size, "team_index": request.team_index, "tech_level": request.tech_level,
+            "tech_investment": request.tech_investment, "competition_level": request.competition_level,
+            "competitor_count": request.competitor_count, "social_impact": request.social_impact,
+            "demand_level": request.demand_level, "audience_reach": request.audience_reach,
             "market_size": request.market_size,
         }
 
@@ -161,6 +150,7 @@ async def test_predict_all_full_form(request: FullFormRequest):
                 "project_name": request.startup_name,
                 "description": request.description,
                 "user_input": user_input_id,
+                "project_number": request.project_number if hasattr(request, "project_number") else random.randint(600000, 699999), # type: ignore
                 "is_public": True
             })
             if project_response.status_code != 201:
@@ -276,151 +266,6 @@ async def test_predict_all_full_form(request: FullFormRequest):
 
     except httpx.HTTPStatusError as http_err:
         print("HTTP error occurred:", http_err)
-        raise HTTPException(status_code=http_err.response.status_code, detail=str(http_err))
-
-    except Exception as e:
-        print("Error encountered:", str(e))
-        raise HTTPException(status_code=400, detail=str(e))
-
-@app.post("/predict/all_full_form")
-async def predict_all_full_form(request: FullFormRequest):
-    try:
-        indices = calculate_indices(request)
-        user_input_data = {
-            "startup_name": request.startup_name, "team_name": request.team_name, "theme_id": request.theme_id,
-            "category_id": request.category_id, "description": request.description, "start_m": request.start_m,
-            "investments_m": request.investments_m, "crowdfunding_m": request.crowdfunding_m, "team_mapping": request.team_mapping,
-            "team_size": request.team_size, "team_index": request.team_index, "tech_level": request.tech_level,
-            "tech_investment": request.tech_investment, "competition_level": request.competition_level,
-            "competitor_count": request.competitor_count, "social_impact": request.social_impact,
-            "demand_level": request.demand_level, "audience_reach": request.audience_reach,
-            "market_size": request.market_size,
-        }
-
-        async with httpx.AsyncClient(proxies=None) as client:
-            response = await client.post(USER_INPUT_DATA_URL, json=user_input_data)
-            response.raise_for_status()
-            user_input_id = response.json().get("id")
-
-        new_data = np.array([[
-            request.theme_id, request.category_id, indices[2],
-            request.start_m, request.investments_m, request.crowdfunding_m,
-            indices[0], indices[1], indices[3], indices[4]
-        ]])
-
-        async with httpx.AsyncClient(proxies=None) as client:
-            project_response = await client.post(PROJECTS_URL, json={
-                "project_name": request.startup_name,
-                "description": request.description,
-                "user_input": user_input_id,
-                "is_public": True
-            })
-            project_response.raise_for_status()
-            project_id = project_response.json()["id"]
-
-        # LSTMPrediction
-        print("LSTMPrediction")
-        new_data_scaled = normalizer.scaler_X.transform(new_data)
-        new_data_lstm = new_data_scaled.reshape((new_data_scaled.shape[0], new_data_scaled.shape[1], 1))
-        prediction = lstm_model.predict(new_data_lstm)
-        prediction_inverse = normalizer.inverse_transform_Y(prediction)
-
-        lstm_prediction_data = {
-            "project": project_id,
-            "predicted_social_idx": prediction_inverse[0][0],
-            "predicted_investments_m": prediction_inverse[0][1],
-            "predicted_crowdfunding_m": prediction_inverse[0][2],
-            "predicted_demand_idx": prediction_inverse[0][3],
-            "predicted_comp_idx": prediction_inverse[0][4]
-            }
-
-        async with httpx.AsyncClient(proxies=None) as client:
-            lstm_prediction_response = await client.post(LSTM_PREDICTIONS_URL, json=lstm_prediction_data)
-            lstm_prediction_response.raise_for_status()
-
-        # LSTMTimePrediction
-        print("LSTMTimePrediction")
-        new_data_scaled_two = normalizer.scaler_X.transform(new_data)
-        new_data_lstm_two = new_data_scaled_two.reshape((new_data_scaled_two.shape[0], new_data_scaled_two.shape[1], 1))
-
-        predictions_two = []
-        pred = synth_lstm_model.predict(new_data_lstm_two)
-        predictions_two.append(normalizer.inverse_transform_Y(pred).flatten())
-
-        for step in range(1, 5):
-            current_input = np.concatenate([new_data_scaled_two.flatten()[:5], pred.flatten()]).reshape((1, 10, 1))
-            pred = synth_lstm_model.predict(current_input)
-            predictions_two.append(normalizer.inverse_transform_Y(pred).flatten())
-
-        for pred in predictions_two:
-            lstm_time_prediction_data = {
-                "project": project_id,
-                "predicted_social_idx": pred[0],
-                "predicted_investments_m": pred[1],
-                "predicted_crowdfunding_m": pred[2],
-                "predicted_demand_idx": pred[3],
-                "predicted_comp_idx": pred[4]
-            }
-            async with httpx.AsyncClient(proxies=None) as client:
-                lstm_time_prediction_response = await client.post(LSTM_TIME_PREDICTIONS_URL, json=lstm_time_prediction_data)
-                lstm_time_prediction_response.raise_for_status()
-
-        # SyntheticPrediction
-        print("SyntheticPrediction")
-        new_data_scaled_three = normalizer.scaler_X.transform(new_data)
-        new_data_lstm_three = new_data_scaled_three.reshape((new_data_scaled_three.shape[0], new_data_scaled_three.shape[1], 1))
-        lstm_prediction_three = synth_lstm_model.predict(new_data_lstm_three)
-        lstm_prediction_inverse_three = normalizer.inverse_transform_Y(lstm_prediction_three)
-
-        synthetic_prediction_data = {
-            "project": project_id,
-            "predicted_social_idx": lstm_prediction_inverse_three[0][0],
-            "predicted_investments_m": lstm_prediction_inverse_three[0][1],
-            "predicted_crowdfunding_m": lstm_prediction_inverse_three[0][2],
-            "predicted_demand_idx": lstm_prediction_inverse_three[0][3],
-            "predicted_comp_idx": lstm_prediction_inverse_three[0][4]
-        }
-        async with httpx.AsyncClient(proxies=None) as client:
-            synthetic_prediction_response = await client.post(SYNTHETIC_PREDICTIONS_URL, json=synthetic_prediction_data)
-            synthetic_prediction_response.raise_for_status()
-
-        # SyntheticTimePrediction
-        print("SyntheticTimePrediction")
-        new_data_scaled_four = normalizer.scaler_X.transform(new_data)
-        new_data_lstm_four = new_data_scaled_four.reshape((new_data_scaled_four.shape[0], new_data_scaled_four.shape[1], 1))
-
-        predictions_four = []
-        pred_four = synth_lstm_model.predict(new_data_lstm_four)
-        predictions_four.append(normalizer.inverse_transform_Y(pred_four).flatten())
-
-        for step in range(1, 5):
-            current_input_four = np.concatenate([new_data_scaled_four.flatten()[:5], pred_four.flatten()]).reshape((1, 10, 1))
-            pred_four = synth_lstm_model.predict(current_input_four)
-            predictions_four.append(normalizer.inverse_transform_Y(pred_four).flatten())
-
-        for pred in predictions_four:
-            synthetic_time_prediction_data = {
-                "project": project_id,
-                "predicted_social_idx": pred[0],
-                "predicted_investments_m": pred[1],
-                "predicted_crowdfunding_m": pred[2],
-                "predicted_demand_idx": pred[3],
-                "predicted_comp_idx": pred[4]
-            }
-            async with httpx.AsyncClient(proxies=None) as client:
-                synthetic_time_prediction_response = await client.post(SYNTHETIC_TIME_PREDICTIONS_URL, json=synthetic_time_prediction_data)
-                synthetic_time_prediction_response.raise_for_status()
-
-        return {
-            "data": new_data.tolist(),
-            "LSTMPrediction": prediction_inverse.tolist(),
-            "LSTMTimePrediction": np.array(predictions_two).tolist(),
-            "SyntheticPredictions": lstm_prediction_inverse_three.tolist(),
-            "SyntheticTimePrediction": np.array(predictions_four).tolist(),
-        }
-
-    except httpx.HTTPStatusError as http_err:
-        print(f"HTTP error occurred: {http_err}")
         raise HTTPException(status_code=http_err.response.status_code, detail=str(http_err))
 
     except Exception as e:
