@@ -23,7 +23,10 @@ API_BASE_URL = "http://localhost:8000/"
 DJANGO_API_BASE_URL = "http://localhost:8000/api"
 USER_INPUT_DATA_URL = f"{DJANGO_API_BASE_URL}/user-input-data/"
 PROJECTS_URL = f"{DJANGO_API_BASE_URL}/projects/"
-MODEL_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/model-predictions/"
+LSTM_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/lstm-predictions/"
+LSTM_TIME_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/lstm-time-predictions/"
+SYNTHETIC_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/synthetic-predictions/"
+SYNTHETIC_TIME_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/synthetic-time-predictions/"
 
 data_loader, normalizer, processor = DataLoader(DATA_FILE, FEATURES, TARGETS), Normalizer(), DataProcessor()
 x_train, y_train = data_loader.get_features_and_targets()
@@ -114,73 +117,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/predict/full_form")
-async def predict_full_form(request: FullFormRequest):
-    try:
-        indices = calculate_indices(request)
-        user_input_data = {
-            "startup_name": request.startup_name, "team_name": request.team_name, "theme_id": request.theme_id,
-            "category_id": request.category_id, "description": request.description, "start_m": request.start_m,
-            "investments_m": request.investments_m, "crowdfunding_m": request.crowdfunding_m, "team_mapping": request.team_mapping,
-            "team_size": request.team_size, "team_index": indices[0], "tech_level": request.tech_level,
-            "tech_investment": request.tech_investment, "competition_level": request.competition_level,
-            "competitor_count": request.competitor_count, "social_impact": request.social_impact,
-            "demand_level": request.demand_level, "audience_reach": request.audience_reach,
-            "market_size": request.market_size,
-        }
-
-        async with httpx.AsyncClient(proxies=None) as client:
-            response = await client.post(USER_INPUT_DATA_URL, json=user_input_data)
-            response.raise_for_status()
-            user_input_id = response.json().get("id")
-
-        project_data = {
-            "project_name": request.startup_name, "description": request.description, "user_input_data": user_input_id,
-            "project_number": request.project_number if hasattr(request, "project_number") else random.randint(600000, 699999), # type: ignore
-            "is_public": request.is_public if hasattr(request, "is_public") else True, # type: ignore
-        }
-
-        async with httpx.AsyncClient(proxies=None) as client:
-            response = await client.post(PROJECTS_URL, json=project_data)
-            response.raise_for_status()
-            project_id = response.json().get("id")
-
-        new_data = np.array([[
-            request.theme_id, request.category_id, indices[2],
-            request.start_m, request.investments_m, request.crowdfunding_m,
-            indices[0], indices[1], indices[3], indices[4]
-        ]])
-
-        new_data_scaled = normalizer.scaler_X.transform(new_data)
-        new_data_lstm = new_data_scaled.reshape((new_data_scaled.shape[0], new_data_scaled.shape[1], 1))
-        prediction = lstm_model.predict(new_data_lstm)
-        prediction_inverse = normalizer.inverse_transform_Y(prediction)
-
-        prediction_data = {
-            "project_id": project_id,
-            "model_name": "LSTM",
-            "predicted_social_idx": round(float(prediction_inverse[0][0]), 2),
-            "predicted_investments_m": round(float(prediction_inverse[0][1]), 2),
-            "predicted_crowdfunding_m": round(float(prediction_inverse[0][2]), 2),
-            "predicted_demand_idx": round(float(prediction_inverse[0][3]), 2),
-            "predicted_comp_idx": round(float(prediction_inverse[0][4]), 2)
-        }
-
-        prediction_data["project"] = prediction_data.pop("project_id")
-        async with httpx.AsyncClient(proxies=None) as client:
-            response = await client.post(MODEL_PREDICTIONS_URL, json=prediction_data)
-            response.raise_for_status()
-
-        return {
-            "prediction": prediction_inverse.tolist(),
-            "data": new_data.tolist(),
-            "calculated_indices": indices
-        }
-
-    except Exception as e:
-        print("Error encountered:", str(e))
-        raise HTTPException(status_code=400, detail=str(e))
-
 @app.post("/predict/all_full_form")
 async def predict_all_full_form(request: FullFormRequest):
     try:
@@ -189,7 +125,7 @@ async def predict_all_full_form(request: FullFormRequest):
             "startup_name": request.startup_name, "team_name": request.team_name, "theme_id": request.theme_id,
             "category_id": request.category_id, "description": request.description, "start_m": request.start_m,
             "investments_m": request.investments_m, "crowdfunding_m": request.crowdfunding_m, "team_mapping": request.team_mapping,
-            "team_size": request.team_size, "team_index": indices[0], "tech_level": request.tech_level,
+            "team_size": request.team_size, "team_index": request.team_index, "tech_level": request.tech_level,
             "tech_investment": request.tech_investment, "competition_level": request.competition_level,
             "competitor_count": request.competitor_count, "social_impact": request.social_impact,
             "demand_level": request.demand_level, "audience_reach": request.audience_reach,
@@ -232,8 +168,9 @@ async def predict_all_full_form(request: FullFormRequest):
             "predicted_demand_idx": prediction_inverse[0][3],
             "predicted_comp_idx": prediction_inverse[0][4]
             }
+
         async with httpx.AsyncClient(proxies=None) as client:
-            lstm_prediction_response = await client.post(MODEL_PREDICTIONS_URL, json=lstm_prediction_data)
+            lstm_prediction_response = await client.post(LSTM_PREDICTIONS_URL, json=lstm_prediction_data)
             lstm_prediction_response.raise_for_status()
 
         # LSTMTimePrediction
@@ -260,7 +197,7 @@ async def predict_all_full_form(request: FullFormRequest):
                 "predicted_comp_idx": pred[4]
             }
             async with httpx.AsyncClient(proxies=None) as client:
-                lstm_time_prediction_response = await client.post(MODEL_PREDICTIONS_URL, json=lstm_time_prediction_data)
+                lstm_time_prediction_response = await client.post(LSTM_TIME_PREDICTIONS_URL, json=lstm_time_prediction_data)
                 lstm_time_prediction_response.raise_for_status()
 
         # SyntheticPrediction
@@ -279,7 +216,7 @@ async def predict_all_full_form(request: FullFormRequest):
             "predicted_comp_idx": lstm_prediction_inverse_three[0][4]
         }
         async with httpx.AsyncClient(proxies=None) as client:
-            synthetic_prediction_response = await client.post(MODEL_PREDICTIONS_URL, json=synthetic_prediction_data)
+            synthetic_prediction_response = await client.post(SYNTHETIC_PREDICTIONS_URL, json=synthetic_prediction_data)
             synthetic_prediction_response.raise_for_status()
 
         # SyntheticTimePrediction
@@ -306,7 +243,7 @@ async def predict_all_full_form(request: FullFormRequest):
                 "predicted_comp_idx": pred[4]
             }
             async with httpx.AsyncClient(proxies=None) as client:
-                synthetic_time_prediction_response = await client.post(MODEL_PREDICTIONS_URL, json=synthetic_time_prediction_data)
+                synthetic_time_prediction_response = await client.post(SYNTHETIC_TIME_PREDICTIONS_URL, json=synthetic_time_prediction_data)
                 synthetic_time_prediction_response.raise_for_status()
 
         return {
