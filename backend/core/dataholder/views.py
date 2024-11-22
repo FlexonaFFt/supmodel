@@ -48,6 +48,9 @@ class SyntheticTimePredictionsViewSet(viewsets.ModelViewSet):
 
 def project_detail(request, project_number):
     project = get_object_or_404(Project, project_number=project_number)
+    context = {
+        'project': project,
+    }
     return render(request, 'project.html', {'project': project})
 
 @api_view(['GET'])
