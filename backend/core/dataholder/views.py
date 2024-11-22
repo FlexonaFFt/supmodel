@@ -1,4 +1,7 @@
 from django.shortcuts import render, get_object_or_404
+from rest_framework.decorators import api_view
+from rest_framework.views import Response
+from rest_framework import status
 from rest_framework import viewsets
 from django.http import JsonResponse
 from .models import (
@@ -15,7 +18,8 @@ from .serializers import (
     LSTMPredictionSerializer,
     LSTMTimePredictionSerializer,
     SyntheticPredictionSerializer,
-    SyntheticTimePredictionSerializer
+    SyntheticTimePredictionSerializer,
+    FullProjectSerializer
 )
 
 class UserInputDataViewSet(viewsets.ModelViewSet):
@@ -46,16 +50,12 @@ def project_detail(request, project_number):
     project = get_object_or_404(Project, project_number=project_number)
     return render(request, 'project.html', {'project': project})
 
+@api_view(['GET'])
 def get_project_data(request, project_number):
-    project = get_object_or_404(Project, project_number=project_number)
-    predictions = LSTMPrediction.objects.filter(project=project) # type: ignore
+    try:
+        project = Project.objects.get(project_number=project_number) # type: ignore
+    except Project.DoesNotExist: # type: ignore
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-    # Пример данных для графиков
-    investments_data = [pred.predicted_investments_m for pred in predictions]
-    crowdfunding_data = [pred.predicted_crowdfunding_m for pred in predictions]
-
-    data = {
-        'investments_data': investments_data,
-        'crowdfunding_data': crowdfunding_data,
-    }
-    return JsonResponse(data)
+    serializer = FullProjectSerializer(project)
+    return Response(serializer.data)

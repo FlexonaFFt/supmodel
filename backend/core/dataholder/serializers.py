@@ -37,3 +37,14 @@ class SyntheticTimePredictionSerializer(serializers.ModelSerializer):
     class Meta:
         model = SyntheticTimePrediction
         fields = '__all__'
+
+class FullProjectSerializer(serializers.ModelSerializer):
+    user_input = UserInputDataSerializer()
+    lstm_predictions = LSTMPredictionSerializer(many=True)
+    lstm_time_predictions = LSTMTimePredictionSerializer(many=True)
+    synthetic_predictions = SyntheticPredictionSerializer(many=True)
+    synthetic_time_predictions = SyntheticTimePredictionSerializer(many=True)
+
+    class Meta:
+        model = Project
+        fields = '__all__'

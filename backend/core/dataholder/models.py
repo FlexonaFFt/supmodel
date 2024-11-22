@@ -22,7 +22,6 @@ class UserInputData(models.Model):
     audience_reach = models.IntegerField()
     market_size = models.IntegerField()
 
-
 class Project(models.Model):
     project_name = models.TextField()
     description = models.TextField()
@@ -34,36 +33,32 @@ class Project(models.Model):
             MinValueValidator(600000),
             MaxValueValidator(699999)
         ]
-
     )
     is_public = models.BooleanField(default=True) # type: ignore
 
     def __str__(self): # type: ignore
         return self.project_name
 
-
 class LSTMPrediction(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='lstm_predictions')
     predicted_social_idx = models.FloatField()
     predicted_investments_m = models.FloatField()
     predicted_crowdfunding_m = models.FloatField()
     predicted_demand_idx = models.FloatField()
     predicted_comp_idx = models.FloatField()
     prediction_date = models.DateTimeField(auto_now_add=True)
-
 
 class LSTMTimePrediction(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='lstm_time_predictions')
     predicted_social_idx = models.FloatField()
     predicted_investments_m = models.FloatField()
     predicted_crowdfunding_m = models.FloatField()
     predicted_demand_idx = models.FloatField()
     predicted_comp_idx = models.FloatField()
     prediction_date = models.DateTimeField(auto_now_add=True)
-
 
 class SyntheticPrediction(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='synthetic_predictions')
     predicted_social_idx = models.FloatField()
     predicted_investments_m = models.FloatField()
     predicted_crowdfunding_m = models.FloatField()
@@ -71,9 +66,8 @@ class SyntheticPrediction(models.Model):
     predicted_comp_idx = models.FloatField()
     prediction_date = models.DateTimeField(auto_now_add=True)
 
-
 class SyntheticTimePrediction(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='synthetic_time_predictions')
     predicted_social_idx = models.FloatField()
     predicted_investments_m = models.FloatField()
     predicted_crowdfunding_m = models.FloatField()
