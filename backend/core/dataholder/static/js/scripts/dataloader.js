@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  fetch("http://127.0.0.1:8000/api/project-data/637206/")
+  fetch("http://127.0.0.1:8000/api/project-data/664910/")
     .then((response) => response.json())
     .then((data) => {
       // Массивы для сопоставления ID с названиями

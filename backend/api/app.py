@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Union
-from pydantic import BaseModel
+from pydantic import BaseModel, Json
 from model import ModelManager, Normalizer, DataLoader, Predictor, DataProcessor # type: ignore
 import tensorflow.keras.losses as losses # type: ignore
 import numpy as np
@@ -23,6 +23,7 @@ API_BASE_URL = "http://localhost:8000/"
 DJANGO_API_BASE_URL = "http://localhost:8000/api"
 USER_INPUT_DATA_URL = f"{DJANGO_API_BASE_URL}/user-input-data/"
 PROJECTS_URL = f"{DJANGO_API_BASE_URL}/projects/"
+INDECES_URL = f"{DJANGO_API_BASE_URL}/indeces/"
 LSTM_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/lstm-predictions/"
 LSTM_TIME_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/lstm-time-predictions/"
 SYNTHETIC_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/synthetic-predictions/"
@@ -157,6 +158,18 @@ async def predict_all_full_form(request: FullFormRequest):
                 raise HTTPException(status_code=project_response.status_code, detail=project_response.text)
             project_id = project_response.json()["id"]
 
+        async with httpx.AsyncClient(proxies=None) as client:
+            indeces_response = await client.post(INDECES_URL, json={
+                "project": project_id,
+                "competition_idx": indices[0],
+                "team_idx": indices[1],
+                "tech_idx": indices[2],
+                "social_idx": indices[3],
+                "demand_idx": indices[4],
+            })
+            if indeces_response.status_code != 201:
+                raise HTTPException(status_code=indeces_response.status_code, detail=indeces_response.text)
+
         # LSTMPrediction
         print("LSTMPrediction")
         new_data_scaled = normalizer.scaler_X.transform(new_data)
@@ -258,6 +271,7 @@ async def predict_all_full_form(request: FullFormRequest):
 
         return {
             "data": new_data.tolist(),
+            "indeces": np.array(indices).tolist(),
             "LSTMPrediction": prediction_inverse.tolist(),
             "LSTMTimePrediction": np.array(predictions_two).tolist(),
             "SyntheticPredictions": lstm_prediction_inverse_three.tolist(),
