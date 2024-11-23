@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import fields, serializers
 from .models import (
     UserInputData,
     Project,
@@ -6,6 +6,7 @@ from .models import (
     LSTMTimePrediction,
     SyntheticPrediction,
     SyntheticTimePrediction,
+    Indeces,
 )
 
 class UserInputDataSerializer(serializers.ModelSerializer):
@@ -38,8 +39,14 @@ class SyntheticTimePredictionSerializer(serializers.ModelSerializer):
         model = SyntheticTimePrediction
         fields = '__all__'
 
+class IndecesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Indeces
+        fields = '__all__'
+
 class FullProjectSerializer(serializers.ModelSerializer):
     user_input = UserInputDataSerializer()
+    indeces = IndecesSerializer(many=True)
     lstm_predictions = LSTMPredictionSerializer(many=True)
     lstm_time_predictions = LSTMTimePredictionSerializer(many=True)
     synthetic_predictions = SyntheticPredictionSerializer(many=True)
