@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-  fetch("http://127.0.0.1:8000/api/project-data/664910/")
+  const projectNumber = document
+    .getElementById("myChart")
+    .getAttribute("data-project-number");
+
+  fetch(`/api/project-data/${projectNumber}/`)
     .then((response) => response.json())
     .then((data) => {
       // Массивы для сопоставления ID с названиями
