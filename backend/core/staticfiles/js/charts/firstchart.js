@@ -3,12 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("myChart")
     .getAttribute("data-project-number");
 
-  fetch(`/api/project-data/${projectNumber}/`)
+  fetch("http://127.0.0.1:8000/api/project-data/631074/")
     .then((response) => response.json())
     .then((data) => {
-      // Получаем первый элемент массива indeces
-      const index = data.indeces[0];
-
+      const idxs = data.indeces;
       const ctx = document.getElementById("myChart").getContext("2d");
       const myChart = new Chart(ctx, {
         type: "bar",
@@ -18,11 +16,11 @@ document.addEventListener("DOMContentLoaded", function () {
             {
               label: "Основные характеристики",
               data: [
-                index.demand_idx,
-                index.competition_idx,
-                index.team_idx,
-                index.tech_idx,
-                index.social_idx,
+                idxs.demand_idx,
+                idxs.competition_idx,
+                idxs.team_idx,
+                idxs.tech_idx,
+                idxs.social_idx,
               ],
               backgroundColor: "rgba(12, 110, 253, 0.2)",
               borderColor: "rgba(12, 110, 253, 1)",
@@ -36,6 +34,9 @@ document.addEventListener("DOMContentLoaded", function () {
             easing: "easeOutBounce",
           },
           scales: {
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1,
             y: {
               beginAtZero: true,
               ticks: {
@@ -43,8 +44,6 @@ document.addEventListener("DOMContentLoaded", function () {
               },
             },
           },
-          responsive: true,
-          maintainAspectRatio: false,
         },
       });
     })
