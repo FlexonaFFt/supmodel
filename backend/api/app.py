@@ -231,9 +231,9 @@ async def predict_all_full_form(request: FullFormRequest):
             "project": project_id,
             "predicted_social_idx": float(lstm_prediction_inverse_three[0][0]),
             "predicted_investments_m": float(lstm_prediction_inverse_three[0][1]),
-            "predicted_crowdfunding_m": float(lstm_prediction_inverse_three[0][1]),
+            "predicted_crowdfunding_m": float(lstm_prediction_inverse_three[0][2]),
             "predicted_demand_idx": float(lstm_prediction_inverse_three[0][3]),
-            "predicted_comp_idx": float(lstm_prediction_inverse_three[0][0])
+            "predicted_comp_idx": float(lstm_prediction_inverse_three[0][4])
         }
 
         async with httpx.AsyncClient(proxies=None) as client:

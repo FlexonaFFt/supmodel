@@ -249,8 +249,8 @@
             <div class="row align-items-md-stretch synth-predictions">
                 <div class="col-md-6 mb-4">
                   <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                    <div class="donut-container">
-                        <canvas id="donutChart" data-project-number="{{ project.project_number }}"></canvas>
+                    <div class="second-donut-container">
+                        <canvas id="second-donutChart" data-project-number="{{ project.project_number }}"></canvas>
                     </div>
                   </div>
                 </div>
@@ -435,5 +435,6 @@
         <script src="{% static 'js/charts/radarchart.js' %}?v=00001"></script>
         <script src="{% static 'js/charts/linechart.js' %}?v=00001"></script>
         <script src="{% static 'js/charts/modalchart1.js' %}?v=00001"></script>
+        <script src="{% static 'js/charts/donutchart2.js' %}"></script>
     </body>
 </html>
