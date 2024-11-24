@@ -9,11 +9,11 @@ fetch(`/api/project-data/${projectNumber}/`)
     const userInput = data.user_input;
     const predictions = data.lstm_time_predictions;
 
-    const predictedInvestments = predictions.map(
-      (pred) => pred.predicted_investments_m,
+    const predictedInvestments = predictions.map((pred) =>
+      Math.round(pred.predicted_investments_m),
     );
-    const predictedCrowdfunding = predictions.map(
-      (pred) => pred.predicted_crowdfunding_m,
+    const predictedCrowdfunding = predictions.map((pred) =>
+      Math.round(pred.predicted_crowdfunding_m),
     );
 
     const myChart = new Chart(ctx, {
@@ -23,14 +23,20 @@ fetch(`/api/project-data/${projectNumber}/`)
         datasets: [
           {
             label: "Инвестиции",
-            data: [userInput.investments_m, ...predictedInvestments],
+            data: [
+              Math.round(userInput.investments_m),
+              ...predictedInvestments,
+            ],
             backgroundColor: "rgba(255, 99, 132, 0.6)",
             borderColor: "rgba(255, 99, 132, 1)",
             borderWidth: 1,
           },
           {
             label: "Краудфандинг",
-            data: [userInput.crowdfunding_m, ...predictedCrowdfunding],
+            data: [
+              Math.round(userInput.crowdfunding_m),
+              ...predictedCrowdfunding,
+            ],
             backgroundColor: "rgba(54, 162, 235, 0.6)",
             borderColor: "rgba(54, 162, 235, 1)",
             borderWidth: 1,
