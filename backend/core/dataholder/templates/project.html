@@ -115,13 +115,13 @@
                             <span class="d-block small opacity-50">Предсказания, основанные на временных рядах</span>
                         </label>
 
-                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios4" value="" disabled>
-                        <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios4">
+                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios3" value="synth">
+                        <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios3">
                             Синтетические предсказания
                             <span class="d-block small opacity-50">Пока эта опция в разработке</span>
                         </label>
 
-                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios3" value="" disabled>
+                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios4" value="" disabled>
                         <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios3">
                             Синтетические предсказания на временных рядах
                             <span class="d-block small opacity-50">Предсказания, основанные на синтетическом датасете</span>
@@ -246,6 +246,86 @@
                 </div>
             </div>
 
+            <div class="row align-items-md-stretch synth-predictions">
+                <div class="col-md-6 mb-4">
+                  <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                    <div class="donut-container">
+                        <canvas id="donutChart" data-project-number="{{ project.project_number }}"></canvas>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="h-100 p-5 border rounded-3">
+                        <h2 class="mb-5">Основные предсказания</h2>
+                        <p style="text-align: justify;">Модели, обученные на несинтетических данных, обеспечат наиболее точные прогнозы.</p>
+                        <p style="text-align: justify;">Ниже можно ознакомиться с результатами предсказанных характеристик. Для каждого показателя написан микровывод и возможный сценарий его дальнейшего развития. Дополнительно представлен график для демонстрации изменения характеристик с течением времени.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-md-stretch synth-predictions">
+                <div class="col-md-6 mb-4 h-100">
+                    <div class="d-flex flex-column flex-md-row align-items-center justify-content-center">
+                      <div class="list-group w-100 h-100" id="dynamic-texts">
+                        <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                          <div class="d-flex gap-2 w-100 justify-content-between">
+                            <div>
+                              <h6 class="mb-0">Уровень возможного спроса</h6>
+                              <p class="mb-0 opacity-75" data-index="0">Тут будет оценка.</p>
+                            </div>
+                            <small class="opacity-50 text-nowrap">чё?</small>
+                          </div>
+                        </a>
+                        <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                          <div class="d-flex gap-2 w-100 justify-content-between">
+                            <div>
+                              <h6 class="mb-0">Характеристика конкурентоспособности</h6>
+                              <p class="mb-0 opacity-75" data-index="1">Тут будет оценка.</p>
+                            </div>
+                            <small class="opacity-50 text-nowrap">чё?</small>
+                          </div>
+                        </a>
+                        <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                          <div class="d-flex gap-2 w-100 justify-content-between">
+                            <div>
+                              <h6 class="mb-0">Характеристика команды</h6>
+                              <p class="mb-0 opacity-75" data-index="2">Тут будет оценка.</p>
+                            </div>
+                            <small class="opacity-50 text-nowrap">чё?</small>
+                          </div>
+                        </a>
+                        <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                          <div class="d-flex gap-2 w-100 justify-content-between">
+                            <div>
+                              <h6 class="mb-0">Технологические инвестиции</h6>
+                              <p class="mb-0 opacity-75" data-index="3">Тут будет оценка.</p>
+                            </div>
+                            <small class="opacity-50 text-nowrap">чё?</small>
+                          </div>
+                        </a>
+                        <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                          <div class="d-flex gap-2 w-100 justify-content-between">
+                            <div>
+                              <h6 class="mb-0">Реакция общества</h6>
+                              <p class="mb-0 opacity-75" data-index="4">Тут будет оценка.</p>
+                            </div>
+                            <small class="opacity-50 text-nowrap">чё?</small>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="h-100 p-2 bg-body-tertiary border rounded-3">
+                        <div class="radar-containert">
+                            <canvas id="radarChart" style="max-height: 450px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="p-5 mb-4 bg-body-tertiary rounded-3">
                 <div class="container-fluid py-5">
                     <h1 class="display-5 fw-bold">Что означают метрики?</h1>
@@ -347,7 +427,7 @@
         <script src="{% static 'js/scripts/conclusion.js' %}"></script>
         <script src="{% static 'js/scripts/dataloader.js' %}"></script>
         <script src="{% static 'js/scripts/reasons.js' %}?v=00001" defer></script>
-        <script src="{% static 'js/scripts/selector.js' %}" defer></script>
+        <script src="{% static 'js/scripts/selector.js' %}?v=00001" defer></script>
         <script src="{% static 'js/scripts/theme-toggle.js' %}"></script>
         <script src="{% static 'js/charts/firstchart.js' %}"></script>
         <script src="{% static 'js/charts/donutchart.js' %}"></script>

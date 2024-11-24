@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const timeSeriesBlocks = document.querySelectorAll(
     ".time-series-predictions",
   );
-  const syntheticBlocks = document.querySelectorAll(".synthetic-prediction");
+  const syntheticBlocks = document.querySelectorAll(".synth-predictions");
   const radioButtons = document.querySelectorAll(
     'input[name="listGroupCheckableRadios"]',
   );
