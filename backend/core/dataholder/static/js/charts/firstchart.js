@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const projectNumber = "631074";
+  const projectNumber = document
+    .getElementById("myChart")
+    .getAttribute("data-project-number");
 
   fetch(`/api/project-data/${projectNumber}/`)
     .then((response) => response.json())

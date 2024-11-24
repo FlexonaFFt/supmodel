@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const projectNumber = document
-    .getElementById("donutChart")
+    .getElementById("myChart")
     .getAttribute("data-project-number");
-  window.projectNumber = projectNumber;
   const ctx = document.getElementById("donutChart").getContext("2d");
 
   fetch(`/api/project-data/${projectNumber}/`)
