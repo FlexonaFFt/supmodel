@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const projectNumber = document
-    .getElementById("dynamic-conclusion")
+    .getElementById("myChart")
     .getAttribute("data-project-number");
 
   fetch(`/api/project-data/${projectNumber}/`)
