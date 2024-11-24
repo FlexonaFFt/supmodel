@@ -1,53 +1,70 @@
 const ctx = document.getElementById("horizontalChart").getContext("2d");
+const projectNumber = document
+  .getElementById("myChart")
+  .getAttribute("data-project-number");
 
-const myChart = new Chart(ctx, {
-  type: "bar",
-  data: {
-    labels: ["Start", "H1", "H2", "H3", "H4", "H5"],
-    datasets: [
-      {
-        label: "Инвестиции",
-        data: [12340, 9900, 8650, 15120, 10200, 6000],
-        backgroundColor: "rgba(255, 99, 132, 0.6)",
-        borderColor: "rgba(255, 99, 132, 1)",
-        borderWidth: 1,
+fetch(`/api/project-data/${projectNumber}/`)
+  .then((response) => response.json())
+  .then((data) => {
+    const userInput = data.user_input;
+    const predictions = data.lstm_time_predictions;
+
+    const predictedInvestments = predictions.map(
+      (pred) => pred.predicted_investments_m,
+    );
+    const predictedCrowdfunding = predictions.map(
+      (pred) => pred.predicted_crowdfunding_m,
+    );
+
+    const myChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["Start", ...predictions.map((_, index) => `H${index + 1}`)],
+        datasets: [
+          {
+            label: "Инвестиции",
+            data: [userInput.investments_m, ...predictedInvestments],
+            backgroundColor: "rgba(255, 99, 132, 0.6)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            borderWidth: 1,
+          },
+          {
+            label: "Краудфандинг",
+            data: [userInput.crowdfunding_m, ...predictedCrowdfunding],
+            backgroundColor: "rgba(54, 162, 235, 0.6)",
+            borderColor: "rgba(54, 162, 235, 1)",
+            borderWidth: 1,
+          },
+        ],
       },
-      {
-        label: "Краудфандинг",
-        data: [9200, 14345, 11100, 18920, 12350, 8060],
-        backgroundColor: "rgba(54, 162, 235, 0.6)",
-        borderColor: "rgba(54, 162, 235, 1)",
-        borderWidth: 1,
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-    indexAxis: "y",
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        beginAtZero: true,
-        title: {
-          display: false,
-          text: "Значения",
+      options: {
+        responsive: true,
+        indexAxis: "y",
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            beginAtZero: true,
+            title: {
+              display: false,
+              text: "Значения",
+            },
+          },
+          y: {
+            title: {
+              display: false,
+              text: "Месяцы",
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            display: false,
+            position: "top",
+          },
         },
       },
-      y: {
-        title: {
-          display: false,
-          text: "Месяцы",
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-        position: "top",
-      },
-    },
-  },
-});
+    });
+  });
 
 /*
 // Получите элемент canvas
