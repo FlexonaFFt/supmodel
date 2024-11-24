@@ -6,13 +6,13 @@ document.addEventListener("DOMContentLoaded", function () {
   fetch(`/api/project-data/${projectNumber}/`)
     .then((response) => response.json())
     .then((data) => {
-      const indeces = data.indeces;
+      const index = data.indeces[0];
       const values = [
-        indeces.demand_idx,
-        indeces.competition_idx,
-        indeces.team_idx,
-        indeces.tech_idx,
-        indeces.social_idx,
+        index.demand_idx,
+        index.competition_idx,
+        index.team_idx,
+        index.tech_idx,
+        index.social_idx,
       ];
 
       const options = [
