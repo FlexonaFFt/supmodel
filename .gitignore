@@ -2,3 +2,5 @@ promts.md
 generated.py
 unpgenerated.py
 .cache
+.mypy_cache
+.ropeproject
