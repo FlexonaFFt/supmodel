@@ -1,4 +1,4 @@
-const options = {
+const analysisOptions = {
   0: [
     {
       range: [1, 2],
@@ -97,7 +97,7 @@ const options = {
 };
 
 function getTextAndLevelForValue(index, value) {
-  const option = options[index].find(
+  const option = analysisOptions[index].find(
     ({ range }) => value >= range[0] && value <= range[1],
   );
   return option
