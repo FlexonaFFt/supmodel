@@ -11,6 +11,7 @@ from .models import (
     LSTMTimePrediction,
     SyntheticPrediction,
     SyntheticTimePrediction,
+    Indeces,
 )
 from .serializers import (
     UserInputDataSerializer,
@@ -19,12 +20,17 @@ from .serializers import (
     LSTMTimePredictionSerializer,
     SyntheticPredictionSerializer,
     SyntheticTimePredictionSerializer,
-    FullProjectSerializer
+    FullProjectSerializer,
+    IndecesSerializer,
 )
 
 class UserInputDataViewSet(viewsets.ModelViewSet):
     queryset = UserInputData.objects.all() # type: ignore
     serializer_class = UserInputDataSerializer
+
+class IndecesViewSet(viewsets.ModelViewSet):
+    queryset = Indeces.objects.all() # type: ignore
+    serializer_class = IndecesSerializer
 
 class ProjectsViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all() # type: ignore

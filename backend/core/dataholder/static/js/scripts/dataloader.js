@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-  fetch("http://127.0.0.1:8000/api/project-data/637206/")
+  const projectNumber = document
+    .getElementById("myChart")
+    .getAttribute("data-project-number");
+
+  fetch(`/api/project-data/${projectNumber}/`)
     .then((response) => response.json())
     .then((data) => {
       // Массивы для сопоставления ID с названиями
@@ -30,10 +34,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const project_number = data.project_number;
       const themeName = themes[data.user_input.theme_id];
       const categoryName = categories[data.user_input.category_id];
+      const teamName = data.user_input.team_name;
 
       document.getElementById("project-title").textContent = projectName;
       document.getElementById("main-project-title").textContent = projectName;
       document.getElementById("main-description").textContent = description;
+      document.getElementById("main-mini-team-text").textContent = teamName;
       document.getElementById("project-number").textContent =
         `project #${project_number}`;
       document.getElementById("span-container-1").textContent = themeName;

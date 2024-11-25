@@ -82,6 +82,7 @@
               <div class="row py-lg-5">
                 <div class="col-lg-6 col-md-8 mx-auto">
                   <h1 id="main-project-title" class="fw-light">Loading...</h1>
+                  <p id="main-mini-team-text" class="text-sm text-body-secondary">Loading...</p>
                   <p id="main-description" class="lead text-body-secondary">Loading...</p>
                   <p>
                     <span id="span-container-1" class="badge text-bg-primary rounded-pill">Технологии</span>
@@ -94,7 +95,7 @@
             <div class="p-5 mb-4 bg-body-tertiary rounded-3">
               <div class="container-fluid py-3" id="dynamic-conclusion">
                 <h1 class="display-5 fw-bold">Краткая характеристика</h1>
-                <p class="col-md-8 fs-4" data-index="0" data-project-number="{{ project.project_number }}">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. Check out the examples below for how you can remix and restyle it to your liking.</p>
+                <p class="col-md-8 fs-4" data-index="0">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. Check out the examples below for how you can remix and restyle it to your liking.</p>
               </div>
             </div>
 
@@ -114,14 +115,14 @@
                             <span class="d-block small opacity-50">Предсказания, основанные на временных рядах</span>
                         </label>
 
-                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios4" value="" disabled>
-                        <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios4">
+                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios3" value="synth">
+                        <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios3">
                             Синтетические предсказания
-                            <span class="d-block small opacity-50">Пока эта опция в разработке</span>
+                            <span class="d-block small opacity-50">Предсказания, основанные на синтетическом датасете</span>
                         </label>
 
-                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios3" value="" disabled>
-                        <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios3">
+                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios4" value="synth-time-series">
+                        <label class="list-group-item rounded-3 py-3" for="listGroupCheckableRadios4">
                             Синтетические предсказания на временных рядах
                             <span class="d-block small opacity-50">Предсказания, основанные на синтетическом датасете</span>
                         </label>
@@ -221,8 +222,8 @@
             <div class="row align-items-md-stretch time-series-predictions">
                 <div class="col-md-6 mb-4">
                     <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                        <div class="donut-container">
-                            <canvas id="horizontalChart" width="400" height="325"></canvas>
+                        <div class="donut-container ">
+                            <canvas id="horizontalChart" style="width: 100%; min-height: 370px; max-height: 450px;"></canvas>
                         </div>
                     </div>
                 </div>
@@ -245,11 +246,118 @@
                 </div>
             </div>
 
+            <div class="row align-items-md-stretch synth-predictions">
+                <div class="col-md-6 mb-4">
+                  <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                    <div class="second-donut-container">
+                        <canvas id="second-donutChart" data-project-number="{{ project.project_number }}"></canvas>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="h-100 p-5 border rounded-3">
+                        <h3 class="mb-3">Синтетические предсказания</h3>
+                        <p style="text-align: justify;">Модели, обученные на синтетических данных, могут помочь расширить возможное впечатление о будущем стартапа. Синтектические датасеты собраны с большим количеством характеристик.</p>
+                        <p style="text-align: justify;">Ниже можно ознакомиться с результатами предсказанных характеристик. Для каждого показателя написан микровывод и возможный сценарий его дальнейшего развития. Дополнительно представлен график для демонстрации изменения характеристик с течением времени.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-md-stretch synth-predictions">
+                <div class="col-md-6 mb-4 h-100">
+                    <div class="d-flex flex-column flex-md-row align-items-center justify-content-center">
+                      <div class="list-group w-100 h-100" id="synth-texts">
+                        <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                          <div class="d-flex gap-2 w-100 justify-content-between">
+                            <div>
+                              <h6 class="mb-0">Уровень возможного спроса</h6>
+                              <p class="mb-0 opacity-75" data-index="0">Тут будет оценка.</p>
+                            </div>
+                            <small class="opacity-50 text-nowrap">чё?</small>
+                          </div>
+                        </a>
+                        <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                          <div class="d-flex gap-2 w-100 justify-content-between">
+                            <div>
+                              <h6 class="mb-0">Характеристика конкурентоспособности</h6>
+                              <p class="mb-0 opacity-75" data-index="1">Тут будет оценка.</p>
+                            </div>
+                            <small class="opacity-50 text-nowrap">чё?</small>
+                          </div>
+                        </a>
+                        <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                          <div class="d-flex gap-2 w-100 justify-content-between">
+                            <div>
+                              <h6 class="mb-0">Характеристика команды</h6>
+                              <p class="mb-0 opacity-75" data-index="2">Тут будет оценка.</p>
+                            </div>
+                            <small class="opacity-50 text-nowrap">чё?</small>
+                          </div>
+                        </a>
+                        <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                          <div class="d-flex gap-2 w-100 justify-content-between">
+                            <div>
+                              <h6 class="mb-0">Технологические инвестиции</h6>
+                              <p class="mb-0 opacity-75" data-index="3">Тут будет оценка.</p>
+                            </div>
+                            <small class="opacity-50 text-nowrap">чё?</small>
+                          </div>
+                        </a>
+                        <a class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                          <div class="d-flex gap-2 w-100 justify-content-between">
+                            <div>
+                              <h6 class="mb-0">Реакция общества</h6>
+                              <p class="mb-0 opacity-75" data-index="4">Тут будет оценка.</p>
+                            </div>
+                            <small class="opacity-50 text-nowrap">чё?</small>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="h-100 p-2 bg-body-tertiary border rounded-3">
+                        <div class="radar-containert">
+                            <canvas id="synth-radarChart" style="max-height: 450px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-md-stretch synth-time-series-predictions">
+                <div class="col-md-6 mb-4">
+                    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                        <div class="donut-container">
+                            <canvas id="horizontalChart2" style="width: 100%; min-height: 370px; max-height: 450px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="h-100 p-5 border rounded-3">
+                        <h2 class="mb-4">Динамика характеристик</h2>
+                        <p style="text-align: justify;">Вы можете изучить прогнозируемую динамику ряда показателей, основанную на временных рядах.</p>
+                        <p style="text-align: justify;">В модальном окне доступны графики изменений этих показателей со временем, включая такие характеристики, как социальный индекс (social_idx), индекс спроса (demand_idx) и индекс конкурентоспособности (comp_idx).</p>
+                        <button class="col-md-6 mt-4 btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#myModal" type="button">Посмотреть</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-5 mb-4 bg-body-tertiary rounded-3 synth-time-series-predictions">
+                <div class="container-fluid py-2">
+                    <div class="line-container" style="min-height: 400px; width: 100%;">
+                        <canvas id="lineChart2"></canvas>
+                    </div>
+                </div>
+            </div>
+
             <div class="p-5 mb-4 bg-body-tertiary rounded-3">
                 <div class="container-fluid py-5">
                     <h1 class="display-5 fw-bold">Что означают метрики?</h1>
                     <p class="col-md-8 fs-4">Представленные модели обучены на специальных метриках, индексах. Вы можете ознакомиться с ними с ними, перейдя по ссылке ниже.</p>
-                    <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#readmeModal" type="button">Посмотреть метрики</button>
+                    <button class="btn btn-primary btn-lg" data-bs-toggle="modal2" data-bs-target="#readmeModal" type="button">Посмотреть метрики</button>
                 </div>
             </div>
 
@@ -258,7 +366,7 @@
             </footer>
         </div>
 
-        <!-- Модальное окно с грфиком -->
+        <!-- Модальное окно с грaфиком -->
         <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -267,12 +375,32 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
               </div>
               <div class="modal-body">
-                  <div class="chart-container" style="min-height: 400px; width: 100%;">
+                  <div class="chart-container" style="min-height: 400px; width: 100%; height: 100%;">
                       <canvas id="modalChart1"></canvas>
                   </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Второе модальное окно с грaфиком -->
+        <div class="modal fade" id="myModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Динамика характеристик</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal2" aria-label="Закрыть"></button>
+              </div>
+              <div class="modal-body">
+                  <div class="chart-container" style="min-height: 400px; width: 100%; height: 100%;">
+                      <canvas id="modalChart2"></canvas>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal2">Закрыть</button>
               </div>
             </div>
           </div>
@@ -345,14 +473,20 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="{% static 'js/scripts/conclusion.js' %}"></script>
         <script src="{% static 'js/scripts/dataloader.js' %}"></script>
-        <script src="{% static 'js/scripts/reasons.js' %}" defer></script>
-        <script src="{% static 'js/scripts/selector.js' %}" defer></script>
+        <script src="{% static 'js/scripts/reasons.js' %}?v=00003"></script>
+        <script src="{% static 'js/scripts/selector.js' %}?v=00001"></script>
         <script src="{% static 'js/scripts/theme-toggle.js' %}"></script>
         <script src="{% static 'js/charts/firstchart.js' %}"></script>
         <script src="{% static 'js/charts/donutchart.js' %}"></script>
-        <script src="{% static 'js/charts/horizontal.js' %}"></script>
-        <script src="{% static 'js/charts/radarchart.js' %}"></script>
-        <script src="{% static 'js/charts/linechart.js' %}"></script>
-        <script src="{% static 'js/charts/modalchart1.js' %}"></script>
+        <script src="{% static 'js/charts/horizontal.js' %}?v=00001"></script>
+        <script src="{% static 'js/charts/radarchart.js' %}?v=00001"></script>
+        <script src="{% static 'js/charts/linechart.js' %}?v=00001"></script>
+        <script src="{% static 'js/charts/linechart2.js' %}"></script>
+        <script src="{% static 'js/charts/modalchart1.js' %}?v=00001"></script>
+        <script src="{% static 'js/charts/modalchart2.js' %}"></script>
+        <script src="{% static 'js/charts/donutchart2.js' %}?v=00001"></script>
+        <script src="{% static 'js/scripts/reasons2.js' %}?v=00003"></script>
+        <script src="{% static 'js/charts/radarchart2.js' %}"></script>
+        <script src="{% static 'js/charts/horizontal2.js' %}"></script>
     </body>
 </html>

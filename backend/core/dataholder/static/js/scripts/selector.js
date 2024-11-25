@@ -3,7 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const timeSeriesBlocks = document.querySelectorAll(
     ".time-series-predictions",
   );
-  const syntheticBlocks = document.querySelectorAll(".synthetic-prediction");
+  const syntheticBlocks = document.querySelectorAll(".synth-predictions");
+  const syntheticTimeSeriesBlocks = document.querySelectorAll(
+    ".synth-time-series-predictions",
+  );
   const radioButtons = document.querySelectorAll(
     'input[name="listGroupCheckableRadios"]',
   );
@@ -13,6 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
     baseBlocks.forEach((block) => (block.style.display = "none"));
     timeSeriesBlocks.forEach((block) => (block.style.display = "none"));
     syntheticBlocks.forEach((block) => (block.style.display = "none"));
+    syntheticTimeSeriesBlocks.forEach(
+      (block) => (block.style.display = "none"),
+    );
   }
 
   radioButtons.forEach((radio) => {
@@ -26,6 +32,10 @@ document.addEventListener("DOMContentLoaded", function () {
         timeSeriesBlocks.forEach((block) => (block.style.display = ""));
       } else if (this.id === "listGroupCheckableRadios3") {
         syntheticBlocks.forEach((block) => (block.style.display = ""));
+      } else if (this.id === "listGroupCheckableRadios4") {
+        syntheticTimeSeriesBlocks.forEach(
+          (block) => (block.style.display = ""),
+        );
       }
     });
   });

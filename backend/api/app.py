@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Union
-from pydantic import BaseModel
+from pydantic import BaseModel, Json
 from model import ModelManager, Normalizer, DataLoader, Predictor, DataProcessor # type: ignore
 import tensorflow.keras.losses as losses # type: ignore
 import numpy as np
@@ -23,6 +23,7 @@ API_BASE_URL = "http://localhost:8000/"
 DJANGO_API_BASE_URL = "http://localhost:8000/api"
 USER_INPUT_DATA_URL = f"{DJANGO_API_BASE_URL}/user-input-data/"
 PROJECTS_URL = f"{DJANGO_API_BASE_URL}/projects/"
+INDECES_URL = f"{DJANGO_API_BASE_URL}/indeces/"
 LSTM_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/lstm-predictions/"
 LSTM_TIME_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/lstm-time-predictions/"
 SYNTHETIC_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/synthetic-predictions/"
@@ -70,21 +71,21 @@ def calculate_team_idx(team_desc: str, experience_years: int, team_size: int) ->
     team_mapping = {"новички": 2, "средний опыт": 5, "эксперты": 8}
     base_score = team_mapping.get(team_desc, 0)
     raw_score = (0.6 * experience_years + 0.4 * team_size) + base_score
-    return max(1.0, min(9.99, round(raw_score / 3, 1)))
+    return max(1.0, min(9.9, round(raw_score / 3, 1)))
 
 def calculate_tech_idx(tech_level: str, tech_investment: int) -> float:
     tech_level = tech_level.lower()
     tech_mapping = {"низкий": 2, "средний": 5, "высокий": 8}
     base_score = tech_mapping.get(tech_level, 0)
     raw_score = (0.7 * (tech_investment / 10) + 0.3 * base_score)
-    return max(1.0, min(9.99, round(raw_score, 1)))
+    return max(1.0, min(9.9, round(raw_score, 1)))
 
 def calculate_comp_idx(comp_level: str, competitors: int) -> float:
     comp_level = comp_level.lower()
     comp_mapping = {"низкая конкуренция": 8, "средняя конкуренция": 5, "высокая конкуренция": 2}
     base_score = comp_mapping.get(comp_level, 0)
     raw_score = base_score - min(competitors / 10, base_score - 1)
-    return max(1.0, min(9.99, round(raw_score, 1)))
+    return max(1.0, min(9.9, round(raw_score, 1)))
 
 def calculate_social_idx(social_impact: str) -> float:
     social_impact = social_impact.lower()
@@ -98,7 +99,7 @@ def calculate_demand_idx(demand_level: str, audience_reach: int, market_size: in
     scaled_audience = audience_reach / 10_000_000
     scaled_market = market_size / 100_000_000
     raw_score = base_score + scaled_audience + scaled_market
-    return max(1.0, min(9.99, round(raw_score, 1)))
+    return max(1.0, min(9.9, round(raw_score, 1)))
 
 def calculate_indices(form_data):
     team_idx = calculate_team_idx(form_data.team_mapping, form_data.team_index, form_data.team_size)
@@ -156,6 +157,18 @@ async def predict_all_full_form(request: FullFormRequest):
             if project_response.status_code != 201:
                 raise HTTPException(status_code=project_response.status_code, detail=project_response.text)
             project_id = project_response.json()["id"]
+
+        async with httpx.AsyncClient(proxies=None) as client:
+            indeces_response = await client.post(INDECES_URL, json={
+                "project": project_id,
+                "competition_idx": indices[0],
+                "team_idx": indices[1],
+                "tech_idx": indices[2],
+                "social_idx": indices[3],
+                "demand_idx": indices[4],
+            })
+            if indeces_response.status_code != 201:
+                raise HTTPException(status_code=indeces_response.status_code, detail=indeces_response.text)
 
         # LSTMPrediction
         print("LSTMPrediction")
@@ -218,9 +231,9 @@ async def predict_all_full_form(request: FullFormRequest):
             "project": project_id,
             "predicted_social_idx": float(lstm_prediction_inverse_three[0][0]),
             "predicted_investments_m": float(lstm_prediction_inverse_three[0][1]),
-            "predicted_crowdfunding_m": float(lstm_prediction_inverse_three[0][1]),
+            "predicted_crowdfunding_m": float(lstm_prediction_inverse_three[0][2]),
             "predicted_demand_idx": float(lstm_prediction_inverse_three[0][3]),
-            "predicted_comp_idx": float(lstm_prediction_inverse_three[0][0])
+            "predicted_comp_idx": float(lstm_prediction_inverse_three[0][4])
         }
 
         async with httpx.AsyncClient(proxies=None) as client:
@@ -258,6 +271,7 @@ async def predict_all_full_form(request: FullFormRequest):
 
         return {
             "data": new_data.tolist(),
+            "indeces": np.array(indices).tolist(),
             "LSTMPrediction": prediction_inverse.tolist(),
             "LSTMTimePrediction": np.array(predictions_two).tolist(),
             "SyntheticPredictions": lstm_prediction_inverse_three.tolist(),

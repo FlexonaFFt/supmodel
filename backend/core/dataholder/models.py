@@ -74,3 +74,11 @@ class SyntheticTimePrediction(models.Model):
     predicted_demand_idx = models.FloatField()
     predicted_comp_idx = models.FloatField()
     prediction_date = models.DateTimeField(auto_now_add=True)
+
+class Indeces(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='indeces')
+    demand_idx = models.FloatField()
+    competition_idx = models.FloatField()
+    team_idx = models.FloatField()
+    tech_idx = models.FloatField()
+    social_idx = models.FloatField()

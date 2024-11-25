@@ -8,10 +8,12 @@ from .views import (
     LSTMTimePredictionsViewSet,
     SyntheticPredictionsViewSet,
     SyntheticTimePredictionsViewSet,
+    IndecesViewSet
 )
 
 router = DefaultRouter()
 router.register(r'user-input-data', UserInputDataViewSet, basename='user-input-data')
+router.register(r'indeces', IndecesViewSet, basename='indeces')
 router.register(r'projects', ProjectsViewSet, basename='projects')
 router.register(r'lstm-predictions', LSTMPredictionsViewSet, basename='lstm-predictions')
 router.register(r'lstm-time-predictions', LSTMTimePredictionsViewSet, basename='lstm-time-predictions')

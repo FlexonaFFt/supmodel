@@ -1,5 +1,3 @@
-const values = [8, 6, 6, 7.5, 6];
-
 const options = {
   0: [
     {
@@ -107,15 +105,37 @@ function getTextAndLevelForValue(index, value) {
     : { text: "Текст не найден.", level: "unknown" };
 }
 
-document.querySelectorAll("#dynamic-texts a").forEach((item, index) => {
-  const value = values[index];
-  const { text, level } = getTextAndLevelForValue(index, value);
+document.addEventListener("DOMContentLoaded", function () {
+  const projectNumber = document
+    .getElementById("myChart")
+    .getAttribute("data-project-number");
 
-  // Обновляем текст в <p>
-  const p = item.querySelector("p");
-  if (p) p.textContent = text;
+  fetch(`/api/project-data/${projectNumber}/`)
+    .then((response) => response.json())
+    .then((data) => {
+      // Получаем первый элемент массива indeces
+      const index = data.indeces[0];
 
-  // Обновляем уровень в <small>
-  const small = item.querySelector("small");
-  if (small) small.textContent = level;
+      const values = [
+        index.demand_idx,
+        index.competition_idx,
+        index.team_idx,
+        index.tech_idx,
+        index.social_idx,
+      ];
+
+      document.querySelectorAll("#dynamic-texts a").forEach((item, index) => {
+        const value = values[index];
+        const { text, level } = getTextAndLevelForValue(index, value);
+
+        // Обновляем текст в <p>
+        const p = item.querySelector("p");
+        if (p) p.textContent = text;
+
+        // Обновляем уровень в <small>
+        const small = item.querySelector("small");
+        if (small) small.textContent = level;
+      });
+    })
+    .catch((error) => console.error("Error fetching data:", error));
 });
