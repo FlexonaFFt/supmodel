@@ -357,7 +357,7 @@
                 <div class="container-fluid py-5">
                     <h1 class="display-5 fw-bold">Что означают метрики?</h1>
                     <p class="col-md-8 fs-4">Представленные модели обучены на специальных метриках, индексах. Вы можете ознакомиться с ними с ними, перейдя по ссылке ниже.</p>
-                    <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#readmeModal" type="button">Посмотреть метрики</button>
+                    <button class="btn btn-primary btn-lg" data-bs-toggle="modal2" data-bs-target="#readmeModal" type="button">Посмотреть метрики</button>
                 </div>
             </div>
 
@@ -381,6 +381,26 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Второе модальное окно с грaфиком -->
+        <div class="modal fade" id="myModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Динамика характеристик</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal2" aria-label="Закрыть"></button>
+              </div>
+              <div class="modal-body">
+                  <div class="chart-container" style="min-height: 400px; width: 100%; height: 100%;">
+                      <canvas id="modalChart2"></canvas>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal2">Закрыть</button>
               </div>
             </div>
           </div>
@@ -462,6 +482,7 @@
         <script src="{% static 'js/charts/radarchart.js' %}?v=00001"></script>
         <script src="{% static 'js/charts/linechart.js' %}?v=00001"></script>
         <script src="{% static 'js/charts/modalchart1.js' %}?v=00001"></script>
+        <script src="{% static 'js/charts/modalchart2.js' %}"></script>
         <script src="{% static 'js/charts/donutchart2.js' %}?v=00001"></script>
         <script src="{% static 'js/scripts/reasons2.js' %}?v=00003"></script>
         <script src="{% static 'js/charts/radarchart2.js' %}"></script>
