@@ -38,10 +38,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 Math.round(prediction.predicted_crowdfunding_m),
               ],
               backgroundColor: [
-                "rgba(12, 110, 253, 0.2)",
-                "rgba(12, 110, 253, 0.4)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(75, 192, 192, 0.4)",
               ],
-              borderColor: ["rgba(12, 110, 253, 1)", "rgba(12, 110, 253, 1)"],
+              borderColor: ["rgba(75, 192, 192, 1)", "rgba(75, 192, 192, 1)"],
               borderWidth: 1,
             },
           ],
