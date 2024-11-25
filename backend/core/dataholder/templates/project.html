@@ -413,6 +413,22 @@
           </div>
         </div>
 
+        <script>
+            function loadScript(src, callback) {
+                const script = document.createElement('script');
+                script.src = src;
+                script.async = false;
+                script.onload = callback;
+                document.head.appendChild(script);
+              }
+
+              loadScript('{% static "js/scripts/reasons.js" %}?v=00002', function() {
+                loadScript('{% static "js/scripts/reasons2.js" %}?v=00003', function() {
+                  console.log('Both scripts are loaded and executed.');
+                });
+              });
+        </script>
+
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
             integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -426,7 +442,7 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="{% static 'js/scripts/conclusion.js' %}"></script>
         <script src="{% static 'js/scripts/dataloader.js' %}"></script>
-        <script src="{% static 'js/scripts/reasons.js' %}?v=00002"></script>
+        <!--<script src="{% static 'js/scripts/reasons.js' %}?v=00002" defer></script>-->
         <script src="{% static 'js/scripts/selector.js' %}?v=00001"></script>
         <script src="{% static 'js/scripts/theme-toggle.js' %}"></script>
         <script src="{% static 'js/charts/firstchart.js' %}"></script>
@@ -436,6 +452,6 @@
         <script src="{% static 'js/charts/linechart.js' %}?v=00001"></script>
         <script src="{% static 'js/charts/modalchart1.js' %}?v=00001"></script>
         <script src="{% static 'js/charts/donutchart2.js' %}"></script>
-        <script src="{% static 'js/scripts/reasons2.js' %}?v=00001"></script>
+        <!--<script src="{% static 'js/scripts/reasons2.js' %}?v=00002" defer></script>-->
     </body>
 </html>

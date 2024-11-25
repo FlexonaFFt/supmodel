@@ -107,7 +107,7 @@ function getTextAndLevelForValue(index, value) {
 
 document.addEventListener("DOMContentLoaded", function () {
   const projectNumber = document
-    .getElementById("myChart")
+    .getElementById("second-donutChart")
     .getAttribute("data-project-number");
 
   fetch(`/api/project-data/${projectNumber}/`)
