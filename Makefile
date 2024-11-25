@@ -3,3 +3,6 @@ start:
 
 runserver:
 	cd backend/api && concurrently -k "python3 app.py"
+
+runapp:
+	cd backend/api && concurrently -k "python3 app.py"
