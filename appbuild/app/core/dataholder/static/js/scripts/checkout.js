@@ -67,6 +67,30 @@
             if (!response.ok) {
               throw new Error(`Ошибка: ${response.statusText}`);
             }
+
+            const responseData = await response.json();
+            const projectId = responseData.project_id;
+
+            // Отправляем запрос на получение номера проекта
+            const projectNumberResponse = await fetch(
+              `http://127.0.0.1:8001/project/${projectId}/`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              },
+            );
+
+            if (!projectNumberResponse.ok) {
+              throw new Error(`Ошибка: ${projectNumberResponse.statusText}`);
+            }
+
+            const projectNumberData = await projectNumberResponse.json();
+            const projectNumber = projectNumberData.project_number;
+
+            // Переадресация на страницу по номеру проекта
+            window.location.href = `/project/${projectNumber}/`;
           } catch (error) {
             console.error("Ошибка при отправке запроса:", error);
           }

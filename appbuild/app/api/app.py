@@ -152,6 +152,7 @@ async def predict_all_full_form(request: FullFormRequest):
                 "project_name": request.startup_name,
                 "description": request.description,
                 "user_input": user_input_id,
+                "project_number": request.project_number if hasattr(request, "project_number") else random.randint(600000, 699999), # type: ignore
                 "is_public": True
             })
             if project_response.status_code != 201:
