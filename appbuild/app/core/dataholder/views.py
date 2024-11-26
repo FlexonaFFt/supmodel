@@ -68,3 +68,6 @@ def get_project_data(request, project_number):
 
     serializer = FullProjectSerializer(project)
     return Response(serializer.data)
+
+def checkout(request):
+    return render(request, 'checkout.html', {'checkout': checkout})

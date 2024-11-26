@@ -23,6 +23,7 @@ router.register(r'synthetic-time-predictions', SyntheticTimePredictionsViewSet, 
 urlpatterns = [
     path('', include(router.urls)),
     path('api/', include(router.urls)),
+    path('checkout', views.checkout, name='checkout'),
     path('project/<int:project_number>/', views.project_detail, name='project_detail'),
     path('api/project-data/<int:project_number>/', views.get_project_data, name='get_project_data'),
 ]
