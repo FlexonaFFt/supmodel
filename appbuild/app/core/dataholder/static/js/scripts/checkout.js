@@ -1,30 +1,23 @@
 (() => {
   "use strict";
-
-  // Получаем все формы, к которым необходимо применить кастомные стили валидации Bootstrap
   const forms = document.querySelectorAll(".needs-validation");
-
-  // Проходим по всем формам и добавляем событие отправки
   Array.from(forms).forEach((form) => {
     form.addEventListener(
       "submit",
       async (event) => {
-        // Если форма не валидна, предотвращаем отправку
         if (!form.checkValidity()) {
           event.preventDefault();
           event.stopPropagation();
         } else {
-          // Если форма валидна, выполняем отправку через API
-          event.preventDefault(); // Отменяем стандартное поведение отправки
+          event.preventDefault();
 
-          // Собираем данные формы
           const formData = {
             startup_name: document.getElementById("StartupName").value.trim(),
             team_name: document.getElementById("TeamName").value.trim(),
-            theme_id: parseInt(document.getElementById("StartupTheme").value), // Преобразуем в число
+            theme_id: parseInt(document.getElementById("StartupTheme").value),
             category_id: parseInt(
               document.getElementById("StartupCathegory").value,
-            ), // Преобразуем в число
+            ),
             description: document.getElementById("Description").value.trim(),
             start_m: parseInt(document.getElementById("Start_m").value),
             investments_m: parseInt(
@@ -61,7 +54,7 @@
           try {
             // Отправляем данные на API
             const response = await fetch(
-              "http://127.0.0.1:8001/predict/full_form",
+              "http://127.0.0.1:8001/predict/all_full_form",
               {
                 method: "POST",
                 headers: {
@@ -76,8 +69,8 @@
             }
 
             const result = await response.json();
-            console.log("Prediction:", result.prediction);
-            console.log("calculate_indices:", result.calculate_indices);
+            console.log("indeces:", result.indeces);
+            console.log("LSTMPrediction:", result.LSTMPrediction);
             alert(
               `Результат предсказания: ${JSON.stringify(result.prediction)}`,
             );
