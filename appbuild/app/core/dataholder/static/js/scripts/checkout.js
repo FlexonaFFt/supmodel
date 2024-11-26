@@ -66,15 +66,7 @@
 
             if (!response.ok) {
               throw new Error(`Ошибка: ${response.statusText}`);
-              if (result.project_url) {
-                window.location.href = result.project_url;
-              } else {
-                console.error("URL проекта не найден в ответе API.");
-                alert("URL проекта не найден в ответе API.");
-              }
             }
-
-            const result = await response.json();
           } catch (error) {
             console.error("Ошибка при отправке запроса:", error);
           }

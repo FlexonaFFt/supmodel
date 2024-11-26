@@ -270,6 +270,7 @@ async def predict_all_full_form(request: FullFormRequest):
                     raise HTTPException(status_code=synthetic_time_prediction_response.status_code, detail=synthetic_time_prediction_response.text)
 
         return {
+            "project_id": project_id,
             "data": new_data.tolist(),
             "indeces": np.array(indices).tolist(),
             "LSTMPrediction": prediction_inverse.tolist(),
