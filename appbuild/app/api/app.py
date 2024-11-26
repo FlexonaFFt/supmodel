@@ -269,17 +269,7 @@ async def predict_all_full_form(request: FullFormRequest):
                 if synthetic_time_prediction_response.status_code != 201:
                     raise HTTPException(status_code=synthetic_time_prediction_response.status_code, detail=synthetic_time_prediction_response.text)
 
-        # Получаем project_number
-        async with httpx.AsyncClient(proxies=None) as client:
-            project_number_response = await client.get(f"{DJANGO_API_BASE_URL}/projects/{project_id}/")
-            if project_number_response.status_code != 200:
-                raise HTTPException(status_code=project_number_response.status_code, detail=project_number_response.text)
-            project_number = project_number_response.json().get("project_number")
-
-        # Возвращаем URL созданного проекта
-        project_url = f"http://127.0.0.1:8001/project/{project_number}/"
         return {
-            "project_url": project_url,
             "data": new_data.tolist(),
             "indeces": np.array(indices).tolist(),
             "LSTMPrediction": prediction_inverse.tolist(),
@@ -295,6 +285,21 @@ async def predict_all_full_form(request: FullFormRequest):
     except Exception as e:
         print("Error encountered:", str(e))
         raise HTTPException(status_code=400, detail=str(e))
+
+@app.get("/project/{project_id}/")
+async def get_project_number(project_id: int):
+    async with httpx.AsyncClient(proxies=None) as client:
+        project_number_response = await client.get(f"{DJANGO_API_BASE_URL}/projects/{project_id}/")
+        if project_number_response.status_code != 200:
+            raise HTTPException(status_code=project_number_response.status_code, detail=project_number_response.text)
+
+        project_data = project_number_response.json()
+        project_number = project_data.get("project_number")
+
+        if project_number is None:
+            raise HTTPException(status_code=404, detail="project_number is None in the response")
+
+        return {"project_number": project_number}
 
 @app.post("/predict/synthlstm/timeseries")
 async def predict_synth_lstm_timeseries(request: FullFormRequest):
