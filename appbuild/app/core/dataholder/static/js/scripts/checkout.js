@@ -66,23 +66,21 @@
 
             if (!response.ok) {
               throw new Error(`Ошибка: ${response.statusText}`);
+              if (result.project_url) {
+                window.location.href = result.project_url;
+              } else {
+                console.error("URL проекта не найден в ответе API.");
+                alert("URL проекта не найден в ответе API.");
+              }
             }
 
             const result = await response.json();
-            console.log("indeces:", result.indeces);
-            console.log("LSTMPrediction:", result.LSTMPrediction);
-            alert(
-              `Результат предсказания: ${JSON.stringify(result.prediction)}`,
-            );
           } catch (error) {
             console.error("Ошибка при отправке запроса:", error);
-            alert(
-              "Не удалось выполнить предсказание. Проверьте консоль для подробностей.",
-            );
           }
         }
 
-        form.classList.add("was-validated"); // Добавляем Bootstrap-стиль валидации
+        form.classList.add("was-validated");
       },
       false,
     );

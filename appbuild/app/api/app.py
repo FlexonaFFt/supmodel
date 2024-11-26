@@ -23,6 +23,7 @@ API_BASE_URL = "http://localhost:8000/"
 DJANGO_API_BASE_URL = "http://localhost:8000/api"
 USER_INPUT_DATA_URL = f"{DJANGO_API_BASE_URL}/user-input-data/"
 PROJECTS_URL = f"{DJANGO_API_BASE_URL}/projects/"
+FULL_PROJECTS_DATA_URL = f"{DJANGO_API_BASE_URL}/project-data/"
 INDECES_URL = f"{DJANGO_API_BASE_URL}/indeces/"
 LSTM_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/lstm-predictions/"
 LSTM_TIME_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/lstm-time-predictions/"
@@ -151,7 +152,6 @@ async def predict_all_full_form(request: FullFormRequest):
                 "project_name": request.startup_name,
                 "description": request.description,
                 "user_input": user_input_id,
-                "project_number": request.project_number if hasattr(request, "project_number") else random.randint(600000, 699999), # type: ignore
                 "is_public": True
             })
             if project_response.status_code != 201:
@@ -269,7 +269,17 @@ async def predict_all_full_form(request: FullFormRequest):
                 if synthetic_time_prediction_response.status_code != 201:
                     raise HTTPException(status_code=synthetic_time_prediction_response.status_code, detail=synthetic_time_prediction_response.text)
 
+        # Получаем project_number
+        async with httpx.AsyncClient(proxies=None) as client:
+            project_number_response = await client.get(f"{DJANGO_API_BASE_URL}/projects/{project_id}/")
+            if project_number_response.status_code != 200:
+                raise HTTPException(status_code=project_number_response.status_code, detail=project_number_response.text)
+            project_number = project_number_response.json().get("project_number")
+
+        # Возвращаем URL созданного проекта
+        project_url = f"http://127.0.0.1:8001/project/{project_number}/"
         return {
+            "project_url": project_url,
             "data": new_data.tolist(),
             "indeces": np.array(indices).tolist(),
             "LSTMPrediction": prediction_inverse.tolist(),
