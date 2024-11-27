@@ -71,3 +71,6 @@ def get_project_data(request, project_number):
 
 def checkout(request):
     return render(request, 'checkout.html', {'checkout': checkout})
+
+def loading(request):
+    return render(request, 'loading.html', {'cloading': loading})
