@@ -73,4 +73,7 @@ def checkout(request):
     return render(request, 'checkout.html', {'checkout': checkout})
 
 def loading(request):
-    return render(request, 'loading.html', {'cloading': loading})
+    return render(request, 'loading.html', {'loading': loading})
+
+def projectlist(request):
+    return render(request, 'projectlist.html', {'projectlist': projectlist})
