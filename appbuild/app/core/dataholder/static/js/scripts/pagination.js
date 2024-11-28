@@ -1,6 +1,29 @@
 document.addEventListener("DOMContentLoaded", function () {
   const itemsPerPage = 9;
   const apiUrl = "http://127.0.0.1:8000/api/projects/";
+  const themes = {
+    1: "Здравоохранение",
+    2: "Образование",
+    3: "Технологии",
+    4: "Окружающая среда",
+    5: "Финансы",
+    6: "Развлечения",
+    7: "Розничная торговля",
+    8: "Транспорт",
+    9: "Путешествия",
+  };
+
+  const categories = {
+    1: "Медицина",
+    2: "EdTech",
+    3: "Искусственный интеллект",
+    4: "Недвижимость",
+    5: "GreenTech",
+    6: "Пищевые технологии",
+    7: "TravelTech",
+    8: "Биотехнологии",
+    9: "EnergyTech",
+  };
 
   async function fetchProjects(page) {
     try {
@@ -52,8 +75,8 @@ document.addEventListener("DOMContentLoaded", function () {
         return {
           ...project,
           team_name: projectData.user_input?.team_name || "N/A",
-          theme: projectData.user_input?.theme_id || "N/A",
-          category: projectData.user_input?.category_id || "N/A",
+          theme: themes[projectData.user_input?.theme_id] || "N/A",
+          category: categories[projectData.user_input?.category_id] || "N/A",
         };
       }),
     );
