@@ -100,7 +100,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     projects.forEach((project) => {
       const projectElement = document.createElement("div");
-      projectElement.className = "col-12 col-md-6 col-lg-4 mb-3";
+      projectElement.setAttribute("data-project-id", project.id);
+      projectElement.className = "col-12 col-md-6 col-lg-4 mb-3 project-card";
       projectElement.innerHTML = `
                 <div class="card border h-100">
                     <div class="card-header">${project.project_name}</div>
@@ -114,6 +115,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     </div>
                 </div>
             `;
+      projectElement.addEventListener("click", () => {
+        window.location.href = `/project/${project.project_number}`;
+      });
       projectList.appendChild(projectElement);
     });
   }
