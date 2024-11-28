@@ -1,171 +1,92 @@
 document.addEventListener("DOMContentLoaded", function () {
   const itemsPerPage = 9;
-  const projects = [
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "swag",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "Lil nas X project",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-    {
-      title: "fuck be ti",
-      author: "Lil nas X",
-      description:
-        "Тут идет описание проекта, его краткое description. Нужно сделать ограничение...",
-      theme: "Тема стартапа",
-      category: "Категория",
-    },
-  ];
+  const apiUrl = "http://127.0.0.1:8000/api/projects/";
 
-  function renderProjects(page) {
+  async function fetchProjects(page) {
+    try {
+      const response = await fetch(
+        `${apiUrl}?page=${page}&limit=${itemsPerPage}`,
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("Fetched projects:", data);
+      return data;
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+      return [];
+    }
+  }
+
+  async function fetchProjectData(projectNumber) {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/project-data/${projectNumber}/`,
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(`Fetched project data for project ${projectNumber}:`, data); // Логирование данных для отладки
+      return data;
+    } catch (error) {
+      console.error(
+        `Error fetching project data for project ${projectNumber}:`,
+        error,
+      );
+      return {};
+    }
+  }
+
+  async function loadProjects(page) {
+    const data = await fetchProjects(page);
+    if (!Array.isArray(data)) {
+      console.error("Projects data is missing or invalid:", data);
+      return;
+    }
+
+    const projectsWithDetails = await Promise.all(
+      data.map(async (project) => {
+        const projectData = await fetchProjectData(project.project_number);
+        return {
+          ...project,
+          team_name: projectData.user_input?.team_name || "N/A",
+          theme: projectData.user_input?.theme_id || "N/A",
+          category: projectData.user_input?.category_id || "N/A",
+        };
+      }),
+    );
+    renderProjects(projectsWithDetails);
+    renderPagination(
+      Math.ceil(projectsWithDetails.length / itemsPerPage),
+      page,
+    );
+  }
+
+  function truncateText(text, maxLength) {
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return text.substring(0, maxLength) + "...";
+  }
+
+  function renderProjects(projects) {
     const projectList = document.getElementById("project-list");
     projectList.innerHTML = "";
-    const start = (page - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const paginatedProjects = projects.slice(start, end);
 
-    paginatedProjects.forEach((project) => {
+    projects.forEach((project) => {
       const projectElement = document.createElement("div");
       projectElement.className = "col-12 col-md-6 col-lg-4 mb-3";
       projectElement.innerHTML = `
                 <div class="card border h-100">
-                    <div class="card-header">${project.title}</div>
+                    <div class="card-header">${project.project_name}</div>
                     <div class="card-body text-secondary">
-                        <h6 class="card-subtitle text-muted mb-2">${project.author}</h6>
-                        <p class="card-text">${project.description}</p>
+                        <h6 class="card-subtitle text-muted mb-2">${project.team_name}</h6>
+                        <p class="card-text">${truncateText(project.description, 90)}</p>
                         <div class="text-muted">
-                            <h6>${project.theme}</h6>
-                            <h6>${project.category}</h6>
+                            <h6>Theme ID: ${project.theme}</h6>
+                            <h6>Category ID: ${project.category}</h6>
                         </div>
                     </div>
                 </div>
@@ -187,15 +108,13 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
         pageItem.querySelector("a").addEventListener("click", () => {
-          renderProjects(i);
-          renderPagination(totalPages, i);
+          loadProjects(i);
         });
       }
       pagination.appendChild(pageItem);
     }
   }
 
-  const totalPages = Math.ceil(projects.length / itemsPerPage);
-  renderProjects(1);
-  renderPagination(totalPages, 1);
+  // Initial load
+  loadProjects(1);
 });
