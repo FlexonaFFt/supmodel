@@ -78,97 +78,17 @@
                 <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
             </form>
             <div class="project-container col-10 col-lg-10 mx-auto">
-                <div class="row">
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
-                        <div class="card border h-100">
-                            <div class="card-header">Lil nas X project</div>
-                            <div class="card-body text-secondary">
-                                <h6 class="card-subtitle text-muted mb-2">Lil nas X</h6>
-                                <p class="card-text">Тут идет описание проекта, его краткое description. Нужно сделать ограничение...</p>
-                                <div class="text-muted">
-                                    <h6>Тема стартапа</h6>
-                                    <h6>Категория</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
-                        <div class="card border h-100">
-                            <div class="card-header">Lil nas X project</div>
-                            <div class="card-body text-secondary">
-                                <h6 class="card-subtitle text-muted mb-2">Lil nas X</h6>
-                                <p class="card-text">Тут идет описание проекта, его краткое description. Нужно сделать ограничение...</p>
-                                <div class="text-muted">
-                                    <h6>Тема стартапа</h6>
-                                    <h6>Категория</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
-                        <div class="card border h-100">
-                            <div class="card-header">Lil nas X project</div>
-                            <div class="card-body text-secondary">
-                                <h6 class="card-subtitle text-muted mb-2">Lil nas X</h6>
-                                <p class="card-text">Тут идет описание проекта, его краткое description. Нужно сделать ограничение...</p>
-                                <div class="text-muted">
-                                    <h6>Тема стартапа</h6>
-                                    <h6>Категория</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
-                        <div class="card border h-100">
-                            <div class="card-header">Lil nas X project</div>
-                            <div class="card-body text-secondary">
-                                <h6 class="card-subtitle text-muted mb-2">Lil nas X</h6>
-                                <p class="card-text">Тут идет описание проекта, его краткое description. Нужно сделать ограничение...</p>
-                                <div class="text-muted">
-                                    <h6>Тема стартапа</h6>
-                                    <h6>Категория</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
-                        <div class="card border h-100">
-                            <div class="card-header">Lil nas X project</div>
-                            <div class="card-body text-secondary">
-                                <h6 class="card-subtitle text-muted mb-2">Lil nas X</h6>
-                                <p class="card-text">Тут идет описание проекта, его краткое description. Нужно сделать ограничение...</p>
-                                <div class="text-muted">
-                                    <h6>Тема стартапа</h6>
-                                    <h6>Категория</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-4 mb-3">
-                        <div class="card border h-100">
-                            <div class="card-header">Lil nas X project</div>
-                            <div class="card-body text-secondary">
-                                <h6 class="card-subtitle text-muted mb-2">Lil nas X</h6>
-                                <p class="card-text">Тут идет описание проекта, его краткое description. Нужно сделать ограничение...</p>
-                                <div class="text-muted">
-                                    <h6>Тема стартапа</h6>
-                                    <h6>Категория</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="row" id="project-list">
+                        <!-- Project items will be injected here -->
                 </div>
             </div>
 
             <nav aria-label="...">
-              <ul class="pagination justify-content-center pt-2">
-                    <li class="page-item active" aria-current="page">
-                        <span class="page-link">1</span>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-              </ul>
+                <ul class="pagination justify-content-center pt-2" id="pagination">
+                        <!-- Pagination links will be injected here -->
+                </ul>
             </nav>
+            </div>
         </div>
 
         <footer class="pt-4 text-body-secondary text-center text-small">
@@ -188,6 +108,7 @@
             integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
             crossorigin="anonymous"
         ></script>
+        <script src="{% static 'js/scripts/pagination.js' %}"></script>
         <script src="{% static 'js/scripts/theme-toggle.js' %}"></script>
     </body>
 </html>
