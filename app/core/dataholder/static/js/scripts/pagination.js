@@ -162,6 +162,13 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelector("form").addEventListener("submit", function (event) {
     event.preventDefault();
     const searchQuery = document.getElementById("searchInput").value;
-    loadProjects(1, searchQuery);
+    if (searchQuery.startsWith("#")) {
+      const projectNumber = searchQuery.substring(1);
+      if (!isNaN(projectNumber)) {
+        window.location.href = `/project/${projectNumber}`;
+      }
+    } else {
+      loadProjects(1, searchQuery);
+    }
   });
 });
