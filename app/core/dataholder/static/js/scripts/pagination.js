@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  async function loadProjects(page) {
+  async function loadProjects(page, searchQuery = "") {
     const data = await fetchProjects(page);
     if (!Array.isArray(data)) {
       console.error("Projects data is missing or invalid:", data);
@@ -80,11 +80,18 @@ document.addEventListener("DOMContentLoaded", function () {
         };
       }),
     );
-    renderProjects(projectsWithDetails);
-    renderPagination(
-      Math.ceil(projectsWithDetails.length / itemsPerPage),
-      page,
+
+    const filteredProjects = projectsWithDetails.filter(
+      (project) =>
+        project.project_name
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        project.team_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        project.description.toLowerCase().includes(searchQuery.toLowerCase()),
     );
+
+    renderProjects(filteredProjects);
+    renderPagination(Math.ceil(filteredProjects.length / itemsPerPage), page);
   }
 
   function truncateText(text, maxLength) {
@@ -135,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
         pageItem.querySelector("a").addEventListener("click", () => {
-          loadProjects(i);
+          loadProjects(i, document.getElementById("searchInput").value);
         });
       }
       pagination.appendChild(pageItem);
@@ -144,4 +151,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initial load
   loadProjects(1);
+
+  // Search input event listener
+  document.getElementById("searchInput").addEventListener("input", function () {
+    const searchQuery = this.value;
+    loadProjects(1, searchQuery);
+  });
+
+  // Form submit event listener
+  document.querySelector("form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const searchQuery = document.getElementById("searchInput").value;
+    loadProjects(1, searchQuery);
+  });
 });
