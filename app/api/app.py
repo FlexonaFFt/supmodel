@@ -111,9 +111,15 @@ def calculate_indices(form_data):
     print([team_idx, tech_idx, comp_idx, social_idx, demand_idx])
     return [team_idx, tech_idx, comp_idx, social_idx, demand_idx]
 
+origins = [
+    "http://localhost",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
