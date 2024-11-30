@@ -3,7 +3,7 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY backend/core /app
+COPY core /app
 RUN pip install -r requirements.txt
 
 EXPOSE 8000
