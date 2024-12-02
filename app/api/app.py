@@ -119,7 +119,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -140,7 +140,7 @@ async def predict_all_full_form(request: FullFormRequest):
             "market_size": request.market_size,
         }
 
-        async with httpx.AsyncClient(proxies=None) as client:
+        async with httpx.AsyncClient() as client:
             response = await client.post(USER_INPUT_DATA_URL, json=user_input_data)
             if response.status_code != 201:
                 raise HTTPException(status_code=response.status_code, detail=response.text)
@@ -153,7 +153,7 @@ async def predict_all_full_form(request: FullFormRequest):
             indices[0], indices[1], indices[2], indices[4]
         ]])
 
-        async with httpx.AsyncClient(proxies=None) as client:
+        async with httpx.AsyncClient() as client:
             project_response = await client.post(PROJECTS_URL, json={
                 "project_name": request.startup_name,
                 "description": request.description,
@@ -165,7 +165,7 @@ async def predict_all_full_form(request: FullFormRequest):
                 raise HTTPException(status_code=project_response.status_code, detail=project_response.text)
             project_id = project_response.json()["id"]
 
-        async with httpx.AsyncClient(proxies=None) as client:
+        async with httpx.AsyncClient() as client:
             indeces_response = await client.post(INDECES_URL, json={
                 "project": project_id,
                 "competition_idx": indices[0],
@@ -193,7 +193,7 @@ async def predict_all_full_form(request: FullFormRequest):
             "predicted_comp_idx": float(prediction_inverse[0][4])
         }
 
-        async with httpx.AsyncClient(proxies=None) as client:
+        async with httpx.AsyncClient() as client:
             lstm_prediction_response = await client.post(LSTM_PREDICTIONS_URL, json=lstm_prediction_data)
             if lstm_prediction_response.status_code != 201:
                 raise HTTPException(status_code=lstm_prediction_response.status_code, detail=lstm_prediction_response.text)
@@ -221,7 +221,7 @@ async def predict_all_full_form(request: FullFormRequest):
                 "predicted_demand_idx": float(pred[3]),
                 "predicted_comp_idx": float(pred[4])
             }
-            async with httpx.AsyncClient(proxies=None) as client:
+            async with httpx.AsyncClient() as client:
                 lstm_time_prediction_response = await client.post(LSTM_TIME_PREDICTIONS_URL, json=lstm_time_prediction_data)
                 if lstm_time_prediction_response.status_code != 201:
                     raise HTTPException(status_code=lstm_time_prediction_response.status_code, detail=lstm_time_prediction_response.text)
@@ -243,7 +243,7 @@ async def predict_all_full_form(request: FullFormRequest):
             "predicted_comp_idx": float(lstm_prediction_inverse_three[0][4])
         }
 
-        async with httpx.AsyncClient(proxies=None) as client:
+        async with httpx.AsyncClient() as client:
             synthetic_prediction_response = await client.post(SYNTHETIC_PREDICTIONS_URL, json=synthetic_prediction_data)
             if synthetic_prediction_response.status_code != 201:
                 raise HTTPException(status_code=synthetic_prediction_response.status_code, detail=synthetic_prediction_response.text)
@@ -271,7 +271,7 @@ async def predict_all_full_form(request: FullFormRequest):
                 "predicted_demand_idx": float(pred[3]),
                 "predicted_comp_idx": float(pred[4])
             }
-            async with httpx.AsyncClient(proxies=None) as client:
+            async with httpx.AsyncClient() as client:
                 synthetic_time_prediction_response = await client.post(SYNTHETIC_TIME_PREDICTIONS_URL, json=synthetic_time_prediction_data)
                 if synthetic_time_prediction_response.status_code != 201:
                     raise HTTPException(status_code=synthetic_time_prediction_response.status_code, detail=synthetic_time_prediction_response.text)
@@ -296,7 +296,7 @@ async def predict_all_full_form(request: FullFormRequest):
 
 @app.get("/project/{project_id}/")
 async def get_project_number(project_id: int):
-    async with httpx.AsyncClient(proxies=None) as client:
+    async with httpx.AsyncClient() as client:
         project_number_response = await client.get(f"{DJANGO_API_BASE_URL}/projects/{project_id}/")
         if project_number_response.status_code != 200:
             raise HTTPException(status_code=project_number_response.status_code, detail=project_number_response.text)
