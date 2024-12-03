@@ -1,5 +1,5 @@
 import numpy as np
-from model import ModelManager, Normalizer, DataLoader, Predictor, DataProcessor # type: ignore
+from .model_utils import ModelManager, Normalizer, DataLoader, Predictor, DataProcessor
 import tensorflow.keras.losses as losses # type: ignore
 
 LSTM_MODEL_PATH = 'models/lstm_model.h5'

@@ -1,19 +1,21 @@
-# myapi/views.py
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from app.api.app import API_BASE_URL, FULL_PROJECTS_DATA_URL, PROJECTS_URL, USER_INPUT_DATA_URL
 from .serializers import FullFormRequestSerializer
 import numpy as np
 import random
 import httpx
-from model import ModelManager, Normalizer, DataLoader, Predictor, DataProcessor # type: ignore
+from .model_utils import ModelManager, Normalizer, DataLoader, Predictor, DataProcessor
 import tensorflow.keras.losses as losses # type: ignore
 import os
 
 # Импортируйте ваши функции и модели
+API_BASE_URL = "http://localhost:8000/"
 from .utils import DJANGO_API_BASE_URL, LSTM_PREDICTIONS_URL, LSTM_TIME_PREDICTIONS_URL, calculate_indices, LSTM_MODEL_PATH, DENSE_MODEL_PATH, SYNTH_LSTM_MODEL_PATH, DATA_FILE, FEATURES, TARGETS, API_BASE_URL, DJANGO_API_BASE_URL, USER_INPUT_DATA_URL, PROJECTS_URL, FULL_PROJECTS_DATA_URL, INDECES_URL , LSTM_PREDICTIONS_URL, LSTM_PREDICTIONS_URL, LSTM_TIME_PREDICTIONS_URL, SYNTHETIC_PREDICTIONS_URL , SYNTHETIC_TIME_PREDICTIONS_URL
+FULL_PROJECTS_DATA_URL = f"{DJANGO_API_BASE_URL}/project-data/"
+PROJECTS_URL = f"{DJANGO_API_BASE_URL}/projects/"
+USER_INPUT_DATA_URL = f"{DJANGO_API_BASE_URL}/user-input-data/"
 
 class PredictAllFullFormView(APIView):
     def post(self, request, *args, **kwargs):
@@ -23,14 +25,14 @@ class PredictAllFullFormView(APIView):
             try:
                 indices = calculate_indices(data)
                 user_input_data = {
-                    "startup_name": data["startup_name"], "team_name": data["team_name"], "theme_id": data["theme_id"],
-                    "category_id": data["category_id"], "description": data["description"], "start_m": data["start_m"],
-                    "investments_m": data["investments_m"], "crowdfunding_m": data["crowdfunding_m"], "team_mapping": data["team_mapping"],
-                    "team_size": data["team_size"], "team_index": data["team_index"], "tech_level": data["tech_level"],
-                    "tech_investment": data["tech_investment"], "competition_level": data["competition_level"],
-                    "competitor_count": data["competitor_count"], "social_impact": data["social_impact"],
-                    "demand_level": data["demand_level"], "audience_reach": data["audience_reach"],
-                    "market_size": data["market_size"],
+                    "startup_name": data.get("startup_name"), "team_name": data.get("team_name"), "theme_id": data.get("theme_id"),
+                    "category_id": data.get("category_id"), "description": data.get("description"), "start_m": data.get("start_m"),
+                    "investments_m": data.get("investments_m"), "crowdfunding_m": data.get("crowdfunding_m"), "team_mapping": data.get("team_mapping"),
+                    "team_size": data.get("team_size"), "team_index": data.get("team_index"), "tech_level": data.get("tech_level"),
+                    "tech_investment": data.get("tech_investment"), "competition_level": data.get("competition_level"),
+                    "competitor_count": data.get("competitor_count"), "social_impact": data.get("social_impact"),
+                    "demand_level": data.get("demand_level"), "audience_reach": data.get("audience_reach"),
+                    "market_size": data.get("market_size"),
                 }
 
                 with httpx.Client() as client:
@@ -40,16 +42,16 @@ class PredictAllFullFormView(APIView):
                     user_input_id = response.json().get("id")
 
                 new_data = np.array([[
-                    data["theme_id"], data["category_id"], indices[0],
-                    data["start_m"], data["investments_m"],
-                    data["crowdfunding_m"],
+                    data.get("theme_id"), data.get("category_id"), indices[0],
+                    data.get("start_m"), data.get("investments_m"),
+                    data.get("crowdfunding_m"),
                     indices[0], indices[1], indices[2], indices[4]
                 ]])
 
                 with httpx.Client() as client:
                     project_response = client.post(PROJECTS_URL, json={
-                        "project_name": data["startup_name"],
-                        "description": data["description"],
+                        "project_name": data.get("startup_name"),
+                        "description": data.get("description"),
                         "user_input": user_input_id,
                         "project_number": data.get("project_number", random.randint(600000, 699999)),
                         "is_public": True
@@ -181,18 +183,3 @@ class PredictAllFullFormView(APIView):
             except Exception as e:
                 return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class GetProjectNumberView(APIView):
-    def get(self, request, project_id, *args, **kwargs):
-        with httpx.Client() as client:
-            project_number_response = client.get(f"{DJANGO_API_BASE_URL}/projects/{project_id}/")
-            if project_number_response.status_code != 200:
-                return Response({"detail": project_number_response.text}, status=project_number_response.status_code)
-
-            project_data = project_number_response.json()
-            project_number = project_data.get("project_number")
-
-            if project_number is None:
-                return Response({"detail": "project_number is None in the response"}, status=status.HTTP_404_NOT_FOUND)
-
-            return Response({"project_number": project_number}, status=status.HTTP_200_OK)
