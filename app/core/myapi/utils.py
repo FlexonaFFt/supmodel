@@ -1,11 +1,8 @@
+import os
 import numpy as np
 from .model_utils import ModelManager, Normalizer, DataLoader, Predictor, DataProcessor
 import tensorflow.keras.losses as losses # type: ignore
 
-LSTM_MODEL_PATH = 'models/lstm_model.h5'
-DENSE_MODEL_PATH = 'models/dense_model.h5'
-SYNTH_LSTM_MODEL_PATH = 'models/synth_lstm_model.h5'
-DATA_FILE = 'data/dataset_.csv'
 FEATURES = ['theme_id', 'category_id', 'comp_idx',
     'start_m', 'investments_m', 'crowdfunding_m',
     'team_idx', 'tech_idx', 'social_idx', 'demand_idx']
@@ -22,6 +19,14 @@ LSTM_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/lstm-predictions/"
 LSTM_TIME_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/lstm-time-predictions/"
 SYNTHETIC_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/synthetic-predictions/"
 SYNTHETIC_TIME_PREDICTIONS_URL = f"{DJANGO_API_BASE_URL}/synthetic-time-predictions/"
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+LSTM_MODEL_PATH = os.path.join(BASE_DIR, 'models', 'lstm_model.h5')
+DENSE_MODEL_PATH = os.path.join(BASE_DIR, 'models', 'dense_model.h5')
+SYNTH_LSTM_MODEL_PATH = os.path.join(BASE_DIR, 'models', 'synth_lstm_model.h5')
+DATA_FILE = os.path.join(BASE_DIR, 'data', 'dataset_.csv')
+if not os.path.exists(DATA_FILE):
+    raise FileNotFoundError(f"File not found: {DATA_FILE}")
 
 data_loader, normalizer, processor = DataLoader(DATA_FILE, FEATURES, TARGETS), Normalizer(), DataProcessor()
 x_train, y_train = data_loader.get_features_and_targets()
