@@ -53,16 +53,13 @@
 
           try {
             // Отправляем данные на API
-            const response = await fetch(
-              "http://127.0.0.1:8000/myapi/predict/all_full_form",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
+            const response = await fetch("myapi/predict/all_full_form/", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
               },
-            );
+              body: JSON.stringify(formData),
+            });
 
             if (!response.ok) {
               throw new Error(`Ошибка: ${response.statusText}`);
@@ -73,7 +70,7 @@
 
             // Отправляем запрос на получение номера проекта
             const projectNumberResponse = await fetch(
-              `http://127.0.0.1:8000/api/project/${projectId}/`,
+              `myapi/project/${projectId}/`,
               {
                 method: "GET",
                 headers: {
