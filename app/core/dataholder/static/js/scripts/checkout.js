@@ -54,7 +54,7 @@
           try {
             // Отправляем данные на API
             const response = await fetch(
-              "http://127.0.0.1:8001/predict/all_full_form",
+              "http://127.0.0.1:8000/myapi/predict/all_full_form",
               {
                 method: "POST",
                 headers: {
@@ -73,7 +73,7 @@
 
             // Отправляем запрос на получение номера проекта
             const projectNumberResponse = await fetch(
-              `http://127.0.0.1:8001/project/${projectId}/`,
+              `http://127.0.0.1:8000/api/project/${projectId}/`,
               {
                 method: "GET",
                 headers: {

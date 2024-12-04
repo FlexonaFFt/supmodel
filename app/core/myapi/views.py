@@ -184,3 +184,19 @@ class PredictAllFullFormView(APIView):
             except Exception as e:
                 return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetProjectNumberView(APIView):
+    def get(self, request, project_id, *args, **kwargs):
+        with httpx.Client() as client:
+            project_number_response = client.get(f"{DJANGO_API_BASE_URL}/projects/{project_id}/")
+            if project_number_response.status_code != 200:
+                return Response({"detail": project_number_response.text}, status=project_number_response.status_code)
+
+            project_data = project_number_response.json()
+            project_number = project_data.get("project_number")
+
+            if project_number is None:
+                return Response({"detail": "project_number is None in the response"}, status=status.HTTP_404_NOT_FOUND)
+
+            return Response({"project_number": project_number}, status=status.HTTP_200_OK)
