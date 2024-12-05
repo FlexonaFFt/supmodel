@@ -1,2 +1,0 @@
-python3.11 -m venv /Users/flexonafft/Documents/supmodel/app/api/venv
-source /Users/flexonafft/Documents/supmodel/app/api/venv/bin/activate
