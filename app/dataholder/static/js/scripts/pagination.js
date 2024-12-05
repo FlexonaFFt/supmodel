@@ -25,11 +25,11 @@ document.addEventListener("DOMContentLoaded", function () {
     9: "EnergyTech",
   };
 
-  async function fetchProjects(page) {
+  let allProjects = [];
+
+  async function fetchProjects() {
     try {
-      const response = await fetch(
-        `${apiUrl}?page=${page}&limit=${itemsPerPage}`,
-      );
+      const response = await fetch(apiUrl);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function loadProjects(page, searchQuery = "") {
-    const data = await fetchProjects(page);
+    const data = await fetchProjects();
     if (!Array.isArray(data)) {
       console.error("Projects data is missing or invalid:", data);
       return;
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }),
     );
 
-    const filteredProjects = projectsWithDetails.filter(
+    allProjects = projectsWithDetails.filter(
       (project) =>
         project.project_name
           .toLowerCase()
@@ -89,8 +89,9 @@ document.addEventListener("DOMContentLoaded", function () {
         project.description.toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
-    renderProjects(filteredProjects);
-    renderPagination(Math.ceil(filteredProjects.length / itemsPerPage), page);
+    console.log("Filtered projects:", allProjects);
+    renderProjects(allProjects, page);
+    renderPagination(Math.ceil(allProjects.length / itemsPerPage), page);
   }
 
   function truncateText(text, maxLength) {
@@ -100,11 +101,15 @@ document.addEventListener("DOMContentLoaded", function () {
     return text.substring(0, maxLength) + "...";
   }
 
-  function renderProjects(projects) {
+  function renderProjects(projects, page) {
     const projectList = document.getElementById("project-list");
     projectList.innerHTML = "";
 
-    projects.slice(0, itemsPerPage).forEach((project) => {
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const projectsToDisplay = projects.slice(startIndex, endIndex);
+
+    projectsToDisplay.forEach((project) => {
       const projectElement = document.createElement("div");
       projectElement.setAttribute("data-project-id", project.id);
       projectElement.className = "col-12 col-md-6 col-lg-4 mb-3 project-card";
@@ -140,8 +145,11 @@ document.addEventListener("DOMContentLoaded", function () {
         pageItem.innerHTML = `<span class="page-link">${i}</span>`;
       } else {
         pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-        pageItem.querySelector("a").addEventListener("click", () => {
-          loadProjects(i, document.getElementById("searchInput").value);
+        pageItem.querySelector("a").addEventListener("click", (event) => {
+          event.preventDefault(); // Предотвращаем стандартное поведение ссылки
+          console.log(`Loading page ${i}`);
+          renderProjects(allProjects, i);
+          renderPagination(totalPages, i);
         });
       }
       pagination.appendChild(pageItem);
