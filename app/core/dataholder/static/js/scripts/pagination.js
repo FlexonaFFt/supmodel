@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const itemsPerPage = 9;
+  const itemsPerPage = 6;
   const apiUrl = "http://127.0.0.1:8000/api/projects/";
   const themes = {
     1: "Здравоохранение",
@@ -51,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      console.log(`Fetched project data for project ${projectNumber}:`, data); // Логирование данных для отладки
       return data;
     } catch (error) {
       console.error(
@@ -105,23 +104,23 @@ document.addEventListener("DOMContentLoaded", function () {
     const projectList = document.getElementById("project-list");
     projectList.innerHTML = "";
 
-    projects.forEach((project) => {
+    projects.slice(0, itemsPerPage).forEach((project) => {
       const projectElement = document.createElement("div");
       projectElement.setAttribute("data-project-id", project.id);
       projectElement.className = "col-12 col-md-6 col-lg-4 mb-3 project-card";
       projectElement.innerHTML = `
-                <div class="card border h-100">
-                    <div class="card-header">${project.project_name}</div>
-                    <div class="card-body text-secondary">
-                        <h6 class="card-subtitle text-muted mb-2">${project.team_name}</h6>
-                        <p class="card-text">${truncateText(project.description, 90)}</p>
-                        <div class="text-muted">
-                            <h6>Theme ID: ${project.theme}</h6>
-                            <h6>Category ID: ${project.category}</h6>
-                        </div>
-                    </div>
-                </div>
-            `;
+        <div class="card border h-100">
+          <div class="card-header">${project.project_name}</div>
+          <div class="card-body text-secondary">
+            <h6 class="card-subtitle text-muted mb-2">${project.team_name}</h6>
+            <p class="card-text">${truncateText(project.description, 90)}</p>
+            <div class="text-muted">
+              <h6>Theme ID: ${project.theme}</h6>
+              <h6>Category ID: ${project.category}</h6>
+            </div>
+          </div>
+        </div>
+      `;
       projectElement.addEventListener("click", () => {
         window.location.href = `/project/${project.project_number}`;
       });
