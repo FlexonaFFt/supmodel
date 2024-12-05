@@ -1,11 +1,7 @@
-# backend/Dockerfile.django
-FROM python:3.12-slim
-
+FROM python:3.11-slim
 WORKDIR /app
-
-COPY core /app
-RUN pip install -r requirements.txt
-
-EXPOSE 8000
-
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+COPY requirements.txt requirements.txt
+COPY db.sqlite3 db.sqlite3
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
