@@ -38,12 +38,21 @@
                 justify-content: center;
             }
             #page-switcher svg {
-                width: 20px;
-                height: 20px;
+                width: 16px;
+                height: 16px;
+            }
+            .dropdown-toggle::after {
+                display: none;
             }
         </style>
     </head>
     <body>
+        <svg style="display: none;">
+          <symbol id="list" viewBox="0 0 16 16">
+            <path d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+          </symbol>
+        </svg>
+
         <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
           <symbol id="check2" viewBox="0 0 16 16">
             <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
@@ -63,27 +72,28 @@
         <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
             <!-- Page Switcher Button -->
             <div>
-                <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
+                <button class="btn btn-bd-primary py-2 dropdown-toggle custom d-flex align-items-center"
                         id="page-switcher"
                         type="button"
                         aria-expanded="false"
-                        data-bs-toggle="dropdown"                            aria-label="Switch page">
-                    <svg class="bi my-1" width="1em" height="1em"><use href="#list"></use></svg>
+                        data-bs-toggle="dropdown"
+                        aria-label="Switch page">
+                        <svg class="bi my-1" width="1em" height="1em"><use xlink:href="#list"></use></svg>
                     <span class="visually-hidden" id="page-switcher-text">Switch page</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="page-switcher-text">
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center" onclick="switchPage('main')">
-                             Main
+                        <button type="button" class="dropdown-item d-flex align-items-center" data-page-value="main">
+                            Main
                         </button>
                     </li>
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center" onclick="switchPage('checkout')">
-                            Checkout
+                        <button type="button" class="dropdown-item d-flex align-items-center" data-page-value="checkout">
+                            Input Page
                         </button>
                     </li>
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center" onclick="switchPage('projectlist')">
+                        <button type="button" class="dropdown-item d-flex align-items-center" data-page-value="projectlist">
                             Project List
                         </button>
                     </li>
@@ -126,6 +136,7 @@
                 </ul>
             </div>
         </div>
+
 
         <div class="container py-4">
             <form class="col-10 col-lg-10 mb-3 mx-auto" role="search">
