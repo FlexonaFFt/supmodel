@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const itemsPerPage = 6;
+  const itemsPerPage = 9;
   const apiUrl = "http://127.0.0.1:8000/api/projects/";
   const themes = {
     1: "Здравоохранение",
