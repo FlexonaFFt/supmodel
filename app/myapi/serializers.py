@@ -1,0 +1,22 @@
+from rest_framework import serializers
+
+class FullFormRequestSerializer(serializers.Serializer):
+    startup_name = serializers.CharField(max_length=255)
+    team_name = serializers.CharField(max_length=255)
+    theme_id = serializers.IntegerField()
+    category_id = serializers.IntegerField()
+    description = serializers.CharField()
+    start_m = serializers.IntegerField()
+    investments_m = serializers.IntegerField()
+    crowdfunding_m = serializers.IntegerField()
+    team_mapping = serializers.CharField(max_length=255)
+    team_size = serializers.IntegerField()
+    team_index = serializers.IntegerField()
+    tech_level = serializers.CharField(max_length=255)
+    tech_investment = serializers.IntegerField()
+    competition_level = serializers.CharField(max_length=255)
+    competitor_count = serializers.IntegerField()
+    social_impact = serializers.CharField(max_length=255)
+    demand_level = serializers.CharField(max_length=255)
+    audience_reach = serializers.IntegerField()
+    market_size = serializers.IntegerField()
