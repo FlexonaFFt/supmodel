@@ -20,8 +20,35 @@
             crossorigin="anonymous"
         />
         <link rel="stylesheet" href="{% static 'css/checkout.css' %}" >
+        <style>
+            .bd-mode-toggle {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            #page-switcher {
+                width: 42px;
+                height: 42px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            #page-switcher svg {
+                width: 16px;
+                height: 16px;
+            }
+            .dropdown-toggle::after {
+                display: none;
+            }
+        </style>
     </head>
     <body>
+        <svg style="display: none;">
+          <symbol id="list" viewBox="0 0 16 16">
+            <path d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+          </symbol>
+        </svg>
+
         <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
           <symbol id="check2" viewBox="0 0 16 16">
             <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
@@ -39,38 +66,66 @@
         </svg>
 
         <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-          <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
-                  id="bd-theme"
-                  type="button"
-                  aria-expanded="false"
-                  data-bs-toggle="dropdown"
-                  aria-label="Toggle theme (auto)">
-            <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#circle-half"></use></svg>
-            <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-            <li>
-              <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
-                <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#sun-fill"></use></svg>
-                Light
-                <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-              </button>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
-                <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
-                Dark
-                <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-              </button>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
-                <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#circle-half"></use></svg>
-                Auto
-                <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-              </button>
-            </li>
-          </ul>
+            <!-- Page Switcher Button -->
+            <div>
+                <button class="btn btn-bd-primary py-2 dropdown-toggle custom d-flex align-items-center"
+                        id="page-switcher"
+                        type="button"
+                        aria-expanded="false"
+                        data-bs-toggle="dropdown"
+                        aria-label="Switch page">
+                        <svg class="bi my-1" width="1em" height="1em"><use xlink:href="#list"></use></svg>
+                    <span class="visually-hidden" id="page-switcher-text">Switch page</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="page-switcher-text">
+                    <li>
+                        <button id="mainButton" type="button" class="dropdown-item d-flex align-items-center" data-page-value="main">
+                            Main
+                        </button> <!--Козлова 65 В, тут живет Матс-->
+                    </li>
+                    <li>
+                        <button id="projectlistButton" type="button" class="dropdown-item d-flex align-items-center" data-page-value="checkout">
+                            Project List
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Theme Toggle Button -->
+            <div>
+                <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
+                        id="bd-theme"
+                        type="button"
+                        aria-expanded="false"
+                        data-bs-toggle="dropdown"
+                        aria-label="Toggle theme (auto)">
+                    <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#circle-half"></use></svg>
+                    <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+                    <li>
+                        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+                            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#sun-fill"></use></svg>
+                            Light
+                            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+                            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
+                            Dark
+                            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+                            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#circle-half"></use></svg>
+                            Auto
+                            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <div class="container">
@@ -356,6 +411,7 @@
         ></script>
         <script src="{% static 'js/scripts/theme-toggle.js' %}"></script>
         <script src="{% static 'js/scripts/checkout.js' %}?v=00006"></script>
+        <script src="{% static 'js/scripts/href-check.js' %}"></script>
         <!-- Короче, пока работает на 00006 -->
     </body>
 </html>
