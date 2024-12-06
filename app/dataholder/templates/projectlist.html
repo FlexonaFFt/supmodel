@@ -83,18 +83,13 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="page-switcher-text">
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center" data-page-value="main">
+                        <button id="mainButton" type="button" class="dropdown-item d-flex align-items-center" data-page-value="main">
                             Main
                         </button>
                     </li>
                     <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center" data-page-value="checkout">
+                        <button id="checkoutButton" type="button" class="dropdown-item d-flex align-items-center" data-page-value="checkout">
                             Input Page
-                        </button>
-                    </li>
-                    <li>
-                        <button type="button" class="dropdown-item d-flex align-items-center" data-page-value="projectlist">
-                            Project List
                         </button>
                     </li>
                 </ul>
@@ -175,5 +170,6 @@
         ></script>
         <script src="{% static 'js/scripts/pagination.js' %}?v=00004"></script>
         <script src="{% static 'js/scripts/theme-toggle.js' %}"></script>
+        <script src="{% static 'js/scripts/href-selector.js' %}"></script>
     </body>
 </html>
