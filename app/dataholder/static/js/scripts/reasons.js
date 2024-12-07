@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
         index.team_idx,
         index.tech_idx,
         index.social_idx,
-      ];
+      ].map((value) => parseFloat(value.toFixed(1)));
 
       document.querySelectorAll("#dynamic-texts a").forEach((item, index) => {
         const value = values[index];
