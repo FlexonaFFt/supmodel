@@ -81,6 +81,7 @@ class PredictAllFullFormView(APIView):
                 new_data_lstm = new_data_scaled.reshape((new_data_scaled.shape[0], new_data_scaled.shape[1], 1))
                 prediction = lstm_model.predict(new_data_lstm)
                 prediction_inverse = normalizer.inverse_transform_Y(prediction)
+                prediction_inverse = np.maximum(prediction_inverse, 0)  # Ensure no negative values
 
                 lstm_prediction_data = {
                     "project": project_id,
@@ -102,12 +103,14 @@ class PredictAllFullFormView(APIView):
 
                 predictions_two = []
                 pred = synth_lstm_model.predict(new_data_lstm_two)
-                predictions_two.append(normalizer.inverse_transform_Y(pred).flatten().tolist())
+                pred = np.maximum(normalizer.inverse_transform_Y(pred), 0)  # Ensure no negative values
+                predictions_two.append(pred.flatten().tolist())
 
                 for step in range(1, 5):
                     current_input = np.concatenate([new_data_scaled_two.flatten()[-5:], pred.flatten()]).reshape(1, 10, 1)
                     pred = synth_lstm_model.predict(current_input)
-                    predictions_two.append(normalizer.inverse_transform_Y(pred).flatten().tolist())
+                    pred = np.maximum(normalizer.inverse_transform_Y(pred), 0)  # Ensure no negative values
+                    predictions_two.append(pred.flatten().tolist())
 
                 for pred in predictions_two:
                     lstm_time_prediction_data = {
@@ -128,7 +131,7 @@ class PredictAllFullFormView(APIView):
                 new_data_lstm_three = new_data_scaled_three.reshape((new_data_scaled_three.shape[0], new_data_scaled_three.shape[1], 1))
 
                 lstm_prediction_three = synth_lstm_model.predict(new_data_lstm_three)
-                lstm_prediction_inverse_three = normalizer.inverse_transform_Y(lstm_prediction_three)
+                lstm_prediction_inverse_three = np.maximum(normalizer.inverse_transform_Y(lstm_prediction_three), 0)  # Ensure no negative values
 
                 synthetic_prediction_data = {
                     "project": project_id,
@@ -150,12 +153,14 @@ class PredictAllFullFormView(APIView):
 
                 predictions_four = []
                 pred_four = synth_lstm_model.predict(new_data_lstm_four)
-                predictions_four.append(normalizer.inverse_transform_Y(pred_four).flatten())
+                pred_four = np.maximum(normalizer.inverse_transform_Y(pred_four), 0)  # Ensure no negative values
+                predictions_four.append(pred_four.flatten())
 
                 for step in range(1, 5):
                     current_input_four = np.concatenate([new_data_scaled_four.flatten()[:5], pred_four.flatten()]).reshape((1, 10, 1))
                     pred_four = synth_lstm_model.predict(current_input_four)
-                    predictions_four.append(normalizer.inverse_transform_Y(pred_four).flatten())
+                    pred_four = np.maximum(normalizer.inverse_transform_Y(pred_four), 0)  # Ensure no negative values
+                    predictions_four.append(pred_four.flatten())
 
                 for pred in predictions_four:
                     synthetic_time_prediction_data = {
