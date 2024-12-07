@@ -47,7 +47,11 @@ def calculate_tech_idx(tech_level: str, tech_investment: int) -> float:
     tech_level = tech_level.lower()
     tech_mapping = {"низкий": 2, "средний": 5, "высокий": 8}
     base_score = tech_mapping.get(tech_level, 0)
-    raw_score = (0.7 * (tech_investment / 10) + 0.3 * base_score)
+    min_investment = 200
+    max_investment = 50000
+    normalized_investment = (tech_investment - min_investment) / (max_investment - min_investment)
+    scaled_investment = normalized_investment * 10
+    raw_score = 0.7 * scaled_investment + 0.3 * base_score
     return max(1.0, min(9.9, round(raw_score, 1)))
 
 def calculate_comp_idx(comp_level: str, competitors: int) -> float:

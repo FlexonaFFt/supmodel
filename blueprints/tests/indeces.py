@@ -33,9 +33,20 @@ def calculate_demand_idx(demand_level: str, audience_reach: int, market_size: in
     raw_score = base_score + scaled_audience + scaled_market
     return max(1.0, min(9.9, round(raw_score, 1)))
 
+def calculate_tech_idx2(tech_level: str, tech_investment: int) -> float:
+    tech_level = tech_level.lower()
+    tech_mapping = {"низкий": 2, "средний": 5, "высокий": 8}
+    base_score = tech_mapping.get(tech_level, 0)
+    min_investment = 200
+    max_investment = 50000
+    normalized_investment = (tech_investment - min_investment) / (max_investment - min_investment)
+    scaled_investment = normalized_investment * 10
+    raw_score = 0.7 * scaled_investment + 0.3 * base_score
+    return max(1.0, min(9.9, round(raw_score, 1)))
+
 def main():
     team_idx = calculate_team_idx("эксперты", 8, 4)
-    tech_idx = calculate_tech_idx("низкий", 2000)
+    tech_idx = calculate_tech_idx2("низкий", 3500)
     comp_idx = calculate_comp_idx("средняя конкуренция", 9)
     social_idx = calculate_social_idx("среднее влияние")
     demand_idx = calculate_demand_idx("средний спрос", 200000, 500000)
