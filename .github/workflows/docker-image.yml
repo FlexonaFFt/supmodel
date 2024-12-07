@@ -19,15 +19,9 @@ jobs:
     - name: Change directory to app
       run: cd app
 
-    - name: Build Docker image
-      run: docker build -t flexonafft/startup-ml-model:latest .
-      working-directory: app
-
-    - name: Push Docker image
-      run: docker push flexonafft/startup-ml-model:latest
-
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
         push: true
         tags: user/app:latest
+        working-directory: app
