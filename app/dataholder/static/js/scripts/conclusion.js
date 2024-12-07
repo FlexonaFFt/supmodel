@@ -8,11 +8,11 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((data) => {
       const index = data.indeces[0];
       const values = [
-        index.demand_idx,
-        index.competition_idx,
-        index.team_idx,
-        index.tech_idx,
-        index.social_idx,
+        Math.max(1.0, Math.min(9.9, index.demand_idx)),
+        Math.max(1.0, Math.min(9.9, index.competition_idx)),
+        Math.max(1.0, Math.min(9.9, index.team_idx)),
+        Math.max(1.0, Math.min(9.9, index.tech_idx)),
+        Math.max(1.0, Math.min(9.9, index.social_idx)),
       ];
 
       const options = [
@@ -43,7 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const average =
         values.reduce((sum, value) => sum + value, 0) / values.length;
-      const conclusionText = getTextForAverage(average);
+      const roundedAverage = parseFloat(average.toFixed(1));
+      const conclusionText = getTextForAverage(roundedAverage);
       document.querySelector("#dynamic-conclusion p").textContent =
         conclusionText;
     })
