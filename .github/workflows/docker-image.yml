@@ -20,8 +20,8 @@ jobs:
       run: cd app
 
     - name: Build Docker image
-      run: docker build -t yourusername/startup-ml-model:latest .
+      run: docker build -t flexonafft/startup-ml-model:latest .
       working-directory: app
 
     - name: Push Docker image
-      run: docker push yourusername/startup-ml-model:latest
+      run: docker push flexonafft/startup-ml-model:latest
