@@ -97,6 +97,9 @@ const analysisOptions = {
 };
 
 function getTextAndLevelForValue(index, value) {
+  // Корректировка значения, если оно выходит за пределы допустимого диапазона
+  value = Math.max(1.0, Math.min(9.9, value));
+
   const option = analysisOptions[index].find(
     ({ range }) => value >= range[0] && value <= range[1],
   );
