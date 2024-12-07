@@ -67,9 +67,9 @@ class PredictAllFullFormView(APIView):
                 with httpx.Client() as client:
                     indeces_response = client.post(INDECES_URL, json={
                         "project": project_id,
-                        "competition_idx": indices[0],
-                        "team_idx": indices[1],
-                        "tech_idx": indices[2],
+                        "competition_idx": indices[2],
+                        "team_idx": indices[0],
+                        "tech_idx": indices[1],
                         "social_idx": indices[3],
                         "demand_idx": indices[4],
                     })
