@@ -17,21 +17,26 @@ jobs:
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Log in to GitHub Container Registry
-      run: echo "${{ secrets.GITHUB_PACKAGES_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-    - name: Change directory to app
-      run: cd app
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v3
+      with:
+        images: ghcr.io/yourusername/startup-ml-model
 
     - name: Build Docker image
-      run: docker build -t flexonafft/startup-ml-model:latest .
-      working-directory: app
+      run: docker build -t startup-ml-model ./app
 
-    - name: Push Docker image
+    - name: Push Docker image to Docker Hub
       run: docker push flexonafft/startup-ml-model:latest
 
-    - name: Push image
+    - name: Push image to GitHub Container Registry
       run: |
-        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+        IMAGE_ID=ghcr.io/${{ github.repository }}/startup-ml-model
 
         # Change all uppercase to lowercase
         IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
@@ -48,5 +53,5 @@ jobs:
         echo IMAGE_ID=$IMAGE_ID
         echo VERSION=$VERSION
 
-        docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-        docker push $IMAGE_ID:$VERSION     
+        docker tag startup-ml-model $IMAGE_ID:$VERSION
+        docker push $IMAGE_ID:$VERSION
