@@ -29,7 +29,7 @@ jobs:
         images: ghcr.io/flexonafft/startup-ml-model
 
     - name: Build Docker image
-      run: docker build -t startup-ml-model ./app
+      run: docker build -t flexonafft/startup-ml-model:latest . ./app
 
     - name: Push Docker image to Docker Hub
       run: docker push flexonafft/startup-ml-model:latest
