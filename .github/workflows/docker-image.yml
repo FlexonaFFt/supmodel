@@ -27,29 +27,13 @@ jobs:
       uses: docker/metadata-action@v3
       with:
         images: |
-          ghcr.io/yourusername/startup-ml-model
+          ghcr.io/${{ github.repository }}/startup-ml-model
           flexonafft/startup-ml-model
 
-    - name: Build Docker image
-      run: docker build -t startup-ml-model ./app
-
-    - name: Tag and push Docker image to Docker Hub
-      run: |
-        docker tag startup-ml-model flexonafft/startup-ml-model:latest
-        docker push flexonafft/startup-ml-model:latest
-
-    - name: Tag and push Docker image to GitHub Container Registry
-      run: |
-        IMAGE_ID=ghcr.io/${{ github.repository }}/startup-ml-model
-        # Change all uppercase to lowercase
-        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-        # Strip git ref prefix from version
-        VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-        # Strip "v" prefix from tag name
-        [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-        # Use Docker `latest` tag convention
-        [ "$VERSION" == "main" ] && VERSION=latest
-        echo IMAGE_ID=$IMAGE_ID
-        echo VERSION=$VERSION
-        docker tag startup-ml-model $IMAGE_ID:$VERSION
-        docker push $IMAGE_ID:$VERSION
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: ./app
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
