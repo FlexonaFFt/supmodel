@@ -1,6 +1,12 @@
 # SturtupMLModel
 
-![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
+<div align="center">
+  <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license">
+  <img src="https://img.shields.io/github/issues/FlexonaFFt/supmodel.svg" alt="GitHub issues">
+  <img src="https://img.shields.io/github/issues-pr/FlexonaFFt/supmodel.svg" alt="GitHub pull requests">
+  <img src="https://img.shields.io/github/last-commit/FlexonaFFt/supmodel.svg" alt="GitHub last commit">
+  <img src="https://img.shields.io/github/v/release/FlexonaFFt/supmodel" alt="GitHub release (latest by date)">
+</div>
 
 Этот проект представляет собой решение для прогнозирования успешности стартапов, основанное на передовых методах машинного обучения. Наша модель анализирует различные факторы, такие как рыночные условия, финансовые показатели, командный состав и технологические тренды, чтобы предоставить точные и обоснованные прогнозы.
 
