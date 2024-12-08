@@ -26,7 +26,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v3
       with:
-        images: ghcr.io/yourusername/startup-ml-model
+        images: ghcr.io/flexonafft/startup-ml-model
 
     - name: Build Docker image
       run: docker build -t startup-ml-model ./app
