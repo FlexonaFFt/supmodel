@@ -8,7 +8,7 @@ from .views import (
     LSTMTimePredictionsViewSet,
     SyntheticPredictionsViewSet,
     SyntheticTimePredictionsViewSet,
-    IndecesViewSet
+    IndecesViewSet,
 )
 
 router = DefaultRouter()
@@ -21,7 +21,7 @@ router.register(r'synthetic-predictions', SyntheticPredictionsViewSet, basename=
 router.register(r'synthetic-time-predictions', SyntheticTimePredictionsViewSet, basename='synthetic-time-predictions')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', views.standalone, name='standalone'),
     path('api/', include(router.urls)),
     path('checkout', views.checkout, name='checkout'),
     path('loading', views.loading, name='loading'),
