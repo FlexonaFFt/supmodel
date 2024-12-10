@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 display: true,
                 text: "Значения",
               },
+              max: 10,
             },
           },
           plugins: {
