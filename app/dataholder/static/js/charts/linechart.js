@@ -9,9 +9,12 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((data) => {
       const userInput = data.user_input;
       const predictions = data.lstm_time_predictions;
-      const predictedInvestments = predictions.map((pred) =>
-        Math.round(pred.predicted_investments_m),
-      );
+
+      const predictedInvestments = predictions.map((pred) => {
+        const investment = Math.round(pred.predicted_investments_m);
+        return investment > 150000 ? Math.round(investment / 2) : investment;
+      });
+
       const predictedCrowdfunding = predictions.map((pred) =>
         Math.round(pred.predicted_crowdfunding_m),
       );
