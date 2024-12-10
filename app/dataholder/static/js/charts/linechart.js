@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
               beginAtZero: true,
               title: {
                 display: true,
-                text: "Сумма (в рублях)",
+                text: "Сумма $",
               },
               ticks: {
                 stepSize: 2000,

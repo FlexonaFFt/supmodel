@@ -102,13 +102,13 @@ class PredictAllFullFormView(APIView):
                 new_data_lstm_two = new_data_scaled_two.reshape((new_data_scaled_two.shape[0], new_data_scaled_two.shape[1], 1))
 
                 predictions_two = []
-                pred = synth_lstm_model.predict(new_data_lstm_two)
+                pred = lstm_model.predict(new_data_lstm_two)
                 pred = np.maximum(normalizer.inverse_transform_Y(pred), 0)  # Ensure no negative values
                 predictions_two.append(pred.flatten().tolist())
 
                 for step in range(1, 5):
                     current_input = np.concatenate([new_data_scaled_two.flatten()[-5:], pred.flatten()]).reshape(1, 10, 1)
-                    pred = synth_lstm_model.predict(current_input)
+                    pred = lstm_model.predict(current_input)
                     pred = np.maximum(normalizer.inverse_transform_Y(pred), 0)  # Ensure no negative values
                     predictions_two.append(pred.flatten().tolist())
 
