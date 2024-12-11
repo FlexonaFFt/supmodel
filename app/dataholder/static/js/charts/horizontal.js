@@ -10,14 +10,35 @@ document.addEventListener("DOMContentLoaded", function () {
       const userInput = data.user_input;
       const predictions = data.lstm_time_predictions;
 
+      const initialInvestments = Math.round(userInput.investments_m);
+      const initialCrowdfunding = Math.round(userInput.crowdfunding_m);
+
+      console.log(`Initial Investments: ${initialInvestments}`);
+      console.log(`Initial Crowdfunding: ${initialCrowdfunding}`);
+
       const predictedInvestments = predictions.map((pred) => {
         const investment = Math.round(pred.predicted_investments_m);
-        return investment > 150000 ? Math.round(investment / 2) : investment;
+        const adaptedInvestment =
+          investment > initialInvestments * 4
+            ? Math.round(investment / 4)
+            : investment;
+        console.log(
+          `Predicted Investment: ${investment}, Adapted: ${adaptedInvestment}`,
+        );
+        return adaptedInvestment;
       });
 
-      const predictedCrowdfunding = predictions.map((pred) =>
-        Math.round(pred.predicted_crowdfunding_m),
-      );
+      const predictedCrowdfunding = predictions.map((pred) => {
+        const crowdfunding = Math.round(pred.predicted_crowdfunding_m);
+        const adaptedCrowdfunding =
+          crowdfunding > initialCrowdfunding * 4
+            ? Math.round(crowdfunding / 4)
+            : crowdfunding;
+        console.log(
+          `Predicted Crowdfunding: ${crowdfunding}, Adapted: ${adaptedCrowdfunding}`,
+        );
+        return adaptedCrowdfunding;
+      });
 
       const myChart = new Chart(ctx, {
         type: "bar",
@@ -26,20 +47,14 @@ document.addEventListener("DOMContentLoaded", function () {
           datasets: [
             {
               label: "Инвестиции",
-              data: [
-                Math.round(userInput.investments_m),
-                ...predictedInvestments,
-              ],
+              data: [initialInvestments, ...predictedInvestments],
               backgroundColor: "rgba(255, 99, 132, 0.6)",
               borderColor: "rgba(255, 99, 132, 1)",
               borderWidth: 1,
             },
             {
               label: "Краудфандинг",
-              data: [
-                Math.round(userInput.crowdfunding_m),
-                ...predictedCrowdfunding,
-              ],
+              data: [initialCrowdfunding, ...predictedCrowdfunding],
               backgroundColor: "rgba(54, 162, 235, 0.6)",
               borderColor: "rgba(54, 162, 235, 1)",
               borderWidth: 1,
