@@ -13,18 +13,32 @@ document.addEventListener("DOMContentLoaded", function () {
       const initialInvestments = Math.round(userInput.investments_m);
       const initialCrowdfunding = Math.round(userInput.crowdfunding_m);
 
+      const adaptValue = (value, initialValue) => {
+        const ratio = value / initialValue;
+        if (ratio > 4) {
+          return Math.round(value / 4);
+        } else if (ratio > 3) {
+          return Math.round(value / 2.5);
+        } else if (ratio > 2) {
+          return value;
+        } else {
+          return value;
+        }
+      };
+
       const predictedInvestments = predictions.map((pred) => {
         const investment = Math.round(pred.predicted_investments_m);
-        return investment > initialInvestments * 4
-          ? Math.round(investment / 4)
-          : investment;
+        const adaptedInvestment = adaptValue(investment, initialInvestments);
+        return adaptedInvestment;
       });
 
       const predictedCrowdfunding = predictions.map((pred) => {
         const crowdfunding = Math.round(pred.predicted_crowdfunding_m);
-        return crowdfunding > initialCrowdfunding * 4
-          ? Math.round(crowdfunding / 4)
-          : crowdfunding;
+        const adaptedCrowdfunding = adaptValue(
+          crowdfunding,
+          initialCrowdfunding,
+        );
+        return adaptedCrowdfunding;
       });
 
       // Вычисление общей суммы

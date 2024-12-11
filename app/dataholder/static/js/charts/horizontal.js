@@ -13,29 +13,30 @@ document.addEventListener("DOMContentLoaded", function () {
       const initialInvestments = Math.round(userInput.investments_m);
       const initialCrowdfunding = Math.round(userInput.crowdfunding_m);
 
-      console.log(`Initial Investments: ${initialInvestments}`);
-      console.log(`Initial Crowdfunding: ${initialCrowdfunding}`);
+      const adaptValue = (value, initialValue) => {
+        const ratio = value / initialValue;
+        if (ratio > 4) {
+          return Math.round(value / 4);
+        } else if (ratio > 3) {
+          return Math.round(value / 2.5);
+        } else if (ratio > 2) {
+          return value;
+        } else {
+          return value;
+        }
+      };
 
       const predictedInvestments = predictions.map((pred) => {
         const investment = Math.round(pred.predicted_investments_m);
-        const adaptedInvestment =
-          investment > initialInvestments * 4
-            ? Math.round(investment / 4)
-            : investment;
-        console.log(
-          `Predicted Investment: ${investment}, Adapted: ${adaptedInvestment}`,
-        );
+        const adaptedInvestment = adaptValue(investment, initialInvestments);
         return adaptedInvestment;
       });
 
       const predictedCrowdfunding = predictions.map((pred) => {
         const crowdfunding = Math.round(pred.predicted_crowdfunding_m);
-        const adaptedCrowdfunding =
-          crowdfunding > initialCrowdfunding * 4
-            ? Math.round(crowdfunding / 4)
-            : crowdfunding;
-        console.log(
-          `Predicted Crowdfunding: ${crowdfunding}, Adapted: ${adaptedCrowdfunding}`,
+        const adaptedCrowdfunding = adaptValue(
+          crowdfunding,
+          initialCrowdfunding,
         );
         return adaptedCrowdfunding;
       });
