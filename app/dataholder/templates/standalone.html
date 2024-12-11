@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -22,9 +23,8 @@
             <div class="flex justify-between items-center">
                 <a href="/" class="text-2xl font-bold text-blue-500">StartupAI</a>
                 <div class="hidden md:flex items-center gap-6">
-                    <a href="#" class="text-gray-600 hover:text-blue-500">Решения</a>
-                    <a href="#" class="text-gray-600 hover:text-blue-500">Возможности</a>
-                    <a href="#" class="text-gray-600 hover:text-blue-500">Цены</a>
+                    <a href="#features" class="text-gray-600 hover:text-blue-500">Преимущества</a>
+                    <a href="#Integrations" class="text-gray-600 hover:text-blue-500">Возможности</a>
                 </div>
             </div>
         </div>
@@ -42,11 +42,11 @@
                     принимать обоснованные решения, основанные на точном анализе данных.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition-colors">
+                    <button id="firstButton" class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition-colors">
                         Начать работу
                     </button>
-                    <button class="border border-gray-300 px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        Демонстрация
+                    <button id="secondaryButton" class="border border-gray-300 px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        Библиотека проектов
                     </button>
                 </div>
             </div>
@@ -68,7 +68,7 @@
     </section>
 
     <!-- Features Section -->
-    <section class="py-20 bg-white">
+    <section class="py-20 bg-white" id="features">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-4">
@@ -144,7 +144,7 @@
     </section>
 
     <!-- Integrations Section -->
-    <section class="py-20 bg-gray-50">
+    <section id="Integrations" class="py-20 bg-gray-50">
         <div class="container mx-auto px-4">
             <div class="space-y-24">
                 <div class="flex flex-col lg:flex-row items-center gap-12">
@@ -232,5 +232,7 @@
             </div>
         </div>
     </footer>
+
+     <script src="{% static 'js/scripts/buttons.js' %}"></script>
 </body>
 </html>
