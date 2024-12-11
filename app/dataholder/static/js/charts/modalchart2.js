@@ -19,6 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
         Math.round(pred.predicted_comp_idx),
       );
 
+      function clamp(value, max) {
+        return value > max ? max : value;
+      }
+
       const myChart = new Chart(ctx, {
         type: "line",
         data: {
@@ -26,7 +30,10 @@ document.addEventListener("DOMContentLoaded", function () {
           datasets: [
             {
               label: "Социальный индекс",
-              data: [Math.round(userInput.social_idx), ...predictedSocialIndxs],
+              data: [
+                clamp(Math.round(userInput.social_idx), 10),
+                ...predictedSocialIndxs.map((value) => clamp(value, 10)),
+              ],
               borderColor: "rgba(255, 99, 132, 1)",
               backgroundColor: "rgba(255, 99, 132, 0.2)",
               borderWidth: 2,
@@ -35,7 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             {
               label: "Индекс спроса",
-              data: [Math.round(userInput.demand_idx), ...predictedDemandIndxs],
+              data: [
+                clamp(Math.round(userInput.demand_idx), 10),
+                ...predictedDemandIndxs.map((value) => clamp(value, 10)),
+              ],
               borderColor: "rgba(54, 162, 235, 1)",
               backgroundColor: "rgba(54, 162, 235, 0.2)",
               borderWidth: 2,
@@ -45,8 +55,8 @@ document.addEventListener("DOMContentLoaded", function () {
             {
               label: "Индекс конкурентоспособности",
               data: [
-                Math.round(userInput.competition_idx),
-                ...predictedCompIndxs,
+                clamp(Math.round(userInput.competition_idx), 10),
+                ...predictedCompIndxs.map((value) => clamp(value, 10)),
               ],
               borderColor: "rgba(75, 192, 192, 1)",
               backgroundColor: "rgba(75, 192, 192, 0.2)",
@@ -72,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 display: true,
                 text: "Значения",
               },
-              max: 10,
+              max: 12,
             },
           },
           plugins: {

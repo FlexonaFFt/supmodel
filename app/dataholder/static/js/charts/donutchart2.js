@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             {
               data: [
+                0,
                 Math.round(prediction.predicted_investments_m),
                 Math.round(prediction.predicted_crowdfunding_m),
               ],
