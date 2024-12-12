@@ -9,18 +9,24 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((data) => {
       const index = data.indeces[0];
       const prediction = data.lstm_predictions[0];
-      function randomAdjust(value) {
+
+      function clampAndAdjust(value) {
         let adjustedValue = value;
-        if (value === 1.0) {
+        if (value <= 0) {
+          adjustedValue = 1.0;
+        } else if (value >= 9.9) {
+          adjustedValue = 9.9;
+        } else if (value === 1.0) {
           adjustedValue += 1.0;
-        } else if (value === 9.99) {
+        } else if (value === 9.9) {
           adjustedValue -= 1.0;
-        } else if (value > 1.0 && value < 9.99) {
+        } else if (value > 1.0 && value < 9.9) {
           const adjustment = Math.random() < 0.5 ? -1.0 : 1.0;
           adjustedValue += adjustment;
         }
         return parseFloat(adjustedValue.toFixed(1));
       }
+
       new Chart(ctx, {
         type: "radar",
         data: {
@@ -42,11 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
             {
               label: "Предсказанные показатели",
               data: [
-                parseFloat(prediction.predicted_demand_idx.toFixed(1)),
-                parseFloat(prediction.predicted_comp_idx.toFixed(1)),
-                randomAdjust(index.team_idx),
-                randomAdjust(index.tech_idx),
-                parseFloat(prediction.predicted_social_idx.toFixed(1)),
+                clampAndAdjust(prediction.predicted_demand_idx),
+                clampAndAdjust(prediction.predicted_comp_idx),
+                clampAndAdjust(index.team_idx),
+                clampAndAdjust(index.tech_idx),
+                clampAndAdjust(prediction.predicted_social_idx),
               ],
               backgroundColor: "rgba(54, 162, 235, 0.2)",
               borderColor: "rgba(54, 162, 235, 1)",

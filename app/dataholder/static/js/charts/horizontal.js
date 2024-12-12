@@ -10,12 +10,36 @@ document.addEventListener("DOMContentLoaded", function () {
       const userInput = data.user_input;
       const predictions = data.lstm_time_predictions;
 
-      const predictedInvestments = predictions.map((pred) =>
-        Math.round(pred.predicted_investments_m),
-      );
-      const predictedCrowdfunding = predictions.map((pred) =>
-        Math.round(pred.predicted_crowdfunding_m),
-      );
+      const initialInvestments = Math.round(userInput.investments_m);
+      const initialCrowdfunding = Math.round(userInput.crowdfunding_m);
+
+      const adaptValue = (value, initialValue) => {
+        const ratio = value / initialValue;
+        if (ratio > 4) {
+          return Math.round(value / 4);
+        } else if (ratio > 3) {
+          return Math.round(value / 2.5);
+        } else if (ratio > 2) {
+          return value;
+        } else {
+          return value;
+        }
+      };
+
+      const predictedInvestments = predictions.map((pred) => {
+        const investment = Math.round(pred.predicted_investments_m);
+        const adaptedInvestment = adaptValue(investment, initialInvestments);
+        return adaptedInvestment;
+      });
+
+      const predictedCrowdfunding = predictions.map((pred) => {
+        const crowdfunding = Math.round(pred.predicted_crowdfunding_m);
+        const adaptedCrowdfunding = adaptValue(
+          crowdfunding,
+          initialCrowdfunding,
+        );
+        return adaptedCrowdfunding;
+      });
 
       const myChart = new Chart(ctx, {
         type: "bar",
@@ -24,20 +48,14 @@ document.addEventListener("DOMContentLoaded", function () {
           datasets: [
             {
               label: "Инвестиции",
-              data: [
-                Math.round(userInput.investments_m),
-                ...predictedInvestments,
-              ],
+              data: [initialInvestments, ...predictedInvestments],
               backgroundColor: "rgba(255, 99, 132, 0.6)",
               borderColor: "rgba(255, 99, 132, 1)",
               borderWidth: 1,
             },
             {
               label: "Краудфандинг",
-              data: [
-                Math.round(userInput.crowdfunding_m),
-                ...predictedCrowdfunding,
-              ],
+              data: [initialCrowdfunding, ...predictedCrowdfunding],
               backgroundColor: "rgba(54, 162, 235, 0.6)",
               borderColor: "rgba(54, 162, 235, 1)",
               borderWidth: 1,
@@ -73,75 +91,3 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 });
-/*
-// Получите элемент canvas
-const ctx = document.getElementById("donutChart2").getContext("2d");
-
-// Создайте график
-const myChart = new Chart(ctx, {
-  type: "doughnut",
-  data: {
-    labels: ["investments", "crowdfunding"],
-    datasets: [
-      {
-        label: "Предсказанные характеристики за 5 промежуток",
-        data: [10000, 28900],
-        backgroundColor: ["rgba(189, 151, 243, 0.2)", "rgba(189, 151, 243, 1)"],
-        borderColor: ["rgba(12, 110, 253, 1)", "rgba(12, 110, 253, 1)"],
-        borderWidth: 0,
-      },
-      {
-        label: "Предсказанные характеристики за 4 промежуток",
-        data: [8000, 43000],
-        backgroundColor: ["rgba(12, 110, 253, 0.2)", "rgba(12, 110, 253, 1)"],
-        borderColor: ["rgba(12, 110, 253, 1)", "rgba(12, 110, 253, 1)"],
-        borderWidth: 0,
-      },
-      {
-        label: "Предсказанные характеристики за 3 промежуток",
-        data: [7600, 34500],
-        backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(54, 162, 235, 1)"],
-        borderColor: ["rgba(12, 110, 253, 1)", "rgba(12, 110, 253, 1)"],
-        borderWidth: 0,
-      },
-      {
-        label: "Предсказанные характеристики за 2 промежуток",
-        data: [14387, 12345],
-        backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(255, 99, 132, 1)"],
-        borderColor: ["rgba(12, 110, 253, 1)", "rgba(12, 110, 253, 1)"],
-        borderWidth: 0,
-      },
-      {
-        label: "Предсказанные характеристики за 1 промежуток",
-        data: [16770, 28900],
-        backgroundColor: ["rgba(75, 192, 192, 0.2)", "rgba(75, 192, 192, 1)"],
-        borderColor: ["rgba(12, 110, 253, 1)", "rgba(12, 110, 253, 1)"],
-        borderWidth: 0,
-      },
-      {
-        label: "Базовые характеристики",
-        data: [22000, 43210],
-        backgroundColor: ["rgba(12, 110, 253, 0.2)", "rgba(12, 110, 253, 1)"],
-        borderColor: ["rgba(12, 110, 253, 1)", "rgba(12, 110, 253, 1)"],
-        borderWidth: 0,
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      tooltip: {
-        enabled: true,
-      },
-      legend: {
-        display: false,
-      },
-    },
-    animation: {
-      animateRotate: true,
-      animateScale: true,
-      duration: 2000,
-    },
-    cutout: "20%",
-  },
-  }); */

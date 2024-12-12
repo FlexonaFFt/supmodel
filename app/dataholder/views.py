@@ -77,3 +77,6 @@ def loading(request):
 
 def projectlist(request):
     return render(request, 'projectlist.html', {'projectlist': projectlist})
+
+def standalone(request):
+    return render(request, 'standalone.html', {'home': standalone})

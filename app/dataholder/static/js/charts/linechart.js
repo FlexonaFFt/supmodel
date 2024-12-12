@@ -9,17 +9,41 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((data) => {
       const userInput = data.user_input;
       const predictions = data.lstm_time_predictions;
-      const predictedInvestments = predictions.map((pred) =>
-        Math.round(pred.predicted_investments_m),
-      );
-      const predictedCrowdfunding = predictions.map((pred) =>
-        Math.round(pred.predicted_crowdfunding_m),
-      );
+
+      const initialInvestments = Math.round(userInput.investments_m);
+      const initialCrowdfunding = Math.round(userInput.crowdfunding_m);
+
+      const adaptValue = (value, initialValue) => {
+        const ratio = value / initialValue;
+        if (ratio > 4) {
+          return Math.round(value / 4);
+        } else if (ratio > 3) {
+          return Math.round(value / 2.5);
+        } else if (ratio > 2) {
+          return value;
+        } else {
+          return value;
+        }
+      };
+
+      const predictedInvestments = predictions.map((pred) => {
+        const investment = Math.round(pred.predicted_investments_m);
+        const adaptedInvestment = adaptValue(investment, initialInvestments);
+        return adaptedInvestment;
+      });
+
+      const predictedCrowdfunding = predictions.map((pred) => {
+        const crowdfunding = Math.round(pred.predicted_crowdfunding_m);
+        const adaptedCrowdfunding = adaptValue(
+          crowdfunding,
+          initialCrowdfunding,
+        );
+        return adaptedCrowdfunding;
+      });
 
       // Вычисление общей суммы
       const totalSum = [
-        Math.round(userInput.investments_m) +
-          Math.round(userInput.crowdfunding_m),
+        initialInvestments + initialCrowdfunding,
         ...predictedInvestments.map(
           (inv, index) => inv + predictedCrowdfunding[index],
         ),
@@ -32,10 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
           datasets: [
             {
               label: "Инвестиции",
-              data: [
-                Math.round(userInput.investments_m),
-                ...predictedInvestments,
-              ],
+              data: [initialInvestments, ...predictedInvestments],
               backgroundColor: "rgba(75, 192, 192, 0.2)",
               borderColor: "rgba(75, 192, 192, 1)",
               borderWidth: 2,
@@ -44,10 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             {
               label: "Краудфандинг",
-              data: [
-                Math.round(userInput.crowdfunding_m),
-                ...predictedCrowdfunding,
-              ],
+              data: [initialCrowdfunding, ...predictedCrowdfunding],
               backgroundColor: "rgba(255, 99, 132, 0.2)",
               borderColor: "rgba(255, 99, 132, 1)",
               borderWidth: 2,
@@ -79,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
               beginAtZero: true,
               title: {
                 display: true,
-                text: "Сумма (в рублях)",
+                text: "Сумма $",
               },
               ticks: {
                 stepSize: 2000,

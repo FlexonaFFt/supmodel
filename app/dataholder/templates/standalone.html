@@ -1,0 +1,238 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StartupAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fade-in {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 bg-white z-50 border-b">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="/" class="text-2xl font-bold text-blue-500">StartupAI</a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="#features" class="text-gray-600 hover:text-blue-500">Преимущества</a>
+                    <a href="#Integrations" class="text-gray-600 hover:text-blue-500">Возможности</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-16">
+        <div class="text-center">
+            <div class="max-w-3xl mx-auto px-4">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">
+                    Умное <span class="text-blue-500">прогнозирование</span> успеха стартапов
+                </h1>
+                <p class="text-gray-600 text-lg mb-8">
+                    Используя передовые методы машинного обучения, мы помогаем инвесторам и предпринимателям
+                    принимать обоснованные решения, основанные на точном анализе данных.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button id="firstButton" class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition-colors">
+                        Начать работу
+                    </button>
+                    <button id="secondaryButton" class="border border-gray-300 px-8 py-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        Библиотека проектов
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <p class="text-sm text-gray-500 mb-8 text-center">Почему именно мы?</p>
+            <div class="flex flex-wrap justify-center items-center gap-8">
+                <div class="text-gray-400 text-xl font-semibold">Удобно</div>
+                <div class="text-gray-400 text-xl font-semibold">Легко</div>
+                <div class="text-gray-400 text-xl font-semibold">Быстро</div>
+                <div class="text-gray-400 text-xl font-semibold">Эффективно</div>
+                <div class="text-gray-400 text-xl font-semibold">Точно</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white" id="features">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">
+                    Передовые технологии для вашего успеха
+                </h2>
+                <p class="text-gray-600 text-lg">
+                    Наша платформа использует инновационные технологии для максимально точного прогнозирования.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex items-center gap-3 text-xl font-semibold mb-4">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                        Машинное обучение
+                    </div>
+                    <p class="text-gray-600">Используем передовые алгоритмы ML для анализа и прогнозирования успешности стартапов.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex items-center gap-3 text-xl font-semibold mb-4">
+                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
+                        </svg>
+                        Большие данные
+                    </div>
+                    <p class="text-gray-600">Анализируем огромные массивы данных о стартапах, рынках и инвестициях.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex items-center gap-3 text-xl font-semibold mb-4">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Точная аналитика
+                    </div>
+                    <p class="text-gray-600">Предоставляем детальные отчеты и метрики для принятия обоснованных решений.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex items-center gap-3 text-xl font-semibold mb-4">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        Интеграция с API
+                    </div>
+                    <p class="text-gray-600">Легко интегрируемся с вашими существующими системами через удобные API.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex items-center gap-3 text-xl font-semibold mb-4">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        Рекомендации
+                    </div>
+                    <p class="text-gray-600">Предлагаем персонализированные рекомендации на основе анализа данных о вашем стартапе.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex items-center gap-3 text-xl font-semibold mb-4">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        Обновление моделей
+                    </div>
+                    <p class="text-gray-600">Наши модели постоянно обновляются для обеспечения максимальной точности прогнозов.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integrations Section -->
+    <section id="Integrations" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="space-y-24">
+                <div class="flex flex-col lg:flex-row items-center gap-12">
+                    <div class="flex-1">
+                        <img src="{% static 'images/img1.png' %}" alt="Комплексный анализ" class="rounded-lg shadow-lg w-full object-cover">
+                    </div>
+                    <div class="flex-1 space-y-4">
+                        <h3 class="text-3xl font-bold">Комплексный анализ данных</h3>
+                        <p class="text-gray-600 text-lg">
+                            Наша система анализирует множество факторов, включая финансовые показатели, рыночные тренды и командный состав, чтобы предоставить наиболее точный прогноз успешности стартапа.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col lg:flex-row-reverse items-center gap-12">
+                    <div class="flex-1">
+                        <img src="{% static 'images/img2.png' %}" alt="Мониторинг" class="rounded-lg shadow-lg w-full object-cover">
+                    </div>
+                    <div class="flex-1 space-y-4">
+                        <h3 class="text-3xl font-bold">Мониторинг и аналитика</h3>
+                        <p class="text-gray-600 text-lg">
+                            Получайте детальные аналитические отчеты и следите за ключевыми метриками в режиме реального времени. Наши инструменты помогут вам принимать обоснованные решения.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto text-center px-4">
+            <div>
+                <div class="text-4xl font-bold mb-2">2024</div>
+                <div class="text-gray-600">Актуальные данные</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold mb-2">30K+</div>
+                <div class="text-gray-600">Записей в датасете</div>
+            </div>
+            <div>
+                <div class="text-4xl font-bold mb-2">50+</div>
+                <div class="text-gray-600">Готовых проектов</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-3xl mx-auto text-center px-4">
+            <blockquote class="text-2xl font-medium mb-8">
+                "Наше решение, наверное, может помочь компаниям снизить операционные расходы и время обработки, одновременно повышая соответствие требованиям. А, наверное, и не может..."
+            </blockquote>
+            <div>
+                <p class="font-semibold">Игорь Жаров</p>
+                <p class="text-gray-600">Разраб</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-blue-500 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">StartupAI</h3>
+                    <p class="text-blue-100">info@startupai.ru</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">О нас</h4>
+                    <ul class="space-y-2 text-blue-100">
+                        <li><a href="http://localhost:8000/">Главная страница</a></li>
+                        <li><a href="#features">Преимущества</a></li>
+                        <li><a href="#Integrations">Возможности</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Продукт</h4>
+                    <ul class="space-y-2 text-blue-100">
+                        <li><a href="http://localhost:8000/checkout">Начать работу</a></li>
+                        <li><a href="http://localhost:8000/projectlist">Библиотека проектов</a></li>
+                        <li><a href="https://github.com/FlexonaFFt/supmodel">О проекте</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+     <script src="{% static 'js/scripts/buttons.js' %}"></script>
+</body>
+</html>
