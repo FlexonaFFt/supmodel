@@ -1,5 +1,6 @@
 FROM python:3.11-slim
 WORKDIR /app
+RUN pip install tensorflow-cpu
 COPY requirements.txt requirements.txt
 COPY db.sqlite3 db.sqlite3
 RUN pip install --no-cache-dir -r requirements.txt
